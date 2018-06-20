@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- 绿色椭圆背景 -->
-    <item android:drawable="@drawable/bg_green_press" android:state_pressed="true"/>
-    <item android:drawable="@drawable/bg_green_press" android:state_enabled="false"/>
-    <item android:drawable="@drawable/bg_green_normal"/>
-</selector>
