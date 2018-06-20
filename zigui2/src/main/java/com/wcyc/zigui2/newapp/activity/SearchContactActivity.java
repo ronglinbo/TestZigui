@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,7 +20,9 @@ import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 
+import com.alibaba.mobileim.channel.constant.B2BConstant;
 import com.easemob.util.HanziToPinyin;
+import com.nostra13.universalimageloader.utils.L;
 import com.wcyc.zigui2.R;
 import com.wcyc.zigui2.chat.ContactDetail;
 import com.wcyc.zigui2.chooseContact.ChooseLowerFragment;
@@ -31,20 +34,31 @@ import com.wcyc.zigui2.core.CCApplication;
 import com.wcyc.zigui2.newapp.bean.AllContactListBean;
 import com.wcyc.zigui2.newapp.bean.AllTeacherList;
 import com.wcyc.zigui2.newapp.bean.AllTeacherList.TeacherMap;
+import com.wcyc.zigui2.newapp.bean.ClassAndStudentInfo;
 import com.wcyc.zigui2.newapp.bean.ClassList;
 import com.wcyc.zigui2.newapp.bean.ClassStudent;
 import com.wcyc.zigui2.newapp.bean.ClassStudent.Student;
 import com.wcyc.zigui2.newapp.bean.ClassStudentList;
 import com.wcyc.zigui2.newapp.bean.ContactsList;
+import com.wcyc.zigui2.newapp.bean.NewClasses;
 import com.wcyc.zigui2.newapp.bean.TeacherSelectInfo;
 import com.wcyc.zigui2.newapp.bean.UserType;
 import com.wcyc.zigui2.newapp.widget.RefreshListView1;
 import com.wcyc.zigui2.newapp.widget.RefreshListView2;
+import com.wcyc.zigui2.utils.ApiManager;
+import com.wcyc.zigui2.utils.Constants;
 import com.wcyc.zigui2.utils.DataUtil;
 import com.wcyc.zigui2.utils.GoHtml5Function;
+import com.wcyc.zigui2.utils.JsonUtils;
 import com.wcyc.zigui2.utils.LocalUtil;
 import com.wcyc.zigui2.utils.RefreshableView;
+import com.wcyc.zigui2.utils.SPConstants;
+import com.wcyc.zigui2.utils.SPUtils;
+import com.wcyc.zigui2.utils.ToastUtil;
 import com.wcyc.zigui2.widget.RoundImageView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -57,10 +71,22 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class SearchContactActivity extends BaseActivity {
+
+    String TAG="SearchContactActivityTAG";
+
     private SearchView search;
     private RefreshListView1 result;
     private RefreshListView1 result2;
@@ -69,23 +95,193 @@ public class SearchContactActivity extends BaseActivity {
 
     private AllContactListBean allContactList;
     private ClassStudentList classStudentList;
-    private ClassStudentList classStudentListSingle;
+    private ClassStudentList classStudentListSingle=null;
     private int Teacherlist;
     private TextView cancel;
     private String type;
+    private String toType="";
     private String userId;
     private Context mContext;
     private List<AllTeacherList.TeacherMap> chooseTeacherList;
     private List<SelectedDepartmentBean> mSelectedDepartmentBeanList;
 
+    private final int SCH_STUDENT_LIST=10004;//获取用户有权限的班级学生列表
+
+    ExecutorService executorService=null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seach_contact);
-
+        executorService= Executors.newCachedThreadPool();
         initInfo();
         initView();
+        initDateLoad();
+//        initData();
+
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(classStudentListSingle!=null&&!TextUtils.isEmpty(toType)&&toType.equals("searchStudent")){
+            //保存到本地
+            SPUtils.put(SearchContactActivity.this, SPConstants.CLASS_STUDENT_FLIE,SPConstants.CLASS_STUDENT+type,JsonUtils.classToString(classStudentListSingle));
+        }
+    }
+
+
+    public boolean originIsOpenCount(){
+        if(TextUtils.isEmpty(toType)||!toType.equals("searchStudent")){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+
+    private void initDateLoad(){
+
+        if(!originIsOpenCount()){
+            return;
+        }
+
+        long start=System.currentTimeMillis();
+        String json= String.valueOf(SPUtils.get(SearchContactActivity.this,SPConstants.CLASS_STUDENT_FLIE,SPConstants.CLASS_STUDENT+type,""));
+        classStudentListSingle=JsonUtils.fromJson(json,ClassStudentList.class);
+
+        if(classStudentListSingle==null){
+            showProgessBar();
+            initData();
+        }else{
+            Log.i(TAG,"学生数22:"+classStudentListSingle.getClassStudent().get(0).getStudentList().size());
+            initData();
+        }
+    }
+
+    private void initData() {
+        if(!originIsOpenCount()){
+            return;
+        }
+        UserType user = CCApplication.getInstance().getPresentUser();
+        JSONObject json=new JSONObject();
+        try {
+            json.put("X-School-Id2",user.getUserId());
+            json.put("X-User-Id2",user.getSchoolId());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//        Log.i(TAG,"获取所有的学生信息json:"+json);
+//        queryPost(Constants.GET_SCH_STUDENT_LIST, json);
+//        action = SCH_STUDENT_LIST;
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Constants.SERVER_URL + "/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(CCApplication.get().initClient())
+                .build();
+        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), json.toString());
+        ApiManager apiManager = retrofit.create(ApiManager.class);
+        Call call = apiManager.getSchStudentList(body);
+
+        call.enqueue(new Callback<ClassAndStudentInfo>() {
+            @Override
+            public void onResponse(Call<ClassAndStudentInfo> call, Response<ClassAndStudentInfo> response) {
+                ClassAndStudentInfo classAndStudentInfo=response.body();
+
+                long start=System.currentTimeMillis();
+
+                List<ClassAndStudentInfo.ClassStudentInfo> classStudentList=getClassStudentList(type,classAndStudentInfo);
+
+                if(classAndStudentInfo==null||null==classStudentList){
+                     dismissPd();
+                     ToastUtil.showLong(SearchContactActivity.this,"获取数据失败1");
+                    return;
+                }else if(classStudentList.size()<=0){
+                     dismissPd();
+                     ToastUtil.showLong(SearchContactActivity.this,"没有学生信息");
+                    return;
+                }
+                int studentSize = classStudentList.size();
+                Log.i(TAG,"学生数11:"+studentSize);
+
+                List<Student> students=new ArrayList<Student>();
+                    for (int i=0;i<studentSize;i++){
+                        Student student=new Student();
+                        student.setName(classStudentList.get(i).studentName);
+                        student.setId(classStudentList.get(i).studentId);
+                        student.setGradeClass(classStudentList.get(i).gradesName+classStudentList.get(i).className);
+//                        student.setHeader(getHeader(classAndStudentInfo.classStudentInfo.get(i).studentName));
+                        students.add(student);
+                    }
+
+                long end=System.currentTimeMillis();
+                Log.i(TAG,"加载完成学生数："+students.size()+"---用时："+(end-start));
+                executorService.execute(new MyGetHeader(0,students));
+
+            }
+
+            @Override
+            public void onFailure(Call<ClassAndStudentInfo> call, Throwable t) {
+                ToastUtil.showLong(SearchContactActivity.this,"获取数据失败");
+                dismissPd();
+            }
+        });
+
+    }
+
+
+    public List<ClassAndStudentInfo.ClassStudentInfo> getClassStudentList(String type,ClassAndStudentInfo classAndStudentInfo){
+        List<ClassAndStudentInfo.ClassStudentInfo> classStudentList=new ArrayList<ClassAndStudentInfo.ClassStudentInfo>();
+        if("schoolAttendance".equals(type)){
+            classStudentList.addAll(classAndStudentInfo.studentList1);
+        }else if("dormAttendance".equals(type)){
+            classStudentList.addAll(classAndStudentInfo.studentList2);
+        }
+        if(null==classStudentList){
+            classStudentList=new ArrayList<ClassAndStudentInfo.ClassStudentInfo>();
+        }
+
+        return classStudentList;
+    }
+
+
+    private final int  maxNumber = 1000;
+    class MyGetHeader implements Runnable{
+        private int startIndex;
+        private List<Student> students;
+
+        public MyGetHeader(int startIndex,List<Student> students){
+            this.startIndex=startIndex;
+            this.students=students;
+        }
+
+        @Override
+        public void run() {
+
+             for (int i=0;i<students.size();i++){
+                 if(students.get(i).getHeader()==null){
+                     students.get(i).setHeader(getHeader(students.get(i).getName()));
+                 }
+             }
+             SearchContactActivity.this.runOnUiThread(new Runnable() {
+                 @Override
+                 public void run() {
+                     classStudentListSingle=new ClassStudentList();
+                     List<ClassStudent> classStudents=new ArrayList<ClassStudent>();
+                     ClassStudent classStudent=new ClassStudent();
+                     classStudent.setStudentList(students);
+                     classStudents.add(classStudent);
+                     classStudentListSingle.setClassStudent(classStudents);
+
+                     dismissPd();
+                 }
+             });
+        }
+    }
+
+
+
 
     private void initInfo() {
         mContext = SearchContactActivity.this;
@@ -101,6 +297,7 @@ public class SearchContactActivity extends BaseActivity {
         chooseTeacherList = (List<TeacherMap>) bundle.getSerializable("lookSelectedTeacher");
         mSelectedDepartmentBeanList = (List<SelectedDepartmentBean>) bundle.getSerializable("lookSelectedDepartment");
         type = bundle.getString("type");
+        toType=bundle.getString("toType");
     }
 
     private TextView department_name_tv;
@@ -831,7 +1028,7 @@ public class SearchContactActivity extends BaseActivity {
                 header += HanziToPinyin.getInstance().get(name).get(i)
                         .target.substring(0, 1).toLowerCase();
             } catch (Exception e) {
-                System.out.println("name" + name);
+//                System.out.println("name" + name);
                 e.printStackTrace();
             }
         }
@@ -869,18 +1066,18 @@ public class SearchContactActivity extends BaseActivity {
         public View getView(int arg0, View convertView, ViewGroup arg2) {
             // TODO Auto-generated method stub
             ViewHolder viewHolder;
-//			if(convertView == null){
-            viewHolder = new ViewHolder();
-            convertView = getLayoutInflater().inflate(R.layout.row_contact, null);
-            viewHolder.avatar = (RoundImageView) convertView.findViewById(R.id.avatar);
-            viewHolder.tvName = (TextView) convertView.findViewById(R.id.name);
-            viewHolder.tvHeader = (TextView) convertView.findViewById(R.id.header);
-            viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.title);
+			if(convertView == null){
+                viewHolder = new ViewHolder();
+                convertView = getLayoutInflater().inflate(R.layout.row_contact, null);
+                viewHolder.avatar = (RoundImageView) convertView.findViewById(R.id.avatar);
+                viewHolder.tvName = (TextView) convertView.findViewById(R.id.name);
+                viewHolder.tvHeader = (TextView) convertView.findViewById(R.id.header);
+                viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.title);
 
-            convertView.setTag(viewHolder);
-//			}else{
-//				viewHolder = (ViewHolder) convertView.getTag();
-//			}
+                convertView.setTag(viewHolder);
+			}else{
+				viewHolder = (ViewHolder) convertView.getTag();
+			}
             ContactsList contact = match.get(arg0);
             String name = contact.getHxNickName();
             if (DataUtil.isNullorEmpty(name)) {
@@ -927,24 +1124,29 @@ public class SearchContactActivity extends BaseActivity {
         public View getView(int arg0, View convertView, ViewGroup arg2) {
             // TODO Auto-generated method stub
             ViewHolder viewHolder;
-//			if(convertView == null){
-            viewHolder = new ViewHolder();
-            convertView = getLayoutInflater().inflate(R.layout.row_contact, null);
-            viewHolder.avatar = (RoundImageView) convertView.findViewById(R.id.avatar);
-            viewHolder.tvName = (TextView) convertView.findViewById(R.id.name);
-            viewHolder.tvHeader = (TextView) convertView.findViewById(R.id.header);
-            viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.title);
+			if(convertView == null){
+                viewHolder = new ViewHolder();
+                convertView = getLayoutInflater().inflate(R.layout.row_contact, null);
+                viewHolder.avatar = (RoundImageView) convertView.findViewById(R.id.avatar);
+                viewHolder.tvName = (TextView) convertView.findViewById(R.id.name);
+                viewHolder.tvHeader = (TextView) convertView.findViewById(R.id.header);
+                viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.title);
 
-            convertView.setTag(viewHolder);
-//			}else{
-//				viewHolder = (ViewHolder) convertView.getTag();
-//			}
+                convertView.setTag(viewHolder);
+			}else{
+				viewHolder = (ViewHolder) convertView.getTag();
+			}
             Student student = match.get(arg0);
             String name = student.getName();
+            if(originIsOpenCount()){
+                name = student.getName()+"    "+student.getGradeClass();
+            }
+
             final int id = student.getId();
             setImage(viewHolder, student.getImgUrl(), String.valueOf(id));
             viewHolder.tvName.setText(name);
-
+            viewHolder.tvHeader.setVisibility(View.GONE);
+            viewHolder.tvTitle.setVisibility(View.GONE);
             return convertView;
         }
 
@@ -982,18 +1184,18 @@ public class SearchContactActivity extends BaseActivity {
         public View getView(int arg0, View convertView, ViewGroup arg2) {
             // TODO Auto-generated method stub
             ViewHolder viewHolder;
-//			if(convertView == null){
-            viewHolder = new ViewHolder();
-            convertView = getLayoutInflater().inflate(R.layout.row_contact, null);
-            viewHolder.avatar = (RoundImageView) convertView.findViewById(R.id.avatar);
-            viewHolder.tvName = (TextView) convertView.findViewById(R.id.name);
-            viewHolder.tvHeader = (TextView) convertView.findViewById(R.id.header);
-            viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.title);
+			if(convertView == null){
+                viewHolder = new ViewHolder();
+                convertView = getLayoutInflater().inflate(R.layout.row_contact, null);
+                viewHolder.avatar = (RoundImageView) convertView.findViewById(R.id.avatar);
+                viewHolder.tvName = (TextView) convertView.findViewById(R.id.name);
+                viewHolder.tvHeader = (TextView) convertView.findViewById(R.id.header);
+                viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.title);
 
-            convertView.setTag(viewHolder);
-//			}else{
-//				viewHolder = (ViewHolder) convertView.getTag();
-//			}
+                convertView.setTag(viewHolder);
+			}else{
+				viewHolder = (ViewHolder) convertView.getTag();
+			}
             TeacherMap teacher = match.get(arg0);
             String name = teacher.getName();
             final int id = teacher.getId();
@@ -1322,6 +1524,12 @@ public class SearchContactActivity extends BaseActivity {
     @Override
     protected void getMessage(String data) {
         // TODO Auto-generated method stub
+        switch (action){
+            case SCH_STUDENT_LIST:
+                Log.i(TAG,"获取所有的学生信息："+data);
+                break;
+        }
+
 
     }
 

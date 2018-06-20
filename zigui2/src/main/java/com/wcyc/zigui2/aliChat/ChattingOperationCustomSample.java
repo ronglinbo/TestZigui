@@ -81,7 +81,7 @@ public class ChattingOperationCustomSample extends IMChattingPageOperateion {
 
 
     /**
-     * 长按消息效果
+     * 长按消息事件
      *
      * @param fragment
      * @param message

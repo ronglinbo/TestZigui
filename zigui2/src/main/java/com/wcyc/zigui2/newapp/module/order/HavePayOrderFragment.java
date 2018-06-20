@@ -212,7 +212,7 @@ public class HavePayOrderFragment extends BaseRecyleviewFragment<Order> {
 
     @Override
     public void initEvents() {
-        //处理效果
+        //处理事件
     }
 }
 

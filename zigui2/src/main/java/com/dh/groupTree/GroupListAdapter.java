@@ -302,7 +302,7 @@ public class GroupListAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
-        // item单击效果
+        // item单击事件
         holder.rltItem.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -319,7 +319,7 @@ public class GroupListAdapter extends BaseAdapter {
                 onItemClickListener.onItemClick(n, !n.isChecked(), position);
             }
         });
-        // 复选框单击效果
+        // 复选框单击事件
         holder.chbSelect.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

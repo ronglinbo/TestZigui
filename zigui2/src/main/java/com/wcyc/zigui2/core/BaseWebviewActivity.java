@@ -41,21 +41,27 @@ import android.webkit.WebSettings;
 import android.webkit.WebSettings.PluginState;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.utils.L;
 import com.wcyc.zigui2.R;
 import com.wcyc.zigui2.bean.PictureURL;
 import com.wcyc.zigui2.chat.ContactDetail;
 import com.wcyc.zigui2.chat.MainActivity;
 import com.wcyc.zigui2.contactselect.OneContactMainActivity;
 import com.wcyc.zigui2.contactselect.contactMainActivity;
+import com.wcyc.zigui2.newapp.activity.ApplyForMaintainActivity;
 import com.wcyc.zigui2.newapp.activity.HomeActivity;
 import com.wcyc.zigui2.newapp.activity.ImagePagerActivity;
 import com.wcyc.zigui2.newapp.activity.LoginActivity;
 
+import com.wcyc.zigui2.newapp.activity.SearchContactActivity;
 import com.wcyc.zigui2.newapp.bean.AttachmentBean;
 import com.wcyc.zigui2.newapp.bean.AttachmentBean.Attachment;
+import com.wcyc.zigui2.newapp.bean.MenuItem;
+import com.wcyc.zigui2.newapp.bean.UserType;
 import com.wcyc.zigui2.newapp.home.NewAttendanceActivity;
 import com.wcyc.zigui2.newapp.home.NewCommentActivity;
 import com.wcyc.zigui2.newapp.home.NewHomeworkActivity;
@@ -85,6 +91,8 @@ import static com.taobao.accs.ACCSManager.mContext;
 @SuppressLint("JavascriptInterface")
 public class BaseWebviewActivity extends TaskBaseActivity {
 
+    String TAG="BaseWebviewTAG";
+
     private ProgressWebView contentWebView = null;
     private FrameLayout videoView;
     private String url = null;
@@ -99,12 +107,14 @@ public class BaseWebviewActivity extends TaskBaseActivity {
     private String refreshUrl;//子贵课堂调用充值接口后跳转地址
     public static final String INTENT_REFESH_DATA = HomeActivity.INTENT_NEW_MESSAGE;//刷新的广播
 
+
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base_web);
         url = getIntent().getStringExtra("url");
+        Log.i(TAG,"onCreate:url:"+url);
         initView();
         Bundle bundle = getIntent().getExtras();
         additionalHttpHeaders = (HashMap<String, String>) bundle.getSerializable("para");
@@ -206,6 +216,7 @@ public class BaseWebviewActivity extends TaskBaseActivity {
             }
 
         });
+        Log.i(TAG,"BaseWebView:url:"+url);
         contentWebView.setWebViewClient(new NoAdWebViewClient(this, url));
         loadUrl();
     }
@@ -222,6 +233,11 @@ public class BaseWebviewActivity extends TaskBaseActivity {
     //刷新的广播
     private BroadcastReceiver refeshDataReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
+            String title= intent.getStringExtra("extraAction");
+            if(!TextUtils.isEmpty(title)&&title.trim().equals("showRepairList")){
+                UserType user = CCApplication.getInstance().getPresentUser();
+                url="https://wcyc.ziguiw.com/zgwps/app_myrepair/toList.do?schoolId="+user.getSchoolId()+"&userId="+user.getUserId()+"&mobileType=android#am";
+            }
             setWebView();//重新获取数据
         }
     };
@@ -232,14 +248,14 @@ public class BaseWebviewActivity extends TaskBaseActivity {
 //		System.out.println("TeacherClassDynamicsActivity onDestroy");
         unregisterReceiver(refeshDataReceiver);
 //		//清空所有Cookie
-//		CookieSyncManager.createInstance(CCApplication.applicationContext);  //Create a singleton CookieSyncManager within a context
-//		CookieManager\ cookieManager = CookieManager.getInstance(); // the singleton CookieManager instance
-//		cookieManager.removeAllCookie();// Removes all cookies.
-//		CookieSyncManager.getInstance().sync(); // forces sync manager to sync now
-//		contentWebView.setWebChromeClient(null);
-//		contentWebView.setWebViewClient(null);
-//		contentWebView.getSettings().setJavaScriptEnabled(false);
-//		contentWebView.clearCache(true);
+		CookieSyncManager.createInstance(CCApplication.applicationContext);  //Create a singleton CookieSyncManager within a context
+		CookieManager cookieManager = CookieManager.getInstance(); // the singleton CookieManager instance
+		cookieManager.removeAllCookie();// Removes all cookies.
+		CookieSyncManager.getInstance().sync(); // forces sync manager to sync now
+		contentWebView.setWebChromeClient(null);
+		contentWebView.setWebViewClient(null);
+		contentWebView.getSettings().setJavaScriptEnabled(false);
+		contentWebView.clearCache(true);
 
     }
 
@@ -264,7 +280,7 @@ public class BaseWebviewActivity extends TaskBaseActivity {
     }
 
     /**
-     * 重新获得焦点效果
+     * 重新获得焦点事件
      */
     @SuppressLint("NewApi")
     @Override
@@ -327,6 +343,14 @@ public class BaseWebviewActivity extends TaskBaseActivity {
             newActivity(NewAttendanceActivity.class, null);
         }
 
+        //发布维修申请
+        @JavascriptInterface
+        public void addNewRepair(){
+            System.out.println("addNewRepair");
+            newActivity(ApplyForMaintainActivity.class, null);
+        }
+
+
         //发布考试
         @JavascriptInterface
         public void addNewExamination() {
@@ -347,7 +371,36 @@ public class BaseWebviewActivity extends TaskBaseActivity {
             intent.putExtras(bundle);
 
             startActivityForResult(intent, CHOOSE_STUDENT);
+
+
+//            Intent intent1=new Intent(BaseWebviewActivity.this,SearchContactActivity.class);
+//            Bundle bundle1=new Bundle();
+//            bundle1.putString("toType","BaseWebview");
+//            bundle1.putString("type", type);
+//            intent1.putExtras(bundle1);
+//
+//            startActivityForResult(intent1, CHOOSE_STUDENT);
         }
+
+        //选择学生
+        @JavascriptInterface
+        public void searchStudent(String type){
+            System.out.println("searchStudent:"+type);
+            BaseWebviewActivity.this.type = type;
+            Intent intent1=new Intent(BaseWebviewActivity.this,SearchContactActivity.class);
+            Bundle bundle1=new Bundle();
+            bundle1.putString("toType","searchStudent");
+            bundle1.putString("type", type);
+            intent1.putExtras(bundle1);
+
+            startActivityForResult(intent1, CHOOSE_STUDENT);
+
+
+
+
+        }
+
+
 
         /**
          * 当前网络不可用activity.
@@ -526,7 +579,7 @@ public class BaseWebviewActivity extends TaskBaseActivity {
          *
          * @param teacherId  老师ID
          * @param workID     课程ID
-         * @param courseDate 课程效果
+         * @param courseDate 课程事件
          */
         @JavascriptInterface
         public void jumpUpdateHomeWork(String teacherId, String workID, String courseDate) {
@@ -594,6 +647,8 @@ public class BaseWebviewActivity extends TaskBaseActivity {
         @JavascriptInterface
         public void jumpSlideActicity(String imageUrl, String onClickImageIndex) {
 
+            Log.i(TAG,"jumpSlideActicity:imageUrl:"+imageUrl+"------:onClickImageIndex:"+onClickImageIndex);
+
             TelephonyManager telephonyManager =
                     (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
             String deviceId = telephonyManager.getDeviceId();
@@ -645,6 +700,10 @@ public class BaseWebviewActivity extends TaskBaseActivity {
                     index);
             startActivity(intent);
         }
+
+
+
+
 
         /**
          * 跳转到原生的activity.<p>
@@ -723,6 +782,11 @@ public class BaseWebviewActivity extends TaskBaseActivity {
             newActivity(ContactDetail.class, bundle);
         }
 
+        /**
+         * 打开附件
+         * @param url
+         * @param name
+         */
         @JavascriptInterface
         public void handleOnClickAttachment(String url, String name) {
             System.out.println("handleOnClickAttachment:" + url + " name:" + name);
@@ -743,6 +807,7 @@ public class BaseWebviewActivity extends TaskBaseActivity {
             bundle.putString("call", "html5");
             intent.putExtras(bundle);
             intent.putExtra("module", "子贵课堂");
+            intent.putExtra("moduleNumber", MenuItem.COURSE_NUMBER);
             startActivityForResult(intent, CHARGE);
         }
 

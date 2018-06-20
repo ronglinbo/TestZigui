@@ -144,9 +144,6 @@ public class SchoolMasterMailDetailActivity extends BaseActivity
 //			content = parseHtmlContent(content);
 			if(webview != null){
 //				DataUtil.showHtmlSetting(webview,content);
-				webview.removeJavascriptInterface("searchBoxJavaBridge_");
-				webview.removeJavascriptInterface("accessibility");
-				webview.removeJavascriptInterface("accessibilityTraversal");
 				new CustomWebView(this,webview,content, R.color.background_color);
 			}
 		}else{
@@ -172,9 +169,6 @@ public class SchoolMasterMailDetailActivity extends BaseActivity
 		RepliedContent = (WebView) findViewById(R.id.replied_content);
 		if(RepliedContent != null){
 			RepliedContent.getSettings().setDefaultTextEncodingName("UTF-8");//设置默认为utf-8
-			RepliedContent.removeJavascriptInterface("searchBoxJavaBridge_");
-			RepliedContent.removeJavascriptInterface("accessibility");
-			RepliedContent.removeJavascriptInterface("accessibilityTraversal");
 		}
 		initView();
 	}

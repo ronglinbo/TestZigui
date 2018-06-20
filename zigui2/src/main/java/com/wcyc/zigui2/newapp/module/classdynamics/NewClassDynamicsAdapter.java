@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,7 +29,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Environment;
+import android.support.v7.app.AlertDialog;
 import android.text.InputFilter;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -79,15 +83,19 @@ import com.wcyc.zigui2.newapp.bean.NewBaseBean;
 import com.wcyc.zigui2.newapp.bean.NewChild;
 import com.wcyc.zigui2.newapp.bean.NewClasses;
 import com.wcyc.zigui2.newapp.bean.NewPointBean;
+import com.wcyc.zigui2.newapp.bean.ShareModel;
+import com.wcyc.zigui2.newapp.module.educationinfor.EducationDetailsActivity;
 import com.wcyc.zigui2.newapp.module.leavemessage.ChildMessage;
 import com.wcyc.zigui2.newapp.videoutils.VideoViewActivity;
 import com.wcyc.zigui2.newapp.widget.EditTextLengthFilter;
+import com.wcyc.zigui2.newapp.widget.SharePopWindow;
 import com.wcyc.zigui2.utils.ApiManager;
 import com.wcyc.zigui2.utils.Constants;
 import com.wcyc.zigui2.utils.DataUtil;
 import com.wcyc.zigui2.utils.HttpHelper;
 import com.wcyc.zigui2.utils.ImageUtils;
 import com.wcyc.zigui2.utils.JsonUtils;
+import com.wcyc.zigui2.utils.PhotoBitmapUtils;
 import com.wcyc.zigui2.utils.RepeatOnClick;
 import com.wcyc.zigui2.widget.RoundImageView;
 
@@ -127,23 +135,25 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
     public static final String EXTRA_IMAGE_URLS = "image_urls";
     DisplayImageOptions build;
 
+    private boolean hidePublish; //是否是全部班级...true 是全部班级  false是单个班级
+
     private void DownloadAllImages() {
         final int num = list.size();
         // String[] tempurls;
         List<String> tempurls;
         for (int i = 0; i < num; i++) {
-            List<NewClassDynamicsBean1.ClassAttachmentBean> clssAttachmentList=new ArrayList<NewClassDynamicsBean1.ClassAttachmentBean>();
-            tempurls=new ArrayList<String>();
-            clssAttachmentList=list.get(i).getAttachmentInfoList_new();
+            List<NewClassDynamicsBean1.ClassAttachmentBean> clssAttachmentList = new ArrayList<NewClassDynamicsBean1.ClassAttachmentBean>();
+            tempurls = new ArrayList<String>();
+            clssAttachmentList = list.get(i).getAttachmentInfoList_new();
             for (int k = 0; k < clssAttachmentList.size(); k++) {
-                String attachementUrl=list.get(i).getAttachmentInfoList_new().get(k).getAttachementUrl();
+                String attachementUrl = list.get(i).getAttachmentInfoList_new().get(k).getAttachementUrl();
                 tempurls.add(attachementUrl);
             }
             if (tempurls != null) {
                 int length = tempurls.size();
                 for (int j = 0; j < length; j++) {
-                    String attchmentType=list.get(i).getAttchmentType();//1是图片  2是视频音频 3是文件文档 5-6也是视频
-                    if(!"2".equals(attchmentType)&&!"6".equals(attchmentType)&&!"5".equals(attchmentType)){
+                    String attchmentType = list.get(i).getAttchmentType();//1是图片  2是视频音频 3是文件文档 5-6也是视频
+                    if (!"2".equals(attchmentType) && !"6".equals(attchmentType) && !"5".equals(attchmentType)) {
                         imageLoader.loadImage(Constants.URL + tempurls.get(j)
                                 + "&sf=150*150", options, new ImageLoadingListener() {//&sf=80*80之前的，感觉太不清晰
                             @Override
@@ -174,9 +184,11 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
         }
     }
 
+    private View parentView;
+
     public NewClassDynamicsAdapter(BaseActivity activity,
                                    List<NewClassDynamicsBean1> list, String userid,
-                                   String resource_id, String userName) {
+                                   String resource_id, String userName, View parentView, boolean hidePublish) {
         this.activity = activity;
         inflater = LayoutInflater.from(activity);
         this.list = list;
@@ -185,6 +197,8 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                 .getUserId();
         this.userName = userName;
         this.resource_id = resource_id;
+        this.parentView = parentView;
+        this.hidePublish = hidePublish;
         this.mBitmapMap = mBitmapMap;
         imageLoader = ImageLoader.getInstance();
         options = new DisplayImageOptions.Builder()
@@ -197,6 +211,7 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
         DownloadAllImages();
         getRelationCode();
     }
+
 
     public NewClassDynamicsAdapter(BaseActivity activity,
                                    List<NewClassDynamicsBean1> list, String userid,
@@ -258,7 +273,7 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                     .findViewById(R.id.gridView);// gridView 图片
             holder.class_vedio_iv = (ImageView) convertView
                     .findViewById(R.id.class_vedio_iv);// 视频
-            holder.class_vedio_ll= (RelativeLayout) convertView
+            holder.class_vedio_ll = (RelativeLayout) convertView
                     .findViewById(R.id.class_vedio_ll);// 视频布局
 
             holder.author_delete = (TextView) convertView
@@ -294,6 +309,9 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                     .findViewById(R.id.message_comment_icon);// 评论点击图标
             holder.class_dynamics_civ = (RoundImageView) convertView
                     .findViewById(R.id.class_dynamics_civ);// 这条班级动态人的头像
+
+            holder.iv_share = (ImageView) convertView.findViewById(R.id.iv_share);
+
             // holder.new_goodlove_gv = (GridView) convertView
             // .findViewById(R.id.new_goodlove_gv);
 
@@ -382,14 +400,14 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                 }
             }
         } else if ("3".equals(usertype)) {
-            List<NewChild> childlist=null;
-         try{
-             childlist = CCApplication.app.getMemberDetail()
-                     .getChildList();
-         }catch (Exception e){
-             DataUtil.getToastShort("数据未加载完成，稍后再试");
-             return;
-         }
+            List<NewChild> childlist = null;
+            try {
+                childlist = CCApplication.app.getMemberDetail()
+                        .getChildList();
+            } catch (Exception e) {
+                DataUtil.getToastShort("数据未加载完成，稍后再试");
+                return;
+            }
 
             if (childlist != null) {
 
@@ -408,49 +426,57 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
 
         holder.mew_bjmc.setText("");// 发布人所在班级
         String class_name_b = "";
-        if (classlist != null) {
-            for (int i = 0; i < classlist.size(); i++) {
-                String class_id_b = classlist.get(i).getClassID();
-                if (class_id_a.equals(class_id_b)) {
-                    class_name_b = classlist.get(i).getClassName();
-                    holder.mew_bjmc.setText(class_name_b);
+
+        //如果是全部班级
+        if (hidePublish) {
+            String allClassName = list.get(position).getClassName();
+            if (!DataUtil.isNullorEmpty(allClassName)) {
+                holder.mew_bjmc.setText(allClassName);
+            } else {
+                holder.mew_bjmc.setText("");
+            }
+
+            //如果是选择单个班级
+        } else {
+            if (classlist != null) {
+                for (int i = 0; i < classlist.size(); i++) {
+                    String class_id_b = classlist.get(i).getClassID();
+                    if (class_id_a.equals(class_id_b)) {
+                        class_name_b = classlist.get(i).getClassName();
+                        holder.mew_bjmc.setText(class_name_b);
+                    }
                 }
             }
-        }
 
-        //如果是管理员或校级领导
-        if (allowAllClassTag) {
-            if (allClassList != null) {
-                for (int i = 0; i < allClassList.size(); i++) {
-                    String class_id_b = allClassList.get(i).getClassID();
-                    if (class_id_a.equals(class_id_b)) {
-                        class_name_b = allClassList.get(i).getClassName();
-                        holder.mew_bjmc.setText(class_name_b);
+            //如果是管理员或校级领导
+            if (allowAllClassTag) {
+                if (allClassList != null) {
+                    for (int i = 0; i < allClassList.size(); i++) {
+                        String class_id_b = allClassList.get(i).getClassID();
+                        if (class_id_a.equals(class_id_b)) {
+                            class_name_b = allClassList.get(i).getClassName();
+                            holder.mew_bjmc.setText(class_name_b);
+                        }
                     }
                 }
             }
         }
 
+
         String publishUserType = list.get(position).getPublishUserType();
         if ("2".equals(publishUserType)) {
 
             holder.author_name.setText(list.get(position).getPublisherName());// 发布人
-        }else if ("3".equals(publishUserType)) {
+        } else if ("3".equals(publishUserType)) {
 
             if (list.get(position).getRelation() != null) {
-
-                holder.author_name.setText(list.get(position).getPublishChildName()
-                        + list.get(position).getRelation());
-            }else {
-
-                holder.author_name.setText(list.get(position).getPublishChildName()
-                        + "家长");
+                holder.author_name.setText(list.get(position).getPublishChildName() + list.get(position).getRelation());
+            } else {
+                holder.author_name.setText(list.get(position).getPublishChildName() + "家长");
             }
-
-
         }
 
-        // 这条班级动态人的头像以及监听效果
+        // 这条班级动态人的头像以及监听事件
         if (list.get(position).getPublisherImgUrl() != null) {
             //方法一
 //			String url = DataUtil.getDownloadURL(activity, list.get(position)
@@ -461,11 +487,10 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
 
             //方法二
 
-            String url=list.get(position).getPublisherImgUrl();
-            if(!DataUtil.isNullorEmpty(url)){
+            String url = list.get(position).getPublisherImgUrl();
+            if (!DataUtil.isNullorEmpty(url)) {
                 String imageurl = DataUtil.getIconURL(url);
-                System.out.println("icon file:"+url);
-//                Picasso.with(activity).load(imageurl).error(R.drawable.pho_touxiang).into(holder.class_dynamics_civ);
+                System.out.println("icon file:" + url);
 
                 if (build == null) {
                     build = new DisplayImageOptions.Builder()
@@ -481,13 +506,19 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                             .displayer(new FadeInBitmapDisplayer(300)).build();
                 }
 
-                (activity).getImageLoader().displayImage(imageurl, holder.class_dynamics_civ, build);
+
+                //防止点击页面的时候抖动
+                if (imageurl.equals(holder.class_dynamics_civ.getTag())) {
+
+                } else {
+                    holder.class_dynamics_civ.setTag(imageurl);
+                    (activity).getImageLoader().displayImage(imageurl, holder.class_dynamics_civ, build);
+                }
+//                (activity).getImageLoader().displayImage(imageurl, holder.class_dynamics_civ, build);
             }
-
-
-         } else {
-            if(list.get(position).getPublisherName().equals("于文源")){
-                String url=list.get(position).getPublisherImgUrl();
+        } else {
+            if (list.get(position).getPublisherName().equals("于文源")) {
+                String url = list.get(position).getPublisherImgUrl();
             }
             holder.class_dynamics_civ.setImageResource(R.drawable.pho_touxiang);
         }
@@ -499,20 +530,20 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
 
             @Override
             public void onClick(View v) {
-              //  if(list.get(position).getPublisherName().equals("于文源")){
-                String url=list.get(position).getPublisherImgUrl();
-                    Log.e("url",list.get(position).getPublisherName()+"1");
-             //   }
+                //  if(list.get(position).getPublisherName().equals("于文源")){
+                String url = list.get(position).getPublisherImgUrl();
+                Log.e("url", list.get(position).getPublisherName() + "1");
+                //   }
                 if ("2".equals(publishUserType_final)) {
                     if (!DataUtil.isNetworkAvailable(activity)) {
                         DataUtil.getToast("当前网络不可用，请检查您的网络设置");
                         return;
                     }
 
-                    String commentUserName=list.get(position).getPublisherName();
-                    if(isFamily(commentUserName)){
+                    String commentUserName = list.get(position).getPublisherName();
+                    if (isFamily(commentUserName)) {
                         DataUtil.getToast("家长暂未开放动态！");
-                    }else{
+                    } else {
                         Intent intent = new Intent(activity,
                                 NewPersonalDynamicsActivity.class);
                         intent.putExtra("publishUserId", list.get(position)
@@ -551,10 +582,10 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                         return;
                     }
 
-                    String commentUserName=list.get(position).getPublisherName();
-                    if(isFamily(commentUserName)){
+                    String commentUserName = list.get(position).getPublisherName();
+                    if (isFamily(commentUserName)) {
                         DataUtil.getToast("家长暂未开放动态！");
-                    }else{
+                    } else {
                         Intent intent = new Intent(activity,
                                 NewPersonalDynamicsActivity.class);
                         intent.putExtra("publishUserId", list.get(position)
@@ -588,6 +619,17 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
 
         String subjectView = list.get(position).getSubjectView();// 发布人在这个班任教科目
 
+//        if (hidePublish) {
+//            holder.mew_bjmc_couse_teacher.setVisibility(View.GONE);
+//        } else {
+//            holder.mew_bjmc_couse_teacher.setVisibility(View.VISIBLE);
+//            holder.mew_bjmc_couse_teacher.setText("");
+//            if (!DataUtil.isNullorEmpty(subjectView)) {
+//                holder.mew_bjmc_couse_teacher.setText(subjectView + "老师");
+//            }
+//        }
+
+        holder.mew_bjmc_couse_teacher.setVisibility(View.VISIBLE);
         holder.mew_bjmc_couse_teacher.setText("");
         if (!DataUtil.isNullorEmpty(subjectView)) {
             holder.mew_bjmc_couse_teacher.setText(subjectView + "老师");
@@ -667,7 +709,6 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
         }
 
         String time = list.get(position).getPublishTime();
-
         Date nowdate = new Date();//当前时间
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//格式
         String nowdate_str = sdf.format(nowdate);
@@ -697,32 +738,32 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
 
         if (list.get(position).getAttachmentInfoList_new() != null) {
 
-            String attchmentType=list.get(position).getAttchmentType();//1是图片  2是视频音频 3是文件文档
+            String attchmentType = list.get(position).getAttchmentType();//1是图片  2是视频音频 3是文件文档
             List<String> pcList = new ArrayList<String>();
-            List<NewClassDynamicsBean1.ClassAttachmentBean> clssAttachmentList=new ArrayList<NewClassDynamicsBean1.ClassAttachmentBean>();
-            clssAttachmentList=list.get(position).getAttachmentInfoList_new();
+            List<NewClassDynamicsBean1.ClassAttachmentBean> clssAttachmentList = new ArrayList<NewClassDynamicsBean1.ClassAttachmentBean>();
+            clssAttachmentList = list.get(position).getAttachmentInfoList_new();
             for (int k = 0; k < clssAttachmentList.size(); k++) {
-                String attachementUrl=list.get(position).getAttachmentInfoList_new().get(k).getAttachementUrl();
+                String attachementUrl = list.get(position).getAttachmentInfoList_new().get(k).getAttachementUrl();
                 pcList.add(attachementUrl);
             }
 //			2是app发的   5和6是web发的
-            if("2".equals(attchmentType)||"6".equals(attchmentType)||"5".equals(attchmentType)){
+            if ("2".equals(attchmentType) || "6".equals(attchmentType) || "5".equals(attchmentType)) {
                 holder.class_vedio_iv.setVisibility(View.VISIBLE);
                 holder.class_vedio_ll.setVisibility(View.VISIBLE);
                 holder.gridView.setVisibility(View.GONE);
-                if("2".equals(attchmentType)){//如果是app发的班级动态
-                    String pcitureAddress=list.get(position).getPcitureAddress();
-                    if(!DataUtil.isNullorEmpty(pcitureAddress)){
-                        String url=DataUtil.getDownloadURL(activity,"/downloadApi?"+pcitureAddress);
-                        if(!DataUtil.isNullorEmpty(url)){
-                            url=url.replaceAll("&vedio=ys","");
+                if ("2".equals(attchmentType)) {//如果是app发的班级动态
+                    String pcitureAddress = list.get(position).getPcitureAddress();
+                    if (!DataUtil.isNullorEmpty(pcitureAddress)) {
+                        String url = DataUtil.getDownloadURL(activity, "/downloadApi?" + pcitureAddress);
+                        if (!DataUtil.isNullorEmpty(url)) {
+                            url = url.replaceAll("&vedio=ys", "");
                         }
                         activity.getImageLoader().displayImage(url, holder.class_vedio_iv, activity.getImageLoaderOptions());
 //                        ImageUtils.showImage(activity, "/downloadApi?"+pcitureAddress, holder.class_vedio_iv);//缩略图
-                    }else{
+                    } else {
                         holder.class_vedio_iv.setImageResource(R.drawable.default_image);
                     }
-                }else{
+                } else {
                     String file = list.get(position).getAttachmentInfoList_new().get(0).getAttachementUrl();
                     String url = DataUtil.getDownloadURL(activity, file + "&vedio=pic");
                     if (!DataUtil.isNullorEmpty(url)) {
@@ -732,18 +773,18 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                             activity.getImageLoaderOptions());
                 }
 
-                final List<String> pcList_final=pcList;
-                holder.class_vedio_iv.setOnClickListener(new OnClickListener(){
+                final List<String> pcList_final = pcList;
+                holder.class_vedio_iv.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         PictureURL pictureURL = null;
                         List<PictureURL> datas = new ArrayList<PictureURL>();
                         pictureURL = new PictureURL();
                         String url = DataUtil.getDownloadURL(activity, pcList_final.get(0));
-                        String filename=pcList_final.get(0);
-                         filename= filename.substring(filename.indexOf("fileId="));
+                        String filename = pcList_final.get(0);
+                        filename = filename.substring(filename.indexOf("fileId="));
                         showProgessBar();
-                        downLoad(url,filename);
+                        downLoad(url, filename);
 //                        pictureURL.setPictureURL(url);
 //                        datas.add(pictureURL);
 //                        Intent intent = new Intent(activity,
@@ -756,7 +797,7 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
 //                        activity.startActivity(intent);
                     }
                 });
-            }else{
+            } else {
                 holder.class_vedio_iv.setVisibility(View.GONE);
                 holder.class_vedio_ll.setVisibility(View.GONE);
                 if (pcList.size() == 0) {
@@ -786,7 +827,7 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
             }
         }
 
-        // 点赞人图标效果
+        // 点赞人图标事件
         holder.message_support.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -832,14 +873,15 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                                                 super.updateDrawState(ds);
                                                 // ds.setColor(Color.WHITE); //设置文件颜色
                                                 ds.setUnderlineText(false); // 设置取消下划线
+                                                ds.setColor(Color.parseColor("#01afef"));
                                             }
 
                                             @Override
                                             public void onClick(View widget) {
-                                                String commentUserName=all.get(i2).getCommentUserName();
-                                                if(isFamily(commentUserName)){
+                                                String commentUserName = all.get(i2).getCommentUserName();
+                                                if (isFamily(commentUserName)) {
                                                     DataUtil.getToast("家长暂未开放动态！");
-                                                }else{
+                                                } else {
                                                     if (!DataUtil.isNetworkAvailable(activity)) {
                                                         DataUtil.getToast("当前网络不可用，请检查您的网络设置");
                                                         return;
@@ -850,11 +892,11 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                                                     intent.putExtra("publishUserId", all.get(i2)
                                                             .getCommentUserId() + "");
 
-                                                    String publisherImgUrl=getPointOrCommentUrl(all.get(i2)
-                                                            .getCommentUserId() + "",list);
-                                                    if(!DataUtil.isNullorEmpty(publisherImgUrl)){
+                                                    String publisherImgUrl = getPointOrCommentUrl(all.get(i2)
+                                                            .getCommentUserId() + "", list);
+                                                    if (!DataUtil.isNullorEmpty(publisherImgUrl)) {
                                                         intent.putExtra("publisherImgUrl", publisherImgUrl);
-                                                    }else{
+                                                    } else {
                                                         intent.putExtra("publisherImgUrl", all.get(i2)
                                                                 .getCommentUserId());// 服务器没有传头像地址给我
                                                     }
@@ -878,9 +920,13 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                 holder.message_support_count_name
                         .setMovementMethod(LinkMovementMethod.getInstance());
             }
+
+            subLikeTextView(holder);
+
+
         }
 
-        // 评论点击效果
+        // 评论点击事件
         holder.message_comment_icon.setOnClickListener(new OnClickListener() {
 
 
@@ -927,18 +973,18 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                                     return;
                                 }
 
-                                String commentUserName=list.get(position).getCommentList().get(arg2).getCommentUserName() + "";
-                                if(isFamily(commentUserName)){
+                                String commentUserName = list.get(position).getCommentList().get(arg2).getCommentUserName() + "";
+                                if (isFamily(commentUserName)) {
                                     DataUtil.getToast("家长暂未开放动态！");
-                                }else{
+                                } else {
                                     Intent intent = new Intent(activity,
                                             NewPersonalDynamicsActivity.class);
                                     intent.putExtra("publishUserId", list.get(position).getCommentList().get(arg2).getCommentUserId() + "");
 
-                                    String publisherImgUrl=getPointOrCommentUrl(list.get(position).getCommentList().get(arg2).getCommentUserId() + "",list);
-                                    if(!DataUtil.isNullorEmpty(publisherImgUrl)){
+                                    String publisherImgUrl = getPointOrCommentUrl(list.get(position).getCommentList().get(arg2).getCommentUserId() + "", list);
+                                    if (!DataUtil.isNullorEmpty(publisherImgUrl)) {
                                         intent.putExtra("publisherImgUrl", publisherImgUrl);
-                                    }else{
+                                    } else {
                                         intent.putExtra("publisherImgUrl", list.get(position).getCommentList().get(arg2).getCommentUserId() + "");// 服务器没有传头像地址给我
                                     }
                                     intent.putExtra("publisherName", list.get(position).getCommentList().get(arg2).getCommentUserName() + "");
@@ -955,18 +1001,18 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                                     DataUtil.getToast("当前网络不可用，请检查您的网络设置");
                                     return;
                                 }
-                                String commentUserName=list.get(position).getCommentList().get(arg2).getToCommentUserName() + "";
-                                if(isFamily(commentUserName)){
+                                String commentUserName = list.get(position).getCommentList().get(arg2).getToCommentUserName() + "";
+                                if (isFamily(commentUserName)) {
                                     DataUtil.getToast("家长暂未开放动态！");
-                                }else{
+                                } else {
                                     Intent intent = new Intent(activity,
                                             NewPersonalDynamicsActivity.class);
                                     intent.putExtra("publishUserId", list.get(position).getCommentList().get(arg2).getToCommentUserId() + "");
 
-                                    String publisherImgUrl=getPointOrCommentUrl(list.get(position).getCommentList().get(arg2).getToCommentUserId() + "",list);
-                                    if(!DataUtil.isNullorEmpty(publisherImgUrl)){
+                                    String publisherImgUrl = getPointOrCommentUrl(list.get(position).getCommentList().get(arg2).getToCommentUserId() + "", list);
+                                    if (!DataUtil.isNullorEmpty(publisherImgUrl)) {
                                         intent.putExtra("publisherImgUrl", publisherImgUrl);
-                                    }else{
+                                    } else {
                                         intent.putExtra("publisherImgUrl", list.get(position).getCommentList().get(arg2).getToCommentUserId() + "");// 服务器没有传头像地址给我
                                     }
                                     intent.putExtra("publisherName", list.get(position).getCommentList().get(arg2).getToCommentUserName() + "");
@@ -979,8 +1025,92 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
 
                     }
                 });
+        holder.iv_share.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                //分享内容
+                String content = list.get(position).getContent();
+                String userName = null;
+                if ("2".equals(usertype)) {
+                    userName = CCApplication.getInstance().getMemberInfo().getUserName();
+                } else if ("3".equals(usertype)) {
+                    userName = CCApplication.getInstance().getPresentUser().getChildName()
+                            + CCApplication.getInstance().getPresentUser().getRelationTypeName();
+
+                }
+                //当班级动态没有文字时，显示： 分享人+“给您分享”+班级名称+“动态”，如张三家长给您分享c1001班级动态..
+                if (DataUtil.isNullorEmpty(content)) {
+                    content = userName + "给你分享了一条班级动态";
+                }
+
+                initSharePara(list.get(position).getId(), content);
+
+            }
+        });
     }
+
+    /**
+     * 截取点赞人数后面的逗号
+     *
+     * @param holder
+     */
+    private void subLikeTextView(ViewHolder holder) {
+        String trim = holder.message_support_count_name.getText().toString().trim();
+        if (!DataUtil.isNullorEmpty(trim)) {
+            String substring = trim.substring(0, trim.length() - 1);
+            holder.message_support_count_name.setText(substring);
+        }
+    }
+
+    /**
+     * 初始化分享参数
+     *
+     * @param id
+     * @param content
+     */
+    private void initSharePara(final int id, final String content) {
+        //下载图片 存储在本地.
+        // 因为微信分享的图片必须要可以下载的或者是存储在本地的图片
+        String url = new StringBuilder(Constants.URL)
+                .append("/downloadApi?fileId=")
+                .append(Constants.SHARE_CLASS_DYNAMICS_PICTURE_ID)
+                .append("&sf=80*150").toString();
+
+        activity.getImageLoader().loadImage(url, new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String url, View view) {
+            }
+
+            @Override
+            public void onLoadingFailed(String url, View view, FailReason failReason) {
+                share(id, content, url);
+            }
+
+            @Override
+            public void onLoadingComplete(String url, View view, Bitmap bitmap) {
+//                String folder = Environment.getExternalStorageDirectory() + "/ZIGUI_Photos/";
+
+                String folder = PhotoBitmapUtils.ZIGUI_Photos;
+                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+                String time = formatter.format(new Date());
+                String fileName = folder + time + ".jpeg";
+
+                boolean flag = DataUtil.saveBitmap(bitmap, fileName);
+                //获取到bitmap对象  存储到sd上.
+                if (flag) {
+                    share(id, content, fileName);
+                } else {
+                    share(id, content, url);
+                }
+            }
+
+            @Override
+            public void onLoadingCancelled(String url, View view) {
+            }
+        });
+    }
+
 
     // 副号不能点赞和评论
     // private void forbiddenOperation(ViewHolder holder){
@@ -997,6 +1127,43 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
     // holder.message_comment_text.setVisibility(View.GONE);
     // }
     // }
+
+
+    /**
+     * 分享
+     * 如果是本地存储图片 则可以分享到微信和QQ空间
+     */
+    private void share(int id, String content, String imageLocal) {
+        ShareModel model = new ShareModel();
+
+        //微信图片分享地址
+        model.setImageLocal(imageLocal);
+
+        String QQUrl = new StringBuilder(Constants.URL)
+                .append("/downloadApi?fileId=")
+                .append(Constants.SHARE_CLASS_DYNAMICS_PICTURE_ID)
+                .append("&sf=80*150").toString();
+
+        //QQ图片分享地址
+        model.setImageUrl(QQUrl);
+
+
+        model.setText(content);
+        model.setTitle("【子贵校园】班级动态");
+
+        String imgAuthId = Constants.AUTHID + "@" + activity.getDeviceID()
+                + "@" + CCApplication.app.getMemberInfo().getAccId();
+
+        String url = new StringBuilder(Constants.URL)
+                .append("/classdynamic/classdynamicshare.do?dynamicId=")
+                .append(id)
+                .append(imgAuthId).toString();
+        model.setUrl(url);
+
+        SharePopWindow share = new SharePopWindow(activity, model);
+        share.showAtLocation(parentView, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+    }
+
 
     class ViewHolder {
         TextView author_name;
@@ -1024,6 +1191,8 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
         RoundImageView class_dynamics_civ;
         ImageView class_vedio_iv;
         RelativeLayout class_vedio_ll;
+
+        ImageView iv_share;
     }
 
     // 添加数据
@@ -1065,7 +1234,7 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
         return data_list_Point;
     }
 
-    // 点赞图标效果
+    // 点赞图标事件
     private void handleClickPraise(ViewHolder holder, final int position) {
 
         if (!DataUtil.isNetworkAvailable(activity)) {
@@ -1121,6 +1290,7 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                                                 super.updateDrawState(ds);
                                                 // ds.setColor(Color.WHITE); //设置文件颜色
                                                 ds.setUnderlineText(false); // 设置下划线
+                                                ds.setColor(Color.parseColor("#01afef"));
                                             }
 
                                             @Override
@@ -1131,20 +1301,20 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                                                     return;
                                                 }
 
-                                                String commentUserName=lll.get(i2).getCommentUserName();
-                                                if(isFamily(commentUserName)){
+                                                String commentUserName = lll.get(i2).getCommentUserName();
+                                                if (isFamily(commentUserName)) {
                                                     DataUtil.getToast("家长暂未开放动态！");
-                                                }else{
+                                                } else {
                                                     Intent intent = new Intent(activity,
                                                             NewPersonalDynamicsActivity.class);
                                                     intent.putExtra("publishUserId", lll.get(i2)
                                                             .getCommentUserId() + "");
 
-                                                    String publisherImgUrl=getPointOrCommentUrl(lll.get(i2)
-                                                            .getCommentUserId() + "",list);
-                                                    if(!DataUtil.isNullorEmpty(publisherImgUrl)){
+                                                    String publisherImgUrl = getPointOrCommentUrl(lll.get(i2)
+                                                            .getCommentUserId() + "", list);
+                                                    if (!DataUtil.isNullorEmpty(publisherImgUrl)) {
                                                         intent.putExtra("publisherImgUrl", publisherImgUrl);
-                                                    }else{
+                                                    } else {
                                                         intent.putExtra("publisherImgUrl", lll.get(i2)
                                                                 .getCommentUserId());// 服务器没有传头像地址给我
                                                     }
@@ -1167,18 +1337,19 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                 holder.message_support_count_name
                         .setMovementMethod(LinkMovementMethod.getInstance());
             }
-
+            subLikeTextView(holder);
             praiseWithServer(position, 0);
         } else {
 
-            String tag = "mei";// 判断是否点赞过
+            boolean like = false;// 判断是否点赞过
+
             for (int i = 0; i < lo.size(); i++) {
                 if (lo.get(i).getCommentUserId() == Integer.parseInt(userid)) {
-                    tag = "shi";
+                    like = true;
                 }
             }
 
-            if ("shi".equals(tag)) {
+            if (like) {
                 // id相等 表示已经点赞
                 // 如果有点赞 点赞后变灰色心心
 
@@ -1216,6 +1387,7 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                                                     super.updateDrawState(ds);
                                                     // ds.setColor(Color.WHITE); //设置文件颜色
                                                     ds.setUnderlineText(false); // 设置下划线
+                                                    ds.setColor(Color.parseColor("#01afef"));
                                                 }
 
                                                 @Override
@@ -1225,21 +1397,21 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                                                         DataUtil.getToast("当前网络不可用，请检查您的网络设置");
                                                         return;
                                                     }
-                                                    String commentUserName=lll.get(i2).getCommentUserName();
-                                                    if(isFamily(commentUserName)){
+                                                    String commentUserName = lll.get(i2).getCommentUserName();
+                                                    if (isFamily(commentUserName)) {
                                                         DataUtil.getToast("家长暂未开放动态！");
-                                                    }else{
+                                                    } else {
 
                                                         Intent intent = new Intent(activity,
                                                                 NewPersonalDynamicsActivity.class);
                                                         intent.putExtra("publishUserId", lll.get(i2)
                                                                 .getCommentUserId() + "");
 
-                                                        String publisherImgUrl=getPointOrCommentUrl(lll.get(i2)
-                                                                .getCommentUserId() + "",list);
-                                                        if(!DataUtil.isNullorEmpty(publisherImgUrl)){
+                                                        String publisherImgUrl = getPointOrCommentUrl(lll.get(i2)
+                                                                .getCommentUserId() + "", list);
+                                                        if (!DataUtil.isNullorEmpty(publisherImgUrl)) {
                                                             intent.putExtra("publisherImgUrl", publisherImgUrl);
-                                                        }else{
+                                                        } else {
                                                             intent.putExtra("publisherImgUrl", lll.get(i2)
                                                                     .getCommentUserId());// 服务器没有传头像地址给我
                                                         }
@@ -1264,7 +1436,7 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                     holder.message_support_count_name
                             .setMovementMethod(LinkMovementMethod.getInstance());
                 }
-
+                subLikeTextView(holder);
                 praiseWithServer(position, 2);
             } else {
                 // 不相等 表示没有点赞
@@ -1306,6 +1478,7 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                                                     super.updateDrawState(ds);
                                                     // ds.setColor(Color.WHITE); //设置文件颜色
                                                     ds.setUnderlineText(false); // 设置下划线
+                                                    ds.setColor(Color.parseColor("#01afef"));
                                                 }
 
                                                 @Override
@@ -1316,21 +1489,21 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                                                         return;
                                                     }
 
-                                                    String commentUserName=lll.get(i2).getCommentUserName();
-                                                    if(isFamily(commentUserName)){
+                                                    String commentUserName = lll.get(i2).getCommentUserName();
+                                                    if (isFamily(commentUserName)) {
                                                         DataUtil.getToast("家长暂未开放动态！");
-                                                    }else{
+                                                    } else {
 
                                                         Intent intent = new Intent(activity,
                                                                 NewPersonalDynamicsActivity.class);
                                                         intent.putExtra("publishUserId", lll.get(i2)
                                                                 .getCommentUserId() + "");
 
-                                                        String publisherImgUrl=getPointOrCommentUrl(lll.get(i2)
-                                                                .getCommentUserId() + "",list);
-                                                        if(!DataUtil.isNullorEmpty(publisherImgUrl)){
+                                                        String publisherImgUrl = getPointOrCommentUrl(lll.get(i2)
+                                                                .getCommentUserId() + "", list);
+                                                        if (!DataUtil.isNullorEmpty(publisherImgUrl)) {
                                                             intent.putExtra("publisherImgUrl", publisherImgUrl);
-                                                        }else{
+                                                        } else {
                                                             intent.putExtra("publisherImgUrl", lll.get(i2)
                                                                     .getCommentUserId());// 服务器没有传头像地址给我
                                                         }
@@ -1354,7 +1527,7 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                     holder.message_support_count_name
                             .setMovementMethod(LinkMovementMethod.getInstance());
                 }
-
+                subLikeTextView(holder);
                 praiseWithServer(position, 0);
             }
 
@@ -1385,6 +1558,8 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                     json.put("interactionId", list.get(position).getId());
                     json.put("flag", flag);
                     json.put("classId", Integer.parseInt(resource_id));
+                    json.put("hidePublish", hidePublish);
+                    json.put("userType", usertype);
 
                     String url = new StringBuilder(Constants.SERVER_URL)
                             .append(Constants.PUBLISH_DYNAMIC_COMMENT).toString();
@@ -1449,7 +1624,7 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
         Button first = (Button) view.findViewById(R.id.pop_btn);
         final EditText ed = (EditText) view.findViewById(R.id.ed);
 
-        ed.setFilters(new InputFilter[] { new EditTextLengthFilter(100) });
+        ed.setFilters(new InputFilter[]{new EditTextLengthFilter(100)});
 
         if (isAt) {
             ed.setHint("回复评论...");
@@ -1499,6 +1674,8 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                     json.put("flag", 1);
                     json.put("classId", resource_id);
                     json.put("textfield", ed.getText());
+                    json.put("hidePublish", hidePublish);
+                    json.put("userType", usertype);
                     if (isAt) {
                         json.put("pointCommentId", list.get(i).getCommentList()
                                 .get(arg2).getId());
@@ -1581,130 +1758,164 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
     /**
      * 显示popupWindow 删除
      */
-    private void handleDelete(final int i, final ViewHolder holder,
+    private void handleDelete(final int postion, final ViewHolder holder,
                               final int arg2, final int q) {
-        // 利用layoutInflater获得View
-        LayoutInflater inflater = (LayoutInflater) activity
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.delete_point, null);
 
-        // 下面是两种方法得到宽度和高度 getWindow().getDecorView().getWidth()
-
-        final PopupWindow window = new PopupWindow(view,
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.WRAP_CONTENT);
-
-        // 设置popWindow弹出窗体可点击，这句话必须添加，并且是true
-        window.setFocusable(true);
-
-        // 防止虚拟软键盘被弹出菜单遮住
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
-        // 实例化一个ColorDrawable颜色为半透明
-        ColorDrawable dw = new ColorDrawable(0xb0000000);
-        window.setBackgroundDrawable(dw);
-
-        // 设置popWindow的显示和消失动画
-        window.setAnimationStyle(R.style.mypopwindow_anim_style);
-        // 在底部显示
-        window.showAtLocation(activity.findViewById(R.id.message_comment_icon),
-                Gravity.BOTTOM, 0, 0);
-
-        // 这里检验popWindow里的button是否可以点击
-        Button cancel_delete = (Button) view.findViewById(R.id.cancel_delete);
-        Button determine_delete = (Button) view
-                .findViewById(R.id.determine_delete);
-        // 取消
-        cancel_delete.setOnClickListener(new OnClickListener() {
-
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("温馨提示");
+        if (1 == q) {
+            builder.setMessage("是否删除本条班级动态?");
+        } else {
+            builder.setMessage("是否删除本条评论?");
+        }
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                window.dismiss();
+            public void onClick(DialogInterface dialogInterface, int i) {
+                doDelete(q, postion, arg2, hidePublish);
+                dialogInterface.dismiss();
             }
         });
-        // 确定
-        determine_delete.setOnClickListener(new OnClickListener() {
 
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (!DataUtil.isNetworkAvailable(activity)) {
-                    DataUtil.getToast(activity.getResources().getString(
-                            R.string.no_network));
-                    return;
-                }
-                // q == 1表示是删除整条班级动态的操作
-                if (q == 1) {
-                    notifyDataSetChanged();
-                    String result = null;
-                    JSONObject json = new JSONObject();
-                    try {
-                        json.put("classDynamicId", list.get(i).getId());
-                        String url = new StringBuilder(Constants.SERVER_URL)
-                                .append(Constants.DELETE_CLASS_DYNAMIC).toString();
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
 
-                        result = HttpHelper.httpPostJson(activity, url, json);
-
-                        // activity.queryPost(url,json);
-                        // resultCode 200 删除成功
-                        list.remove(i);
-                        Intent broadcast = new Intent(
-                                NewClassDynamicsActivity.INTENT_REFESH_DATA);
-
-                        activity.sendBroadcast(broadcast);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {// 删除某条评论
-                    String result = null;
-                    JSONObject json = new JSONObject();
-                    try {
-                        json.put("classDynamicCommentId", list.get(i)
-                                .getCommentList().get(arg2).getId());
+        builder.create();
+        builder.show();
 
 
-                        String url = new StringBuilder(Constants.SERVER_URL)
-                                .append(Constants.DELETE_CLASS_DYNAMIC_COMMENT).toString();
-                        result = HttpHelper.httpPostJson(activity, url, json);
+//        // 利用layoutInflater获得View
+//        LayoutInflater inflater = (LayoutInflater) activity
+//                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View view = inflater.inflate(R.layout.delete_point, null);
+//
+//        // 下面是两种方法得到宽度和高度 getWindow().getDecorView().getWidth()
+//
+//        final PopupWindow window = new PopupWindow(view,
+//                WindowManager.LayoutParams.MATCH_PARENT,
+//                WindowManager.LayoutParams.WRAP_CONTENT);
+//
+//        // 设置popWindow弹出窗体可点击，这句话必须添加，并且是true
+//        window.setFocusable(true);
+//
+//        // 防止虚拟软键盘被弹出菜单遮住
+//        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+//
+//        // 实例化一个ColorDrawable颜色为半透明
+//        ColorDrawable dw = new ColorDrawable(0xb0000000);
+//        window.setBackgroundDrawable(dw);
+//
+//        // 设置popWindow的显示和消失动画
+//        window.setAnimationStyle(R.style.mypopwindow_anim_style);
+//        // 在底部显示
+//        window.showAtLocation(activity.findViewById(R.id.message_comment_icon),
+//                Gravity.BOTTOM, 0, 0);
+//
+//        // 这里检验popWindow里的button是否可以点击
+//        Button cancel_delete = (Button) view.findViewById(R.id.cancel_delete);
+//        Button determine_delete = (Button) view
+//                .findViewById(R.id.determine_delete);
+//        // 取消
+//        cancel_delete.setOnClickListener(new OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                window.dismiss();
+//            }
+//        });
+//        // 确定
+//        determine_delete.setOnClickListener(new OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//
+//                doDelete(q, postion, arg2);
+//
+//                window.dismiss();
+//            }
+//        });
+//
+//        // popWindow消失监听方法
+//        window.setOnDismissListener(new OnDismissListener() {
+//
+//            @Override
+//            public void onDismiss() {
+//            }
+//        });
+    }
 
-                        // resultCode 200 删除成功
-                        JSONObject json1 = new JSONObject(result);
+    private void doDelete(int q, int i, int arg2, boolean hidePublish) {
+        if (!DataUtil.isNetworkAvailable(activity)) {
+            DataUtil.getToast(activity.getResources().getString(
+                    R.string.no_network));
+            return;
+        }
+        // q == 1表示是删除整条班级动态的操作
+        if (q == 1) {
+            notifyDataSetChanged();
+            String result = null;
+            JSONObject json = new JSONObject();
+            try {
+                json.put("classDynamicId", list.get(i).getId());
+                json.put("hidePublish", hidePublish);
+                String url = new StringBuilder(Constants.SERVER_URL)
+                        .append(Constants.DELETE_CLASS_DYNAMIC).toString();
+
+                result = HttpHelper.httpPostJson(activity, url, json);
+
+                // activity.queryPost(url,json);
+                // resultCode 200 删除成功
+                list.remove(i);
+                Intent broadcast = new Intent(
+                        NewClassDynamicsActivity.INTENT_REFESH_DATA);
+
+                activity.sendBroadcast(broadcast);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {// 删除某条评论
+            String result = null;
+            JSONObject json = new JSONObject();
+            try {
+                json.put("classDynamicCommentId", list.get(i)
+                        .getCommentList().get(arg2).getId());
+                json.put("hidePublish", hidePublish);
+
+                String url = new StringBuilder(Constants.SERVER_URL)
+                        .append(Constants.DELETE_CLASS_DYNAMIC_COMMENT).toString();
+                result = HttpHelper.httpPostJson(activity, url, json);
+
+                // resultCode 200 删除成功
+                JSONObject json1 = new JSONObject(result);
 
 //						notifyDataSetChanged();
-                        Intent broadcast = new Intent(
-                                NewClassDynamicsActivity.INTENT_REFESH_DATA);
+                Intent broadcast = new Intent(
+                        NewClassDynamicsActivity.INTENT_REFESH_DATA);
 
-                        broadcast.putExtra("flag",3);
-                        broadcast.putExtra("type","comment");
-                        broadcast.putExtra("interactionId",list.get(i).getId());
-                        broadcast.putExtra("pointCommentId",list.get(i)
-                                .getCommentList().get(arg2).getId());
-                        activity.sendBroadcast(broadcast);
+                broadcast.putExtra("flag", 3);
+                broadcast.putExtra("type", "comment");
+                broadcast.putExtra("interactionId", list.get(i).getId());
+                broadcast.putExtra("pointCommentId", list.get(i)
+                        .getCommentList().get(arg2).getId());
+                activity.sendBroadcast(broadcast);
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                window.dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        });
-
-        // popWindow消失监听方法
-        window.setOnDismissListener(new OnDismissListener() {
-
-            @Override
-            public void onDismiss() {
-            }
-        });
+        }
     }
 
     //动态列表中是否有 点赞人 评论人 被评论人 头像
-    private String getPointOrCommentUrl(String pointOrCommentId,List<NewClassDynamicsBean1> list){
-        if(list!=null&&!DataUtil.isNullorEmpty(pointOrCommentId)){
-            if(list.size()>0){
+    private String getPointOrCommentUrl(String pointOrCommentId, List<NewClassDynamicsBean1> list) {
+        if (list != null && !DataUtil.isNullorEmpty(pointOrCommentId)) {
+            if (list.size() > 0) {
                 for (int i = 0; i < list.size(); i++) {
-                    String pubishUserId=list.get(i).getPublishUserId()+"";
-                    if(!DataUtil.isNullorEmpty(pubishUserId)){
-                        if(pointOrCommentId.endsWith(pubishUserId)){
+                    String pubishUserId = list.get(i).getPublishUserId() + "";
+                    if (!DataUtil.isNullorEmpty(pubishUserId)) {
+                        if (pointOrCommentId.endsWith(pubishUserId)) {
                             return list.get(i).getPublisherImgUrl();
                         }
                     }
@@ -1714,7 +1925,7 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
         return "";
     }
 
-    private void getRelationCode(){
+    private void getRelationCode() {
         try {
             JSONObject json = new JSONObject();
             json.put("parentCode", "GXM");
@@ -1735,23 +1946,23 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                 String relationShipList = jsonB.getString("relationShipList");
                 JSONArray json2 = new JSONArray(relationShipList);
                 for (int i = 0; i < json2.length(); i++) {
-                    ChildRelationTypeBean childRelationTypeBean=JsonUtils.fromJson(json2
-                            .get(i).toString(),ChildRelationTypeBean.class);
+                    ChildRelationTypeBean childRelationTypeBean = JsonUtils.fromJson(json2
+                            .get(i).toString(), ChildRelationTypeBean.class);
                     childRelationTypeList.add(childRelationTypeBean);
                 }
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private Boolean isFamily(String name){
-        if(childRelationTypeList!=null&&!DataUtil.isNullorEmpty(name)){
-            if(childRelationTypeList.size()>0){
+    private Boolean isFamily(String name) {
+        if (childRelationTypeList != null && !DataUtil.isNullorEmpty(name)) {
+            if (childRelationTypeList.size() > 0) {
                 for (int i = 0; i < childRelationTypeList.size(); i++) {
-                    String childRelationType=childRelationTypeList.get(i).getConfigName();
-                    if(name.contains(childRelationType)){
+                    String childRelationType = childRelationTypeList.get(i).getConfigName();
+                    if (name.contains(childRelationType)) {
                         return true;
                     }
                 }
@@ -1778,6 +1989,8 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
                     dismissPd();
                     if (writtenToDisk) {
                         gotoVideoView();
+                    } else {
+                        DataUtil.getToast("没有获取存储权限!");
                     }
                     //进入视频打开界面
                 } else {
@@ -1796,7 +2009,7 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
     }
 
     private void gotoVideoView() {
-        //点击效果
+        //点击事件
         PictureURL pictureURL = null;
         List<PictureURL> datas = new ArrayList<PictureURL>();
         pictureURL = new PictureURL();
@@ -1822,7 +2035,7 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
             //视频缓存路径
             // todo change the file location/name according to your needs
             File futureStudioIconFile = new File(Constants.CACHE_PATH + "video-cache" + "/" + fileid);
-            if(futureStudioIconFile.exists()){
+            if (futureStudioIconFile.exists()) {
                 futureStudioIconFile.delete();
                 futureStudioIconFile = new File(Constants.CACHE_PATH + "video-cache" + "/" + fileid);
             }
@@ -1863,11 +2076,13 @@ public class NewClassDynamicsAdapter extends BaseAdapter {
             return false;
         }
     }
+
     public void dismissPd() {
         if (pd != null && pd.isShowing()) {
             pd.dismiss();
         }
     }
+
     private ProgressDialog pd;
 
     public void showProgessBar() {

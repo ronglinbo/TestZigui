@@ -1,5 +1,7 @@
 package com.wcyc.zigui2.newapp.module.email;
 
+import android.text.TextUtils;
+
 import com.wcyc.zigui2.newapp.bean.NewBaseBean;
 
 import java.util.List;
@@ -21,6 +23,7 @@ public class MenuConfigBean extends NewBaseBean {
 
     public class MenuConfig{
         private String functionName;
+        private int functionNumber;
         private int sort;//排序号
         private String type;//所属栏目（1：免费应用 2：个性服务）
         private int status;//状态（0:有效 1:禁用）
@@ -31,6 +34,14 @@ public class MenuConfigBean extends NewBaseBean {
 
         public void setFunctionName(String functionName) {
             this.functionName = functionName;
+        }
+
+        public int getFunctionNumber() {
+            return functionNumber;
+        }
+
+        public void setFunctionNumber(int functionNumber) {
+            this.functionNumber = functionNumber;
         }
 
         public int getSort() {

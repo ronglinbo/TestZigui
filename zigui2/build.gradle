@@ -8,7 +8,6 @@ apply plugin: 'com.mob.sdk'
 //    debug = true
 //}
 
-
 MobSDK {
     appKey "239a4b42ca0c8"
     appSecret "3bad290a66fdcbde3afaa3a2ae290c04"
@@ -48,7 +47,7 @@ android {
         config {
             keyAlias 'zigui'
             keyPassword 'weichuyoucai'
-            storeFile file('F:\\Wrok\\File\\b\\zigui_keystore')
+            storeFile file('F:\\Wrok\\newZigui2\\zigui_keystore')
             storePassword 'weichuyoucai'
         }
     }
@@ -71,10 +70,9 @@ android {
     buildTypes {
 
         release {
-            minifyEnabled true
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-           // debuggable true
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            debuggable true
             signingConfig signingConfigs.config
         }
         debug {
@@ -141,7 +139,7 @@ android {
 dependencies {
     compile project(':alipay_lib')
     compile files('libs/android-async-http-1.4.5.jar')
-//    compile files('libs/APPayAssistEx.jar')          // 11111111111111111
+    compile files('libs/APPayAssistEx.jar')
     //    compile files('libs/APPayAssistEx0510.jar')
     compile files('libs/baidumapapi_v2_1_1.jar')
     compile files('libs/falllistview.jar')
@@ -174,10 +172,8 @@ dependencies {
     //        transitive = false;
     //    }
     // compile 'com.easefun.polyvsdk:polyvPlayer:2.0.4'
-
     //环信Jar
     compile files('libs/easemobchat_2.1.1.jar')
-
     compile project(path: ':polyv')
     compile 'com.tencent.bugly:crashreport:latest.release'
     compile 'com.android.support:support-v4:23.1.1'
@@ -187,12 +183,10 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:design:23.1.1'
-
     compile 'org.greenrobot:greendao:3.2.0'
     //滚动指示器
     compile 'com.github.hackware1993:MagicIndicator:1.5.0'
     testCompile 'junit:junit:4.12'
-
     //阿里百川
     compile project(':OneSDK')
 }

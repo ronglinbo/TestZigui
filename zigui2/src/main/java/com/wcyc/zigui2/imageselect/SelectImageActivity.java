@@ -70,7 +70,7 @@ import com.wcyc.zigui2.utils.DataUtil;
 //2014-10-6
 /**
  * 图片选择器的主类
- * 
+ *
  * @author 姜韵雯
  * @version 1.01
  * @since 1.01
@@ -88,7 +88,7 @@ public class SelectImageActivity extends TaskBaseActivity {
 	private HashMap<String, ArrayList<String>> mGruopMap = new HashMap<String, ArrayList<String>>();
 	// 存放图片对象 放是集合
 	private ArrayList<ImageBean> imgBeanLists = new ArrayList<ImageBean>();
-	// 所有的图片 
+	// 所有的图片
 	//jiang HashMap 是无序的，必须修改成有序的
 	HashMap<String, String> mAllImgs = new HashMap<String, String>();
 	/**
@@ -124,14 +124,16 @@ public class SelectImageActivity extends TaskBaseActivity {
 	 * 是否在处理旋转的图片
 	 */
 	private boolean isRotaing = false ;
-	@Override
+    private TextView tv_choose_pic;
+
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE));
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		limit_count = getIntent().getIntExtra("limit" , 8);
 		attachmentLimit = getIntent().getStringExtra("attachmentLimit");
-		
+
 		setContentView(R.layout.image_select);
 		cr = getContentResolver();
 		//建立保存相片的文件夹
@@ -153,13 +155,14 @@ public class SelectImageActivity extends TaskBaseActivity {
 		button_send = (TextView) findViewById(R.id.title_imgbtn_accomplish);  // 完成按钮
 		button_send.setVisibility(View.VISIBLE);
 		choose_original = (CheckBox)findViewById(R.id.choose_original);
-	}
-	
+        tv_choose_pic = (TextView) findViewById(R.id.tv_choose_pic_num);
+    }
+
 	private void initData() {
 		button_back.setText(R.string.selector_img_title);
-		
+
 		button_send.setTextColor(getResources().getColor(R.color.font_lightgray));//灰色禁用 不可点击   蓝色测试
-		
+
 		// 初始化数据
 		chooseItem.add(0);
 		gridAdatper = new GridAdapter();
@@ -201,13 +204,16 @@ public class SelectImageActivity extends TaskBaseActivity {
         }else{
             choose_original.setVisibility(View.GONE);
         }
-        
-		// limit_count = getIntent().getIntExtra("limit_count", 8);
+
+        //第二次进来,判断已经选择的图片张数
+        showChoosePicNum();
+
+        // limit_count = getIntent().getIntExtra("limit_count", 8);
 		// total_text.setText("0/" + limit_count + "张");
 		getImages();
 	}
 
-	private void setListener() {
+    private void setListener() {
 		button_back.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -226,10 +232,10 @@ public class SelectImageActivity extends TaskBaseActivity {
 				}
 				/***********旋转选择的图片*************/
 				//DataUtil.showDialog(SelectImageActivity.this, "正在处理图片，请稍等");
-				
+
 				new Thread(new Runnable(){
 					public void run(){
-						int size = addedPath.size();	
+						int size = addedPath.size();
 						for(int i = 0; i < size; i++){
 							String imagePath = addedPath.get(i).toString();
 							int degree = readPictureDegree(imagePath);
@@ -311,7 +317,7 @@ public class SelectImageActivity extends TaskBaseActivity {
 						mHandler.sendEmptyMessage(SCAN_FOLDER_OK);
 					}
 					group_text.setText(imgBeanLists.get(position).getFolderName());
-					
+
 				}
 			}
 		});
@@ -338,7 +344,7 @@ public class SelectImageActivity extends TaskBaseActivity {
 				}
 			}
 		});
-		
+
 		choose_original.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 
 			@Override
@@ -348,7 +354,7 @@ public class SelectImageActivity extends TaskBaseActivity {
 				is_choose_original = isChecked;
 				System.out.println("isChecked:"+isChecked);
 			}
-			
+
 		});
 	}
 
@@ -377,9 +383,9 @@ public class SelectImageActivity extends TaskBaseActivity {
 				final File fi = new File(tempCameraPath);
 				sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(fi)));
 
-				/** 
-				 * 获取图片的旋转角度，有些系统把拍照的图片旋转了，有的没有旋转 
-				 */  
+				/**
+				 * 获取图片的旋转角度，有些系统把拍照的图片旋转了，有的没有旋转
+				 */
 				final int degree = readPictureDegree(tempCameraPath);
 				Log.i(Constants.TAKE_PHOTO,"degree:"+degree+" tempCameraPath:"+tempCameraPath);
 				//如果图片是旋转了的，那么旋转回来重新保存
@@ -392,9 +398,9 @@ public class SelectImageActivity extends TaskBaseActivity {
 							Bitmap cameraBitmap = null;
 							try{
 								cameraBitmap = BitmapTool.getBitmap(SelectImageActivity.this,tempCameraPath);
-								/** 
-								 * 把图片旋转为正的方向 
-								 */  
+								/**
+								 * 把图片旋转为正的方向
+								 */
 								cameraBitmap = rotaingImageView(degree, cameraBitmap);
 							}catch(Exception e){
 								e.printStackTrace();
@@ -447,46 +453,46 @@ public class SelectImageActivity extends TaskBaseActivity {
 		setResult(RESULT_OK, dataIntent);
 		SelectImageActivity.this.finish();
 	}
-	/** 
-	 * 读取图片属性：旋转的角度 
-	 * @param path 图片绝对路径 
-	 * @return degree旋转的角度 
-	 */  
-   public int readPictureDegree(String path) {  
-       int degree  = 0;  
+	/**
+	 * 读取图片属性：旋转的角度
+	 * @param path 图片绝对路径
+	 * @return degree旋转的角度
+	 */
+   public int readPictureDegree(String path) {
+       int degree  = 0;
        try {
-               ExifInterface exifInterface = new ExifInterface(path);  
-               int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);  
-               switch (orientation) {  
-               case ExifInterface.ORIENTATION_ROTATE_90:  
-                       degree = 90;  
-                       break;  
-               case ExifInterface.ORIENTATION_ROTATE_180:  
-                       degree = 180;  
-                       break;  
-               case ExifInterface.ORIENTATION_ROTATE_270:  
-                       degree = 270;  
-                       break;  
-               }  
-       } catch (IOException e) {  
-               e.printStackTrace();  
+               ExifInterface exifInterface = new ExifInterface(path);
+               int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+               switch (orientation) {
+               case ExifInterface.ORIENTATION_ROTATE_90:
+                       degree = 90;
+                       break;
+               case ExifInterface.ORIENTATION_ROTATE_180:
+                       degree = 180;
+                       break;
+               case ExifInterface.ORIENTATION_ROTATE_270:
+                       degree = 270;
+                       break;
+               }
+       } catch (IOException e) {
+               e.printStackTrace();
        }
-       return degree;  
+       return degree;
    }
-	/** 
-    * 旋转图片 
+	/**
+    * 旋转图片
     * @param angle  旋转的角度
     * @param bitmap 原bitmap
     * @return Bitmap 旋转回来的bitmap
-    */  
-   public Bitmap rotaingImageView(int angle , Bitmap bitmap) {  
-       //旋转图片 动作   
-       Matrix matrix = new Matrix(); 
-       matrix.postRotate(angle);  
-       // 创建新的图片   
-       Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,  
-               bitmap.getWidth(), bitmap.getHeight(), matrix, true);  
-       return resizedBitmap;  
+    */
+   public Bitmap rotaingImageView(int angle , Bitmap bitmap) {
+       //旋转图片 动作
+       Matrix matrix = new Matrix();
+       matrix.postRotate(angle);
+       // 创建新的图片
+       Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
+               bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+       return resizedBitmap;
    }
 
 
@@ -526,12 +532,12 @@ public class SelectImageActivity extends TaskBaseActivity {
 
 	/**
 	 * 利用ContentProvider扫描手机中的图片，此方法在运行在子线程中
-	 * 
+	 *
 	 */
 	private void getImages() {
 		if (!Environment.getExternalStorageState().equals(
 				Environment.MEDIA_MOUNTED)) {
-			Toast.makeText(this, "暂无外部存储", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "请检查sd卡或者是否开启存储权限", Toast.LENGTH_SHORT).show();
 			return;
 		}
 		// 显示进度条
@@ -562,7 +568,7 @@ public class SelectImageActivity extends TaskBaseActivity {
 						sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE));
 						continue;
 					}
-						
+
 					int id = mCursor.getInt(mCursor
 							.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
 					// 获取该图片的父路径名
@@ -583,7 +589,7 @@ public class SelectImageActivity extends TaskBaseActivity {
 				}
 				mCursor.close();
 				getThumbnail();
-				
+
 			}
 		}).start();
 
@@ -610,7 +616,7 @@ public class SelectImageActivity extends TaskBaseActivity {
 				Cursor cursor = cr.query(Thumbnails.EXTERNAL_CONTENT_URI, projection,
 						null, null, null);
 				getThumbnailColumnData(cursor);
-				
+
 				Iterator<Entry<String, String>> it = mAllImgs.entrySet()
 						.iterator();
 				while (it.hasNext()) {
@@ -637,7 +643,7 @@ public class SelectImageActivity extends TaskBaseActivity {
 
 	/**
 	 * 从数据库中得到缩略图
-	 * 
+	 *
 	 * @param cur
 	 */
 	private void getThumbnailColumnData(Cursor cur) {
@@ -687,7 +693,7 @@ public class SelectImageActivity extends TaskBaseActivity {
 	/**
 	 * 组装分组界面GridView的数据源。<P>
 	 * 因为我们扫描手机的时候将图片信息放在HashMap中， 所以需要遍历HashMap将数据组装成List
-	 * 
+	 *
 	 * @param groupMap 组映射
 	 * @return ImageBean列表
 	 */
@@ -705,7 +711,7 @@ public class SelectImageActivity extends TaskBaseActivity {
 			ig0.setTopImagePath(mAllList.get(0));
 		}
 		list.add(0, ig0);
-		
+
 		while (it.hasNext()) {
 			Map.Entry<String, ArrayList<String>> entry = it.next();
 			ImageBean mImageBean = new ImageBean();
@@ -718,10 +724,10 @@ public class SelectImageActivity extends TaskBaseActivity {
 			mImageBean.setFa_filepath(key);
 			list.add(mImageBean);
 		}
-		
+
 		return list;
 	}
-	
+
 	// gridview的Adapter
 	class GridAdapter extends BaseAdapter {
 		// 根据三种不同的布局来应用
@@ -861,7 +867,7 @@ public class SelectImageActivity extends TaskBaseActivity {
 									button_send.setTextColor(getResources().getColor(R.color.font_lightgray));
 
 								} else {
-									
+
 									if(DataUtil.isNullorEmpty(attachmentLimit)){
 										// 判断图片张数大小
 										if (addedPath.size() < limit_count) {
@@ -888,10 +894,10 @@ public class SelectImageActivity extends TaskBaseActivity {
 												long size = DataUtil.getFileSize(new File(file));
 												sizeAllLong += size;
 											}
-											
+
 											long thisPicSize=DataUtil.getFileSize(new File(getItem(position)));
 											sizeAllLong+=thisPicSize;
-											
+
 //											if(sizeAllLong>20*1024*1024){//20M的长度是20971520
 //												DataUtil.getToast("图片总大小不能超过20M");
 //											}else{
@@ -913,38 +919,38 @@ public class SelectImageActivity extends TaskBaseActivity {
 													}
 												}
 //											}
-											
-										
-										
+
+
+
 										} catch (Exception e) {
 											e.printStackTrace();
 										}
 									}
-									
+
 									button_send.setTextColor(getResources().getColor(R.color.font_black));
 								}
 								mYhandler.sendEmptyMessage(0);
 							}
 						});
 
-				
+
 				if (addedPath.contains(getItem(position))) {
 					// 已经添加过了
 					gridHolder.grid_img
 							.setImageResource(R.drawable.photo_choose_bg_s);
-					
+
 				} else {
 					gridHolder.grid_img
 							.setImageResource(R.drawable.photo_choose_bg);
 				}
-				
+
 				if(addedPath.size()>0){
-					
+
 					button_send.setTextColor(getResources().getColor(R.color.font_black));
 				}else{
 					button_send.setTextColor(getResources().getColor(R.color.font_lightgray));
 				}
-				
+
 			}
 			return convertView;
 		}
@@ -969,18 +975,18 @@ public class SelectImageActivity extends TaskBaseActivity {
 			public ImageView grid_img;
 		}
 	}
-	
+
 	//2014年10月11日 下午12:08:51
 	/**
 	 * 点击条目更改选中图标
-	 * 
+	 *
 	 * @author 王登辉
 	 * @version 1.01
 	 */
 	class MyOnClickListener implements OnClickListener {
 		/**
 		 * 创建一个新的实例 SelectImageActivity.MyOnClickListener.
-		 * 
+		 *
 		 */
 		private GridHolder gridHolder;
 		private String url;
@@ -998,7 +1004,7 @@ public class SelectImageActivity extends TaskBaseActivity {
 				gridHolder.grid_img
 						.setImageResource(R.drawable.photo_choose_bg);
 			} else {
-				
+
 				if(DataUtil.isNullorEmpty(attachmentLimit)){
 					// 判断图片张数大小
 					if (addedPath.size() < limit_count) {
@@ -1015,7 +1021,7 @@ public class SelectImageActivity extends TaskBaseActivity {
 							DataUtil.getToast("最多选" + limit_count
 									+ "张");
 						}
-						
+
 					}
 				}else{
 					try {
@@ -1025,10 +1031,10 @@ public class SelectImageActivity extends TaskBaseActivity {
 							long size = DataUtil.getFileSize(new File(file));
 							sizeAllLong += size;
 						}
-						
+
 						long thisPicSize=DataUtil.getFileSize(new File(url));
 						sizeAllLong+=thisPicSize;
-						
+
 //						if(sizeAllLong>20971520){//20M的长度是20971520
 //							DataUtil.getToast("图片总大小不能超过20M");
 //							
@@ -1048,10 +1054,10 @@ public class SelectImageActivity extends TaskBaseActivity {
 									DataUtil.getToast("最多选" + limit_count
 											+ "张");
 								}
-								
+
 							}
 //						}
-					
+
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -1071,6 +1077,7 @@ public class SelectImageActivity extends TaskBaseActivity {
 				// "张");
 				// button_send.setTextSize(18f);
 				// button_send.setText(addedPath.size() + "/" + limit_count);
+                showChoosePicNum();
 				gridAdatper.notifyDataSetChanged();
 				break;
 			default:
@@ -1170,5 +1177,16 @@ public class SelectImageActivity extends TaskBaseActivity {
 		Log.i(Constants.TAKE_PHOTO,"系统是否处于低内存运行："+info.lowMemory);
 		Log.i(Constants.TAKE_PHOTO,"当系统剩余内存低于"+(info.threshold >> 20) +"时就看成低内存运行");
 	}
+
+
+    private void showChoosePicNum() {
+        if(!addedPath.isEmpty()){
+            int size = addedPath.size();
+            tv_choose_pic.setText("已选择"+size+"张相片");
+            tv_choose_pic.setVisibility(View.VISIBLE);
+        }else{
+            tv_choose_pic.setVisibility(View.GONE);
+        }
+    }
 
 }

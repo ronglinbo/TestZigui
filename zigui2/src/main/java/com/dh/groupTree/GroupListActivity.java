@@ -228,7 +228,7 @@ public class GroupListActivity extends BaseActivity implements OnClickListener, 
 
     /**
      * <p>
-     * 设置控件的监听效果
+     * 设置控件的监听事件
      * </p>
      * 
      * @author fangzhihua 2014-5-6 下午2:34:04

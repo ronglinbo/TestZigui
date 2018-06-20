@@ -14,6 +14,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -63,6 +64,8 @@ import com.wcyc.zigui2.utils.JsonUtils;
 public class NewSelectSingleStudentActivity extends BaseActivity implements
 		OnClickListener {
 
+	String TAG="SelectSingleStudentTAG";
+
 	private TextView new_content;
 	private TextView title2_off;
 	private TextView title2_ok;
@@ -95,7 +98,12 @@ public class NewSelectSingleStudentActivity extends BaseActivity implements
 
 		setContentView(R.layout.new_select_single_student);
 		initView();
+		long startLong=System.currentTimeMillis();
+		Log.i(TAG,"开始加载数据");
 		initDatas();
+		long endLong=System.currentTimeMillis();
+
+		Log.i(TAG,"加载数据完成用时："+(endLong-startLong));
 		initEvents();
 	}
 
@@ -127,6 +135,7 @@ public class NewSelectSingleStudentActivity extends BaseActivity implements
 
 	@SuppressWarnings({ "unchecked", "rawtypes", "null" })
 	private void initDatas() {
+		Log.i(TAG,"处理数据1111");
 		new_content.setText("选择单个学生");
 		type = getIntent().getExtras().getString("type");
 
@@ -137,7 +146,7 @@ public class NewSelectSingleStudentActivity extends BaseActivity implements
 			cList0930=new ArrayList<NewClasses>();
 			cList0930.addAll(cList);
 		}
-
+		Log.i(TAG,"处理数据2222");
 		List<Role> roleListA=CCApplication.getInstance().getMemberDetail().getRoleList();
 		for (int i = 0; i < roleListA.size(); i++) {
 			String roleCode=roleListA.get(i).getRoleCode();
@@ -193,6 +202,7 @@ public class NewSelectSingleStudentActivity extends BaseActivity implements
 			}
 
 		}
+		Log.i(TAG,"处理数据3333");
 
 		if(schooladmin||schoolleader||educationadmin||gradeleader||fileadmin){
 			List<NewClasses> schoolAllClassList=CCApplication.getInstance().getSchoolAllClassList();
@@ -297,7 +307,7 @@ public class NewSelectSingleStudentActivity extends BaseActivity implements
 		}
 
 
-
+		Log.i(TAG,"处理数据4444");
 
 		String usertype_a = CCApplication.getInstance().getPresentUser()
 				.getUserType();
@@ -333,6 +343,7 @@ public class NewSelectSingleStudentActivity extends BaseActivity implements
 					if(!isClassIdExist(classList,classes.getClassID()))//是否已存在list中
 						classList.add(classes);
 				}
+				Log.i(TAG,"studentList_bb.size():"+studentList_bb.size());
 				if(studentList_bb.size()==0){
 					long cur3=System.currentTimeMillis();
 					System.out.println("=选==全 开始==="+System.currentTimeMillis());
@@ -373,13 +384,16 @@ public class NewSelectSingleStudentActivity extends BaseActivity implements
 				classStudentList_aa.add(studentList);//将班级添加到班级列表；
 				classStudentListSingle.setClassStudent(classStudentList_aa);//设置班级列表
 
-			}
 
+			}
+			Log.i(TAG,"处理数据5555");
 			myNewSelectStudentSingleAdapter = new NewSelectStudentSingleAdapter(
 					this, studentList_aa,title2_ok,this,cList);
 			student_list_view_elv.setAdapter(myNewSelectStudentSingleAdapter);
 
 		}
+
+		Log.i(TAG,"处理数据6666");
 
 	}
 

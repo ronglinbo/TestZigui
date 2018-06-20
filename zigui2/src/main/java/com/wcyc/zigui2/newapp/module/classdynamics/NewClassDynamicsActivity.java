@@ -1,12 +1,17 @@
 package com.wcyc.zigui2.newapp.module.classdynamics;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONArray;
@@ -19,22 +24,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
+import android.provider.MediaStore;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -47,26 +54,35 @@ import com.google.gson.reflect.TypeToken;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.wcyc.zigui2.R;
+import com.wcyc.zigui2.asynctask.HttpRequestAsyncTask;
 import com.wcyc.zigui2.bean.NewClassDynamicsBean;
 import com.wcyc.zigui2.bean.NewClassDynamicsBean1;
 import com.wcyc.zigui2.core.BaseActivity;
+import com.wcyc.zigui2.core.BaseWebviewActivity;
 import com.wcyc.zigui2.core.CCApplication;
 
 import com.wcyc.zigui2.listener.HttpRequestAsyncTaskListener;
 import com.wcyc.zigui2.newapp.activity.HomeActivity;
+import com.wcyc.zigui2.newapp.asynctask.ImageUploadAsyncTask;
+import com.wcyc.zigui2.newapp.asynctask.ImageUploadAsyncTaskListener;
 import com.wcyc.zigui2.newapp.bean.GradeleaderBean;
 import com.wcyc.zigui2.newapp.bean.MemberDetailBean;
+import com.wcyc.zigui2.newapp.bean.MenuItem;
 import com.wcyc.zigui2.newapp.bean.ModelRemindList;
 import com.wcyc.zigui2.newapp.bean.NewBaseBean;
 import com.wcyc.zigui2.newapp.bean.NewClasses;
 import com.wcyc.zigui2.newapp.bean.NewPointBean;
 import com.wcyc.zigui2.newapp.bean.ModelRemindList.ModelRemind;
+import com.wcyc.zigui2.newapp.bean.SubmitPictureBean;
+import com.wcyc.zigui2.newapp.bean.UploadFileResult;
 import com.wcyc.zigui2.newapp.bean.UserType;
 
+import com.wcyc.zigui2.newapp.widget.ChangeBackgroundPop;
 import com.wcyc.zigui2.newapp.widget.RefreshListView1;
 import com.wcyc.zigui2.newapp.widget.RefreshListView1.OnRefreshListener;
 
 
+import com.wcyc.zigui2.newapp.widget.SelectPicturePop;
 import com.wcyc.zigui2.utils.Constants;
 import com.wcyc.zigui2.utils.DataUtil;
 import com.wcyc.zigui2.utils.HttpHelper;
@@ -74,9 +90,9 @@ import com.wcyc.zigui2.utils.ImageUtils;
 import com.wcyc.zigui2.utils.JsonUtils;
 import com.wcyc.zigui2.utils.LocalUtil;
 
+import com.wcyc.zigui2.utils.PhotoBitmapUtils;
 import com.wcyc.zigui2.widget.CircleImageViewTwo;
 import com.wcyc.zigui2.widget.CustomDialog;
-import com.wcyc.zigui2.widget.RoundImageView;
 import com.wcyc.zigui2.widget.SpinnerButton;
 
 /**
@@ -86,7 +102,8 @@ import com.wcyc.zigui2.widget.SpinnerButton;
  * @version 2.0
  */
 public class NewClassDynamicsActivity extends BaseActivity implements
-        HttpRequestAsyncTaskListener, OnClickListener {
+        HttpRequestAsyncTaskListener, OnClickListener, SelectPicturePop.SelectPictureInterface, ImageUploadAsyncTaskListener, ChangeBackgroundPop.ChangeBackgroundInterface {
+
     private RefreshListView1 teacher_list;
     private SpinnerButton spinnerButton;
     private ListView spinnerListView;
@@ -112,9 +129,12 @@ public class NewClassDynamicsActivity extends BaseActivity implements
 
     private final int ACTION_GET_CLASS_LIST = 1;
     private final int ACTION_GET_CLASS_LIST_MORE = 4;
-
     private final int ACTION_REQUEST_CLASS_DATA = 2;
     private final int ACTION_GET_CLASS_DATA = 3;
+
+    private static final int ACTION_UPDATE_CLASS_DYNAMIC_BACKGROUND = 5;
+
+    private static final int ACTION_GET_PARENTS_CLASS_DATA = 6;
     // 网络断了后，提示发送失败
     public static final String INTENT_REFESH_DATA = HomeActivity.INTENT_NEW_MESSAGE;
 
@@ -128,16 +148,42 @@ public class NewClassDynamicsActivity extends BaseActivity implements
     private int scrolledX = 0;
     private int scrolledY = 0;
 
+    private View parentView;
+    private RelativeLayout rl_guide_no; //访问数
+    private TextView tv_today_no; //今天访问数
+    private TextView tv_sum_no; //总计访问数
+    private RelativeLayout rl_background; //背景图片
+    private String imagePath;
+    private FrameLayout fl_header;
+    private ImageView iv_background;
+
+    private static final int REQUEST_CODE_PICK = 1000; // 相册选图标记
+    private static final int REQUEST_CODE_TAKE = 2000; // 相机拍照标记
+    private static final int REQUEST_CODE_CULT = 3000; // 图片裁切标记
+    private static final int REQUEST_CODE_REFRESH = 4000; // 刷新数据标记
+
+    private static final String IMAGE_FILE_NAME = "background.jpg";// 裁剪之后的图片
+
+
+    private boolean hidePublish = false;
+    private String fileName;
+    private Uri imageUri;
+
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        setContentView(R.layout.new_class_dynamics_mian);
+//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+//        setContentView(R.layout.new_class_dynamics_mian);
+
+        parentView = LayoutInflater.from(this).inflate(R.layout.new_class_dynamics_mian, null);
+        setContentView(parentView);
+
         initView();
         initData();
         initEvents();
-        requestClassList();// 请求班级动态
+
+        getClassDynamicsData();
 
         IntentFilter mFilter = new IntentFilter(
                 NewPublishDynamicActivity.INTENT_BEGIN_UPLOAD_PICTURE);
@@ -147,6 +193,24 @@ public class NewClassDynamicsActivity extends BaseActivity implements
         registerReceiver(finishUploadReceiver, mfinishFilter);
         IntentFilter mrefeshDataFilter = new IntentFilter(INTENT_REFESH_DATA);
         registerReceiver(refeshDataReceiver, mrefeshDataFilter);
+    }
+
+    private void getClassDynamicsData() {
+        UserType presentUser = CCApplication.getInstance().getPresentUser();
+        String userType = presentUser.getUserType();
+        if (Constants.TEACHER_STR_TYPE.equals(userType)) {
+            requestAllClassDynamicsData();    //请求全部班级动态
+        } else {
+            String classId = presentUser.getClassId();
+            if (DataUtil.isNullorEmpty(classId)) {
+                DataUtil.getToast("获取班级动态信息失败");
+            } else {
+                resource_id = classId;
+                class_a = Integer.valueOf(classId);
+                class_id_a = String.valueOf(classId);
+                updateVisitorNum(classId);
+            }
+        }
     }
 
     Handler handler = new Handler() {
@@ -174,26 +238,38 @@ public class NewClassDynamicsActivity extends BaseActivity implements
     protected void getMessage(String data) {
         switch (action) {
             case ACTION_GET_CLASS_LIST:
-                getClassList(data);
+                dismissPd();
+                parseAllClassDynamicsData(data);
                 break;
+
             case ACTION_GET_CLASS_LIST_MORE:
-                getClassListMore(data);
+                parseGetMoreClassDynamicsData(data);
                 break;
+
             case ACTION_REQUEST_CLASS_DATA:
                 break;
-            case ACTION_GET_CLASS_DATA:
-                getClassData(data, resource_id);
 
+            case ACTION_GET_CLASS_DATA:
+                dismissPd();
+                parseSingleClassDynamicsData(data, resource_id);
                 break;
+
+            case ACTION_UPDATE_CLASS_DYNAMIC_BACKGROUND:
+                parseUpdateBackground(data);
+                break;
+
+            case ACTION_GET_PARENTS_CLASS_DATA:
+                parseParentsClassDynamicsData(data, resource_id);
+                break;
+
             default:
                 break;
         }
     }
 
-
-    private boolean isClassIdExist(List<NewClasses> classlist, String classId) {
-        for (int i = 0; i < classlist.size(); i++) {
-            if (classlist.get(i).getClassID().equals(classId)) {
+    private boolean isClassIdExist(List<NewClasses> classList, String classId) {
+        for (int i = 0; i < classList.size(); i++) {
+            if (classList.get(i).getClassID().equals(classId)) {
                 return true;
             }
         }
@@ -202,14 +278,22 @@ public class NewClassDynamicsActivity extends BaseActivity implements
     }
 
     private void initView() {
-        teacher_list = (RefreshListView1) findViewById(R.id.teacher_list);
-        iv_bg = (ImageView) findViewById(R.id.iv_bg);
-        title_back = (LinearLayout) findViewById(R.id.title_back);
-        spinnerButton = (SpinnerButton) findViewById(R.id.new_content);
-        iv_title_xiala = (ImageView) findViewById(R.id.iv_title_xiala);
+        teacher_list = (RefreshListView1) parentView.findViewById(R.id.teacher_list);
+        iv_bg = (ImageView) parentView.findViewById(R.id.iv_bg);
+        title_back = (LinearLayout) parentView.findViewById(R.id.title_back);
+        spinnerButton = (SpinnerButton) parentView.findViewById(R.id.new_content);
+        iv_title_xiala = (ImageView) parentView.findViewById(R.id.iv_title_xiala);
 
-        title_imgbtn_add = (RelativeLayout) findViewById(R.id.title_imgbtn_add);
-        class_circleImageView = (CircleImageViewTwo) findViewById(R.id.class_circleImageView);
+        title_imgbtn_add = (RelativeLayout) parentView.findViewById(R.id.title_imgbtn_add);
+        class_circleImageView = (CircleImageViewTwo) parentView.findViewById(R.id.class_circleImageView);
+
+        rl_guide_no = (RelativeLayout) parentView.findViewById(R.id.rl_guide_no);
+        tv_today_no = (TextView) parentView.findViewById(R.id.tv_today_no);
+        tv_sum_no = (TextView) parentView.findViewById(R.id.tv_sum_no);
+
+        rl_background = (RelativeLayout) parentView.findViewById(R.id.rl_background);
+        fl_header = (FrameLayout) parentView.findViewById(R.id.fl_header);
+        iv_background = (ImageView) parentView.findViewById(R.id.iv_background);
     }
 
     private void initData() {
@@ -224,7 +308,9 @@ public class NewClassDynamicsActivity extends BaseActivity implements
         title_back.setVisibility(View.VISIBLE);
 
         usertype = CCApplication.getInstance().getPresentUser().getUserType();
-        if ("2".equals(usertype)) {
+
+        //如果是老师
+        if (Constants.TEACHER_STR_TYPE.equals(usertype)) {
             title_imgbtn_add.setVisibility(View.VISIBLE);//老师才能发布班级动态  20161114
 
             List<NewClasses> cList_aa = CCApplication.app.getMemberDetail().getClassList();
@@ -294,10 +380,16 @@ public class NewClassDynamicsActivity extends BaseActivity implements
                                 }
                             }
                         }
+
                     } catch (Exception e) {
                     }
 
                 }
+            }
+
+            ArrayList<NewClasses> sampleClassList = (ArrayList<NewClasses>) cList;
+            if(sampleClassList != null){
+                cList = removeDuplicateData(sampleClassList);
             }
 
         } else if ("3".equals(usertype)) {
@@ -313,6 +405,19 @@ public class NewClassDynamicsActivity extends BaseActivity implements
 
             cList.add(newclass);
         }
+    }
+
+    //去除重复元素
+    public ArrayList<NewClasses> removeDuplicateData(ArrayList<NewClasses> list) {
+        ArrayList<NewClasses> newList = new ArrayList<>();
+        Iterator it = list.iterator();
+        while (it.hasNext()) {
+            NewClasses obj = (NewClasses) it.next();
+            if (!newList.contains(obj)) {
+                newList.add(obj);
+            }
+        }
+        return newList;
     }
 
     private void initEvents() {
@@ -366,12 +471,12 @@ public class NewClassDynamicsActivity extends BaseActivity implements
                 }
 
                 if (arg2 == 0) {
-                    requestClassList();// 请求班级动态
+                    requestAllClassDynamicsData();// 请求班级动态
                 } else {
 
                     class_id = cList.get(arg2 - 1).getClassID();
                     class_id_a = cList.get(arg2 - 1).getClassID();
-                    requestClassData(class_id, userid);
+                    requestSingleClassDynamicsData(class_id, userid);
                 }
             }
         });
@@ -414,7 +519,7 @@ public class NewClassDynamicsActivity extends BaseActivity implements
 //						intent.putExtra("dynamics_class", cList.get(0).getClassName());
                     }
 
-                    startActivity(intent);
+                    startActivityForResult(intent, REQUEST_CODE_REFRESH);
                 }
                 //家长不在有动态
 //				else if ("3".equals(usertype)) {
@@ -437,9 +542,9 @@ public class NewClassDynamicsActivity extends BaseActivity implements
                 k = 2;//初始化  k=2
                 System.out.println("=====class_a=====" + class_a);
                 if (class_a <= 0) {
-                    requestClassList();// 请求所有班级动态
+                    requestAllClassDynamicsData();// 请求所有班级动态
                 } else {
-                    requestClassData(class_id_a, userid);// 请求某班级动态
+                    requestSingleClassDynamicsData(class_id_a, userid);// 请求某班级动态
                 }
                 teacher_list.hideHeaderView();//收起下拉刷新
             }
@@ -464,7 +569,7 @@ public class NewClassDynamicsActivity extends BaseActivity implements
                 break;
             case R.id.title_imgbtn_add:
 
-                boolean ret = CCApplication.app.CouldFunctionBeUse("班级圈");
+                boolean ret = CCApplication.app.CouldFunctionBeUse("班级圈", MenuItem.CLASS_CIRCLE_NUMBER);
                 ret = true;//发布班级动态是免费的
 
                 if (ret) {
@@ -487,7 +592,7 @@ public class NewClassDynamicsActivity extends BaseActivity implements
 
                     dialog = new CustomDialog(this, R.style.mystyle,
                             R.layout.customdialog, handler);
-                    dialog.setCanceledOnTouchOutside(true);
+                    dialog.setCanceledOnTouchOutside(false);
                     dialog.show();
                     dialog.setTitle(getResources().getString(R.string.vip));
                     dialog.setContent(getResources().getString(R.string.vip_tip));
@@ -498,13 +603,6 @@ public class NewClassDynamicsActivity extends BaseActivity implements
         }
     }
 
-    @Override
-    public void onRequstComplete(String result) {
-    }
-
-    @Override
-    public void onRequstCancelled() {
-    }
 
     @Override
     protected void onResume() {
@@ -564,12 +662,11 @@ public class NewClassDynamicsActivity extends BaseActivity implements
         }
     }
 
+
     /**
-     * 请求当前用户的班级动态列表
-     *
-     * @param
+     * 查看所有班级的班级动态
      */
-    private void requestClassList() {
+    private void requestAllClassDynamicsData() {
         JSONObject json = null;
         try {
             if (cList == null) {
@@ -591,6 +688,23 @@ public class NewClassDynamicsActivity extends BaseActivity implements
             cd.setCurPage(1);
             cd.setPageSize(10);
             cd.setIsNeedCLA("1");
+
+            //全部班级
+            cd.setHidePublish(true);
+
+            UserType user = CCApplication.getInstance().getPresentUser();
+            String userType = user.getUserType();
+
+            if (Constants.TEACHER_STR_TYPE.equals(userType)) {
+                cd.setUserType(Constants.TEACHER_STR_TYPE);
+                cd.setVisitorId(user.getUserId());
+                cd.setParentsName(CCApplication.getInstance().getMemberInfo().getUserName());
+            } else {
+                cd.setUserType(Constants.PARENT_STR_TYPE);
+                cd.setVisitorId(user.getUserId());
+                cd.setParentsName(user.getChildName() + user.getRelationTypeName());
+            }
+
             Gson gson = new Gson();
             String string = gson.toJson(cd);
 
@@ -612,12 +726,18 @@ public class NewClassDynamicsActivity extends BaseActivity implements
     }
 
     /**
-     * 获取当前用户所有班级动态列表
+     * 解析当前用户所有班级动态
      *
      * @param result
      */
-    private void getClassList(String result) {
+    private void parseAllClassDynamicsData(String result) {
         System.out.println("===班级动态出参==" + result);
+
+        hidePublish = true;
+        rl_guide_no.setVisibility(View.GONE);
+        fl_header.setOnClickListener(null);
+        iv_background.setImageResource(R.drawable.bg_banjidongtai);
+
         try {
             ArrayList<String> tempClassNameList = new ArrayList<String>();// 班级名字list
             ArrayList<String> tempNjmcList = new ArrayList<String>();// 年级名字list
@@ -692,26 +812,27 @@ public class NewClassDynamicsActivity extends BaseActivity implements
 
                 if (list != null && list.size() > 0) {
                     if (resourceIdList != null && resourceIdList.size() > 0) {
-
                         resource_id = resourceIdList.get(class_i);
                     }
 
+                    //附件
                     if (list.get(class_i).getAttachmentInfoList_new() == null) {
-                        list.get(class_i).setAttachmentInfoList_new(
-                                new ArrayList<NewClassDynamicsBean1.ClassAttachmentBean>());
+                        list.get(class_i).setAttachmentInfoList_new(new ArrayList<NewClassDynamicsBean1.ClassAttachmentBean>());
                     }
+
+                    //评论
                     if (list.get(class_i).getCommentList() == null) {
-                        list.get(class_i).setCommentList(
-                                new ArrayList<NewPointBean>());
+                        list.get(class_i).setCommentList(new ArrayList<NewPointBean>());
                     }
+
+                    //点赞
                     if (list.get(class_i).getLoveList() == null) {
-                        list.get(class_i)
-                                .setLoveList(new ArrayList<NewPointBean>());
+                        list.get(class_i).setLoveList(new ArrayList<NewPointBean>());
                     }
 
                     mClassDynamicsAdapter = new NewClassDynamicsAdapter(
                             NewClassDynamicsActivity.this, list, userid,
-                            resource_id, CCApplication.app.getUserName());
+                            resource_id, CCApplication.app.getUserName(), parentView, hidePublish);
 
                     teacher_list.setAdapter(mClassDynamicsAdapter);
 
@@ -795,7 +916,6 @@ public class NewClassDynamicsActivity extends BaseActivity implements
                         }
                     }
                 }
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -807,7 +927,7 @@ public class NewClassDynamicsActivity extends BaseActivity implements
      *
      * @param result
      */
-    private void getClassListMore(String result) {
+    private void parseGetMoreClassDynamicsData(String result) {
         try {
 
             List<NewClassDynamicsBean1> list1 = null;
@@ -815,8 +935,6 @@ public class NewClassDynamicsActivity extends BaseActivity implements
             // 总页数
             int totalPageNum = obj.getInt("totalPageNum");
             loadMore.setVisibility(View.GONE);
-
-
             JSONArray ja = obj.getJSONArray("interactionList");
             Gson gson1 = new Gson();
             Type t = new TypeToken<List<NewClassDynamicsBean1>>() {
@@ -830,11 +948,11 @@ public class NewClassDynamicsActivity extends BaseActivity implements
     }
 
     /**
-     * 请求当前用户的某个班级动态列表
+     * 获取一个班级的班级动态
      *
      * @param classid ,userid
      */
-    private void requestClassData(String classid, String userid) {
+    private void requestSingleClassDynamicsData(String classid, String userid) {
         JSONObject json = null;
         try {
             ArrayList<String> mmClassIDlist = new ArrayList<String>();
@@ -845,6 +963,22 @@ public class NewClassDynamicsActivity extends BaseActivity implements
             cd.setType("0");
             cd.setCurPage(1);
             cd.setPageSize(10);
+            //一个班级
+            cd.setHidePublish(false);
+
+
+            UserType user = CCApplication.getInstance().getPresentUser();
+            String userType = user.getUserType();
+
+            if (Constants.TEACHER_STR_TYPE.equals(userType)) {
+                cd.setUserType(Constants.TEACHER_STR_TYPE);
+                cd.setVisitorId(user.getUserId());
+                cd.setParentsName(CCApplication.getInstance().getMemberInfo().getUserName());
+            } else {
+                cd.setUserType(Constants.PARENT_STR_TYPE);
+                cd.setVisitorId(user.getUserId());
+                cd.setParentsName(user.getChildName() + user.getRelationTypeName());
+            }
 
             Gson gson = new Gson();
             String string = gson.toJson(cd);
@@ -860,11 +994,14 @@ public class NewClassDynamicsActivity extends BaseActivity implements
     }
 
     /**
-     * 获取当前用户某个班级动态列表
+     * 解析当前用户某个班级动态列表
      *
      * @param result
      */
-    private void getClassData(String result, String resource_id) {
+    private void parseSingleClassDynamicsData(String result, String resource_id) {
+
+        hidePublish = false;
+
         try {
             JSONObject json = new JSONObject(result);
 
@@ -886,7 +1023,7 @@ public class NewClassDynamicsActivity extends BaseActivity implements
             totalPageNum_str = json.getString("totalPageNum");
             mClassDynamicsAdapter = new NewClassDynamicsAdapter(
                     NewClassDynamicsActivity.this, list, userid, resource_id,
-                    CCApplication.app.getUserName());
+                    CCApplication.app.getUserName(), parentView, hidePublish);
             teacher_list.setAdapter(mClassDynamicsAdapter);
 
             // json.getString("")
@@ -897,13 +1034,74 @@ public class NewClassDynamicsActivity extends BaseActivity implements
                 loadMore.setVisibility(View.GONE);
             }
 
+            int todayCount = json.getInt("todayCount");
+            int visitorCount = json.getInt("visitorcount");
+            rl_guide_no.setVisibility(View.VISIBLE);
+            if (todayCount > 99999) {
+                tv_today_no.setText("99999+");
+            } else {
+                tv_today_no.setText(String.valueOf(todayCount));
+            }
+            if (visitorCount > 99999) {
+                tv_sum_no.setText("99999+");
+            } else {
+                tv_sum_no.setText(String.valueOf(visitorCount));
+            }
+
+            rl_guide_no.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //跳转地址
+                    if (!DataUtil.isNullorEmpty(class_id_a)) {
+                        String url = new StringBuilder(Constants.URL)
+                                .append("/classdynamic/classdynamicdetails.do?classId=")
+                                .append(class_id_a)
+                                .append("&mobileType=")
+                                .append("android")
+                                .toString();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("url", url);
+                        System.out.println("url:" + url);
+                        newActivity(BaseWebviewActivity.class, bundle);
+                    }
+                }
+            });
+
+            //教职工才有权限修改背景图片
+            UserType presentUser = CCApplication.getInstance().getPresentUser();
+            if (Constants.TEACHER_STR_TYPE.equals(presentUser.getUserType())) {
+                fl_header.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ChangeBackgroundPop changePop = new ChangeBackgroundPop(NewClassDynamicsActivity.this, NewClassDynamicsActivity.this);
+                        changePop.showAtLocation(parentView, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+                    }
+                });
+            }
+
+
+            //显示背景图片
+            int backgroundId = json.getInt("backgroundId");
+            if (0 != backgroundId) {
+                String imgAuthId = Constants.AUTHID + "@" + getDeviceID()
+                        + "@" + CCApplication.app.getMemberInfo().getAccId();
+                String url = new StringBuilder(Constants.URL)
+                        .append("/downloadApi?fileId=")
+                        .append(backgroundId)
+                        .append(imgAuthId).toString();
+                getImageLoader().displayImage(url, iv_background, getImageLoaderOptions());
+                System.out.println("背景图片下载地址:" + url);
+            } else {
+                iv_background.setImageResource(R.drawable.bg_banjidongtai);
+            }
         } catch (Exception e) {
             e.printStackTrace();
+            iv_background.setImageResource(R.drawable.bg_banjidongtai);
         }
     }
 
     /**
-     * loadMore 的点击效果
+     * loadMore 的点击事件
      */
     class ButtonClickListener implements OnClickListener {
         @Override
@@ -957,9 +1155,26 @@ public class NewClassDynamicsActivity extends BaseActivity implements
                 cd.setCurPage(index);
                 cd.setPageSize(10);
                 cd.setIsNeedCLA("1");
+                //全部班级动态
+                cd.setHidePublish(true);
+
+                UserType user = CCApplication.getInstance().getPresentUser();
+                String userType = user.getUserType();
+
+                if (Constants.TEACHER_STR_TYPE.equals(userType)) {
+                    cd.setUserType(Constants.TEACHER_STR_TYPE);
+                    cd.setVisitorId(user.getUserId());
+                    cd.setParentsName(CCApplication.getInstance().getMemberInfo().getUserName());
+                } else {
+                    cd.setUserType(Constants.PARENT_STR_TYPE);
+                    cd.setVisitorId(user.getUserId());
+                    cd.setParentsName(user.getChildName() + user.getRelationTypeName());
+                }
+
                 Gson gson = new Gson();
                 String string = gson.toJson(cd);
                 json = new JSONObject(string);
+
                 //改为异步
                 queryPost(Constants.GET_CLASS_DYNAMIC_LIST, json);
                 action = ACTION_GET_CLASS_LIST_MORE;
@@ -973,6 +1188,21 @@ public class NewClassDynamicsActivity extends BaseActivity implements
                 cd.setCurPage(index);
                 cd.setPageSize(10);
                 cd.setIsNeedCLA("1");
+                //一个班级动态
+                cd.setHidePublish(false);
+
+                UserType user = CCApplication.getInstance().getPresentUser();
+                String userType = user.getUserType();
+
+                if (Constants.TEACHER_STR_TYPE.equals(userType)) {
+                    cd.setUserType(Constants.TEACHER_STR_TYPE);
+                    cd.setVisitorId(user.getUserId());
+                    cd.setParentsName(CCApplication.getInstance().getMemberInfo().getUserName());
+                } else {
+                    cd.setUserType(Constants.PARENT_STR_TYPE);
+                    cd.setVisitorId(user.getUserId());
+                    cd.setParentsName(user.getChildName() + user.getRelationTypeName());
+                }
                 Gson gson = new Gson();
                 String string = gson.toJson(cd);
                 json = new JSONObject(string);
@@ -999,7 +1229,7 @@ public class NewClassDynamicsActivity extends BaseActivity implements
             }
             spinnerButton.setText(njmc + classNameList.get(class_i));
             if (paths.size() == 0) {// 只有文字没有 图片
-                requestClassData(resource_id, userid);
+                requestSingleClassDynamicsData(resource_id, userid);
             } else {
                 DataUtil.getToast("班级动态正在后台处理,请稍候");
             }
@@ -1013,7 +1243,7 @@ public class NewClassDynamicsActivity extends BaseActivity implements
         public void onReceive(Context context, Intent intent) {
             DataUtil.hasUnfinishedTask = false;
             DataUtil.isAlert = false;
-            requestClassData(resource_id, userid);
+            requestSingleClassDynamicsData(resource_id, userid);
             boolean is_compress = intent.getBooleanExtra("is_compress", true);
             int size = intent.getIntExtra("upload_nums", 12);
             DataUtil.cleanTempFile(is_compress, size);
@@ -1058,130 +1288,146 @@ public class NewClassDynamicsActivity extends BaseActivity implements
 
     private BroadcastReceiver refeshDataReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
-            // requestClassData(resource_id, userid);//某个班级动态
-//			requestClassList();// 所有班级数据
+            // requestSingleClassDynamicsData(resource_id, userid);//某个班级动态
+//			requestAllClassDynamicsData();// 所有班级数据
             //		k=2;//初始化  k=2
-
-            if (intent.getStringExtra("publish") != null) {
-                requestClassList();
-            }
-            if (class_a <= 0) {
-
-                //重新加载一次数据
-                int classId = intent.getIntExtra("classId", 0);
-                int interactionId = intent.getIntExtra("interactionId", 0);
-                int flag = intent.getIntExtra("flag", -1);
-                int position = intent.getIntExtra("position", 0);
-                int pointCommentId = intent.getIntExtra("pointCommentId", -1);
-                int user_id = Integer.parseInt(CCApplication.getInstance().getPresentUser().getUserId());
-                String username = "";
-                if (CCApplication.getInstance().getPresentUser().getUserType().equals(Constants.PARENT_STR_TYPE)) {
-                    username = CCApplication.getInstance().getPresentUser().getChildName() + CCApplication.getInstance().getPresentUser().getRelationTypeName();
-                } else if (CCApplication.getInstance().getPresentUser().getUserType().equals(Constants.TEACHER_STR_TYPE)) {
-                    username = CCApplication.getInstance().getPresentUser().getTeacherName();
+            boolean refreshDeleteData = intent.getBooleanExtra("RefreshDeleteData", false);
+            if (refreshDeleteData) {
+                if (class_a <= 0) {
+                    requestAllClassDynamicsData();
+                } else {
+                    requestSingleClassDynamicsData(class_id_a, userid);// 请求某班级动态
                 }
+                showProgessBar();
+            } else {
+                if (intent.getStringExtra("publish") != null) {
+//                    requestAllClassDynamicsData();
 
-                String type = intent.getStringExtra("type");
-                if (type != null) {
+                }
+                if (class_a <= 0) {
+                    requestAllClassDynamicsData();
+                    //本地刷新评论
+                    loadLocalData(intent);
+                } else {
+                    requestSingleClassDynamicsData(class_id_a, userid);// 请求某班级动态
 
-                    if (type.equals("good")) {
-                        Iterator<NewClassDynamicsBean1> iterator = list.iterator();
-                        //本地刷新点赞
-                        while (iterator.hasNext()) {
-                            NewClassDynamicsBean1 bean1 = iterator.next();
-                            if (bean1.getId() == interactionId) { //同一个动态
-                                Iterator<NewPointBean> iterator1 = bean1.getLoveList().iterator();
-                                if (flag == 0) { //点赞
-                                    int i = 0;
-                                    while (iterator1.hasNext()) {
-                                        NewPointBean newPointBean = iterator1.next();
-                                        if (newPointBean.getCommentUserId() == user_id) {//包含点赞
-                                            i++;
+                }
+            }
 
-                                        }
-                                    }
-                                    if (i == 0) {
-                                        NewPointBean newPointBean1 = new NewPointBean();
-                                        newPointBean1.setCommentUserId(Integer.parseInt(CCApplication.getInstance().getPresentUser().getUserId()));
-                                        newPointBean1.setInteractionId(interactionId);
-                                        newPointBean1.setCommentUserName(username);
-                                        bean1.getLoveList().add(newPointBean1);
-                                    }
+
+        }
+    };
+
+    /**
+     * 加载本地数据__点赞 评论
+     *
+     * @param intent
+     */
+    private void loadLocalData(Intent intent) {
+        int classId = intent.getIntExtra("classId", 0);
+        int interactionId = intent.getIntExtra("interactionId", 0);
+        int flag = intent.getIntExtra("flag", -1);
+        int position = intent.getIntExtra("position", 0);
+        int pointCommentId = intent.getIntExtra("pointCommentId", -1);
+        int user_id = Integer.parseInt(CCApplication.getInstance().getPresentUser().getUserId());
+        String username = "";
+        if (CCApplication.getInstance().getPresentUser().getUserType().equals(Constants.PARENT_STR_TYPE)) {
+            username = CCApplication.getInstance().getPresentUser().getChildName() + CCApplication.getInstance().getPresentUser().getRelationTypeName();
+        } else if (CCApplication.getInstance().getPresentUser().getUserType().equals(Constants.TEACHER_STR_TYPE)) {
+            username = CCApplication.getInstance().getPresentUser().getTeacherName();
+        }
+
+        String type = intent.getStringExtra("type");
+        if (type != null) {
+
+            if (type.equals("good")) {
+                Iterator<NewClassDynamicsBean1> iterator = list.iterator();
+                //本地刷新点赞
+                while (iterator.hasNext()) {
+                    NewClassDynamicsBean1 bean1 = iterator.next();
+                    if (bean1.getId() == interactionId) { //同一个动态
+                        Iterator<NewPointBean> iterator1 = bean1.getLoveList().iterator();
+                        if (flag == 0) { //点赞
+                            int i = 0;
+                            while (iterator1.hasNext()) {
+                                NewPointBean newPointBean = iterator1.next();
+                                if (newPointBean.getCommentUserId() == user_id) {//包含点赞
+                                    i++;
 
                                 }
-                                if (flag == 2) {
-                                    while (iterator1.hasNext()) {
-                                        NewPointBean newPointBean = iterator1.next();
-                                        if (newPointBean.getCommentUserId() == user_id) {//包含点赞
-                                            iterator1.remove();
-                                        }
-                                    }
-                                }
-
                             }
+                            if (i == 0) {
+                                NewPointBean newPointBean1 = new NewPointBean();
+                                newPointBean1.setCommentUserId(Integer.parseInt(CCApplication.getInstance().getPresentUser().getUserId()));
+                                newPointBean1.setInteractionId(interactionId);
+                                newPointBean1.setCommentUserName(username);
+                                bean1.getLoveList().add(newPointBean1);
+                            }
+
                         }
-                    } else if (type.equals("comment")) { //本地刷新 评论
-                        Iterator<NewClassDynamicsBean1> iterator = list.iterator();
-                        //本地刷新评论
-                        while (iterator.hasNext()) {
-                            NewClassDynamicsBean1 bean2 = iterator.next();
-                            if (bean2.getId() == interactionId) { //同一个动态
-                                Iterator<NewPointBean> iterator2 = bean2.getCommentList().iterator();
-                                if (flag == 3) {
-                                    //删除评论
-                                    while (iterator2.hasNext()) {
-                                        NewPointBean newPointBean = iterator2.next();
-                                        if (newPointBean.getId() == pointCommentId) {//判断添加
-                                            iterator2.remove();
-                                        }
-                                    }
+                        if (flag == 2) {
+                            while (iterator1.hasNext()) {
+                                NewPointBean newPointBean = iterator1.next();
+                                if (newPointBean.getCommentUserId() == user_id) {//包含点赞
+                                    iterator1.remove();
                                 }
-                                if (flag == 1) {
-                                    //添加评论
-                                    //评论
-                                    int i = 0;
-                                    while (iterator2.hasNext()) {
-                                        NewPointBean newPointBean = iterator2.next();
-                                        if (newPointBean.getId() == pointCommentId) {//判断添加
-                                            i++;
-                                        }
-                                    }
-                                    if (i == 0) {
-                                        //添加评论
-                                        NewPointBean newPointBean1 = new NewPointBean();
-                                        newPointBean1.setCommentUserId(Integer.parseInt(CCApplication.getInstance().getPresentUser().getUserId()));
-                                        newPointBean1.setInteractionId(interactionId);
-                                        newPointBean1.setCommentUserName(username);
-                                        newPointBean1.setContent(intent.getStringExtra("textfield"));
-                                        newPointBean1.setId(pointCommentId);
-                                        bean2.getCommentList().add(newPointBean1);
-                                    }
-                                }
-
-
                             }
                         }
 
                     }
                 }
-
-
-                try {
-                    mClassDynamicsAdapter.notifyDataSetChanged();
-                } catch (Exception e) {
-
-                }
-
+            } else if (type.equals("comment")) { //本地刷新 评论
+                Iterator<NewClassDynamicsBean1> iterator = list.iterator();
                 //本地刷新评论
+                while (iterator.hasNext()) {
+                    NewClassDynamicsBean1 bean2 = iterator.next();
+                    if (bean2.getId() == interactionId) { //同一个动态
+                        Iterator<NewPointBean> iterator2 = bean2.getCommentList().iterator();
+                        if (flag == 3) {
+                            //删除评论
+                            while (iterator2.hasNext()) {
+                                NewPointBean newPointBean = iterator2.next();
+                                if (newPointBean.getId() == pointCommentId) {//判断添加
+                                    iterator2.remove();
+                                }
+                            }
+                        }
+                        if (flag == 1) {
+                            //添加评论
+                            //评论
+                            int i = 0;
+                            while (iterator2.hasNext()) {
+                                NewPointBean newPointBean = iterator2.next();
+                                if (newPointBean.getId() == pointCommentId) {//判断添加
+                                    i++;
+                                }
+                            }
+                            if (i == 0) {
+                                //添加评论
+                                NewPointBean newPointBean1 = new NewPointBean();
+                                newPointBean1.setCommentUserId(Integer.parseInt(CCApplication.getInstance().getPresentUser().getUserId()));
+                                newPointBean1.setInteractionId(interactionId);
+                                newPointBean1.setCommentUserName(username);
+                                newPointBean1.setContent(intent.getStringExtra("textfield"));
+                                newPointBean1.setId(pointCommentId);
+                                bean2.getCommentList().add(newPointBean1);
+                            }
+                        }
 
-                //   requestClassList();// 请求所有班级动态
-//				initData();
-            } else {
-                requestClassData(class_id_a, userid);// 请求某班级动态
+
+                    }
+                }
 
             }
         }
-    };
+
+        try {
+            mClassDynamicsAdapter.notifyDataSetChanged();
+        } catch (Exception e) {
+
+        }
+    }
+
     private String totalPageNum_str;
 
     void DownloadAllImages() {
@@ -1228,11 +1474,11 @@ public class NewClassDynamicsActivity extends BaseActivity implements
 
 	/*
      * 业务入口
-	 * 
+	 *
 	 * 发布完成
-	 * 
+	 *
 	 * ID String 用户ID Type String 反馈内容
-	 * 
+	 *
 	 * ? 出参 参数名 参数类型 描述 code Integer 返回代码 （200 成功 201 失败）
 	 */
 
@@ -1267,4 +1513,497 @@ public class NewClassDynamicsActivity extends BaseActivity implements
         int top = c.getTop();
         return -top + firstVisiblePosition * c.getHeight();
     }
+
+
+    /**
+     * 拍照
+     */
+    @Override
+    public void takePicture() {
+        boolean flag = isHavePermissionToUseCamera();
+        if (flag) {
+//            File temp = new File(Environment.getExternalStorageDirectory() + "/" + IMAGE_FILE_NAME)
+//            imageUri = FileUtil.getTmpUri();//The Uri to store the big bitmap
+
+            fileName = PhotoBitmapUtils.getPhotoFileName(NewClassDynamicsActivity.this);
+            File file = new File(fileName);
+            if (!file.exists()) {
+                try {
+                    file.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            Uri imageUri = Uri.fromFile(file);
+
+            Intent takeIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            takeIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+            startActivityForResult(takeIntent, REQUEST_CODE_TAKE);
+        } else {
+            DataUtil.getToast("没有获取摄像头权限!");
+        }
+    }
+
+    /**
+     * 选择相册
+     */
+    @Override
+    public void selectPicture() {
+        try {
+            fileName = PhotoBitmapUtils.getPhotoFileName(NewClassDynamicsActivity.this);
+            File file = new File(fileName);
+            if (!file.exists()) {
+                try {
+                    file.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            imageUri = Uri.fromFile(file);
+
+            Intent pickIntent = new Intent(Intent.ACTION_PICK, null);
+            pickIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+            startActivityForResult(pickIntent, REQUEST_CODE_PICK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * @param requestCode 请求码 父类BaseActivity 请求码为1的时候 表示强制升级  如果取消了 就会关闭App
+     * @param resultCode  结果码
+     * @param data        intent
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+//        Log.i("临时TAG", "requestCode:" + requestCode + "--imageUri:" + imageUri);
+        switch (requestCode) {
+            case REQUEST_CODE_PICK:// 直接从相册获取
+                try {
+                    if (data == null) {
+                        return;
+                    } else {
+                        startPhotoZoom(data.getData());
+                    }
+                } catch (NullPointerException e) {
+                    e.printStackTrace();// 用户点击取消操作
+                }
+                break;
+
+            case REQUEST_CODE_TAKE:// 调用相机拍照
+//                File temp = new File(Environment.getExternalStorageDirectory() + "/" + IMAGE_FILE_NAME);
+                try {
+                    // 得到修复后的照片路径  因为三星手机拍照截图会旋转
+                    String filepath = PhotoBitmapUtils.amendRotatePhoto(fileName, NewClassDynamicsActivity.this);
+                    File file = new File(filepath);
+                    if (!file.exists()) {
+                        try {
+                            file.createNewFile();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    imageUri = Uri.fromFile(file);
+                    startPhotoZoom(imageUri);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                    DataUtil.getToast("没有获取到照片,请重试");
+                }
+
+                break;
+
+            case REQUEST_CODE_CULT:// 取得裁剪后的图片
+                try {
+                    if (data != null) {
+                        setPicToView(data);
+                    } else {
+                        DataUtil.getToast("已取消");
+                    }
+                } catch (Exception e) {
+                    DataUtil.getToast("裁切图片异常,请重试");
+                }
+                break;
+
+            //删除个人动态页面需要刷新数据
+            case REQUEST_CODE_REFRESH:
+                if (resultCode == RESULT_OK) {
+                    getClassDynamicsData();
+                }
+                break;
+
+            default:
+                break;
+        }
+
+    }
+
+    /**
+     * 图片栽剪的URI
+     */
+//    private Uri imageUri;
+
+
+    /**
+     * 裁剪图片方法实现
+     *
+     * @param uri
+     */
+    public void startPhotoZoom(Uri uri) {
+//        imageUri = FileUtil.getTmpUri();
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        // crop=true是设置在开启的Intent中设置显示的VIEW可裁剪
+        intent.putExtra("crop", "true");
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", 3);
+        intent.putExtra("aspectY", 1);
+        // outputX outputY 是裁剪图片宽高
+//        intent.putExtra("outputX", 600);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+//        intent.putExtra("outputY", 200);
+        intent.putExtra("scale", true);
+        intent.putExtra("return-data", false);
+
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        intent.putExtra("noFaceDetection", true); // no face detection
+
+        startActivityForResult(intent, REQUEST_CODE_CULT);
+    }
+
+
+    /**
+     * 保存裁剪之后的图片数据
+     *
+     * @param picData
+     */
+    private void setPicToView(Intent picData) {
+//        Bundle extras = picData.getExtras();
+//        if (extras != null) {
+        // 取得SDCard图片路径做显示
+//            Bitmap photo = extras.getParcelable("data");
+        Bitmap photo = null;
+        try {
+            photo = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (photo == null) {
+            DataUtil.getToast("图片选择出错，请重新选择");
+            return;
+        }
+
+        //把bitmap存储到本地
+//            String folder = Environment.getExternalStorageDirectory() + "/ZIGUI_Photos/";
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+        String time = formatter.format(new Date());
+        imagePath = PhotoBitmapUtils.ZIGUI_Photos + time + ".jpeg";
+
+        boolean flag = false;
+        try {
+            flag = DataUtil.saveBitmap(photo, imagePath);
+        } catch (Exception e) {
+            DataUtil.getToast("没有开启存储权限!");
+        }
+        //保存成功
+        if (flag) {
+            System.out.println(imagePath);
+            ImageUploadAsyncTask imageUploadAsyncTask = new ImageUploadAsyncTask(this, Constants.PIC_TYPE, imagePath, Constants.UPLOAD_URL, this);
+            imageUploadAsyncTask.execute();
+        } else {
+            DataUtil.getToast("更换背景图片失败");
+        }
+//        }
+    }
+
+    @Override
+    public void onImageUploadCancelled() {
+        DataUtil.getToast("更换背景图片失败");
+    }
+
+    @Override
+    public void onImageUploadComplete(String result) {
+        if (DataUtil.isNullorEmpty(result)) {
+            DataUtil.getToast("更换背景图片失败");
+            return;
+        }
+
+        UploadFileResult uploadFileResult = JsonUtils.fromJson(result, UploadFileResult.class);
+        if (uploadFileResult.getServerResult().getResultCode() == 0) {
+            HashMap<String, String> map = uploadFileResult.getSuccFiles();
+            Set<String> keySet = map.keySet();
+            String picId = "";
+            for (String s : keySet) {
+                picId = s;
+            }
+            submitBackground(picId);
+        }
+    }
+
+    /**
+     * 更换背景图片
+     *
+     * @param picId
+     */
+    private void submitBackground(String picId) {
+        JSONObject json;
+        try {
+            ArrayList<String> classIdList = new ArrayList<>();
+            classIdList.add(class_id_a);
+            SubmitPictureBean submitPictureBean = new SubmitPictureBean();
+            submitPictureBean.setClassIdList(classIdList);
+            submitPictureBean.setPicId(picId);
+            Gson gson = new Gson();
+            String string = gson.toJson(submitPictureBean);
+            json = new JSONObject(string);
+
+            if (!DataUtil.isNetworkAvailable(this)) {
+                DataUtil.getToast(getResources().getString(R.string.no_network));
+                return;
+            }
+
+            if (!isLoading()) {
+                System.out.println("替换背景图片=====" + json);
+                action = ACTION_UPDATE_CLASS_DYNAMIC_BACKGROUND;
+                queryPost(Constants.UPDATE_CLASS_DYNAMIC_BACKGROUND, json);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void parseUpdateBackground(String data) {
+        try {
+            JSONObject jsonRoot = new JSONObject(data);
+            JSONObject serverResult = jsonRoot.getJSONObject("serverResult");
+            int code = serverResult.getInt("resultCode");
+            if (code == Constants.SUCCESS_CODE) {
+//                iv_background.setBackgroundDrawable(Drawable.createFromPath(imagePath));
+                iv_background.setImageDrawable(Drawable.createFromPath(imagePath));
+
+                PhotoBitmapUtils.deleteTempAlum();
+                DataUtil.getToast("设置背景图片成功");
+            } else {
+                DataUtil.getToast("更换背景图片失败");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            DataUtil.getToast("更换背景图片失败");
+        }
+    }
+
+
+    @Override
+    public void changeBackGround() {
+        SelectPicturePop selectPop = new SelectPicturePop(NewClassDynamicsActivity.this, NewClassDynamicsActivity.this);
+        selectPop.showAtLocation(parentView, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+    }
+
+
+    /**
+     * 获取到家长账号查看的班级动态
+     *
+     * @param classId 班级id
+     */
+    private void requestParentsSingleClassDynamicsData(String classId) {
+        JSONObject json = null;
+        try {
+            ArrayList<String> mmClassIDlist = new ArrayList<String>();
+            mmClassIDlist.add(classId);
+            NewClassDynamicsBean cd = new NewClassDynamicsBean();
+            cd.setClassIdList(mmClassIDlist);
+            cd.setIsNeedCLA("1");
+            cd.setType("0");
+            cd.setCurPage(1);
+            cd.setPageSize(10);
+            //一个班级
+            cd.setHidePublish(false);
+
+
+            UserType user = CCApplication.getInstance().getPresentUser();
+            String userType = user.getUserType();
+
+            if (Constants.TEACHER_STR_TYPE.equals(userType)) {
+                cd.setUserType(Constants.TEACHER_STR_TYPE);
+                cd.setVisitorId(user.getUserId());
+                cd.setParentsName(CCApplication.getInstance().getMemberInfo().getUserName());
+            } else {
+                cd.setUserType(Constants.PARENT_STR_TYPE);
+                cd.setVisitorId(user.getUserId());
+                cd.setParentsName(user.getChildName() + user.getRelationTypeName());
+            }
+
+            Gson gson = new Gson();
+            String string = gson.toJson(cd);
+            json = new JSONObject(string);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (!isLoading()) {
+            queryPost(Constants.GET_CLASS_DYNAMIC_LIST, json);
+        }
+        action = ACTION_GET_PARENTS_CLASS_DATA;
+    }
+
+
+    /**
+     * 解析家长查看的某一个班级的班级动态列表
+     *
+     * @param result      json数据
+     * @param resource_id 班级ID
+     */
+    private void parseParentsClassDynamicsData(String result, String resource_id) {
+
+        spinnerButton.setText("班级动态");
+        iv_title_xiala.setVisibility(View.INVISIBLE);
+        spinnerButton.setOnClickListener(null);
+        hidePublish = false;
+
+        try {
+            JSONObject json = new JSONObject(result);
+            JSONArray ja = json.getJSONArray("interactionList");
+            Gson gson = new Gson();
+            Type t = new TypeToken<List<NewClassDynamicsBean1>>() {
+            }.getType();
+            list = gson.fromJson(ja.toString(), t);
+
+            if (list == null || list.size() < 1) {
+                iv_bg.setVisibility(View.VISIBLE);// 无数据 显示这张图
+                teacher_list.setVisibility(View.GONE);
+            } else {
+                iv_bg.setVisibility(View.GONE);// 有数据 隐藏
+                teacher_list.setVisibility(View.VISIBLE);
+            }
+
+            totalPageNum_str = json.getString("totalPageNum");
+            mClassDynamicsAdapter = new NewClassDynamicsAdapter(
+                    NewClassDynamicsActivity.this, list, userid, resource_id,
+                    CCApplication.app.getUserName(), parentView, hidePublish);
+            teacher_list.setAdapter(mClassDynamicsAdapter);
+
+            String pageNum_i = json.getString("pageNum");
+            if (Integer.parseInt(pageNum_i) > 1) {
+                loadMore.setVisibility(View.VISIBLE);
+            } else {
+                loadMore.setVisibility(View.GONE);
+            }
+
+            int todayCount = json.getInt("todayCount");
+            int visitorCount = json.getInt("visitorcount");
+            rl_guide_no.setVisibility(View.VISIBLE);
+            if (todayCount > 99999) {
+                tv_today_no.setText("99999+");
+            } else {
+                tv_today_no.setText(String.valueOf(todayCount));
+            }
+            if (visitorCount > 99999) {
+                tv_sum_no.setText("99999+");
+            } else {
+                tv_sum_no.setText(String.valueOf(visitorCount));
+            }
+
+            rl_guide_no.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!DataUtil.isNullorEmpty(class_id_a)) {
+                        String url = new StringBuilder(Constants.URL)
+                                .append("/classdynamic/classdynamicdetails.do?classId=")
+                                .append(class_id_a)
+                                .append("&mobileType=")
+                                .append("android")
+                                .toString();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("url", url);
+                        System.out.println("url:" + url);
+                        newActivity(BaseWebviewActivity.class, bundle);
+                    }
+                }
+            });
+
+            //教职工才有权限修改背景图片
+            UserType presentUser = CCApplication.getInstance().getPresentUser();
+            if (Constants.TEACHER_STR_TYPE.equals(presentUser.getUserType())) {
+                fl_header.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ChangeBackgroundPop changePop = new ChangeBackgroundPop(NewClassDynamicsActivity.this, NewClassDynamicsActivity.this);
+                        changePop.showAtLocation(parentView, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+                    }
+                });
+            }
+
+
+            //显示背景图片
+            int backgroundId = json.getInt("backgroundId");
+            if (0 != backgroundId) {
+                String imgAuthId = Constants.AUTHID + "@" + getDeviceID()
+                        + "@" + CCApplication.app.getMemberInfo().getAccId();
+                String url = new StringBuilder(Constants.URL)
+                        .append("/downloadApi?fileId=")
+                        .append(backgroundId)
+                        .append(imgAuthId).toString();
+                getImageLoader().displayImage(url, iv_background, getImageLoaderOptions());
+                System.out.println("背景图片下载地址:" + url);
+            } else {
+                iv_background.setImageResource(R.drawable.bg_banjidongtai);
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateVisitorNum(String classId) {
+
+        UserType user = CCApplication.getInstance().getPresentUser();
+        String userType = user.getUserType();
+        NewClassDynamicsBean cd = new NewClassDynamicsBean();
+
+        if (Constants.TEACHER_STR_TYPE.equals(userType)) {
+            cd.setUserType(Constants.TEACHER_STR_TYPE);
+            cd.setVisitorId(user.getUserId());
+            cd.setParentsName(CCApplication.getInstance().getMemberInfo().getUserName());
+        } else {
+            cd.setUserType(Constants.PARENT_STR_TYPE);
+            cd.setVisitorId(user.getUserId());
+            cd.setParentsName(user.getChildName() + user.getRelationTypeName());
+        }
+
+        ArrayList<String> classList = new ArrayList<>();
+        classList.add(classId);
+        cd.setHidePublish(false);
+        cd.setClassIdList(classList);
+
+
+        Gson gson = new Gson();
+        JSONObject para = null;
+        String string = gson.toJson(cd);
+        try {
+            para = new JSONObject(string);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new HttpRequestAsyncTask(para, this, this, false).execute(Constants.UPDATE_CLASS_DYNAMIC_VISITOR_COUNT);
+    }
+
+    @Override
+    public void onRequstComplete(String result) {
+        System.out.println("访问数出参" + result);
+        requestParentsSingleClassDynamicsData(resource_id);
+    }
+
+    @Override
+    public void onRequstCancelled() {
+        System.out.println("请求取消");
+        requestParentsSingleClassDynamicsData(resource_id);
+    }
+
+
 }

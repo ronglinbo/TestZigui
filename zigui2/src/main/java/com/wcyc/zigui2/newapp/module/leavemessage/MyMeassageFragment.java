@@ -2,6 +2,7 @@ package com.wcyc.zigui2.newapp.module.leavemessage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.wcyc.zigui2.R;
 import com.wcyc.zigui2.core.BaseRecycleAdapter;
 import com.wcyc.zigui2.core.BaseRecyleviewFragment;
 import com.wcyc.zigui2.core.CCApplication;
+import com.wcyc.zigui2.greendao.db.LeaveMessageManager;
 import com.wcyc.zigui2.newapp.asynctask.HttpRequestAsyncTask;
 import com.wcyc.zigui2.newapp.asynctask.HttpRequestAsyncTaskListener;
 import com.wcyc.zigui2.newapp.widget.DeleteItemPop;
@@ -35,6 +37,9 @@ import java.util.List;
 public class MyMeassageFragment extends BaseRecyleviewFragment<LeaveMessage> implements View.OnClickListener, HttpRequestAsyncTaskListener, BaseRecyleviewFragment.OnItemLongClickListener, DeleteItemPop.OnLongClick {
     private List<LeaveMessage> mdata = new ArrayList();
 
+    LeaveMessageManager leaveMessageManager;
+
+
     @Override
     public int getAdapterLayoutId() {
         //适配器 item 布局
@@ -42,7 +47,7 @@ public class MyMeassageFragment extends BaseRecyleviewFragment<LeaveMessage> imp
         return R.layout.mymessage_item;
     }
 
-    private LeaveMessageDao leaveMessageDao = CCApplication.getInstance().getDaoinstant().getLeaveMessageDao();
+//    private LeaveMessageDao leaveMessageDao = CCApplication.getInstance().getDaoinstant().getLeaveMessageDao();
     ;
 
     @Override
@@ -53,7 +58,28 @@ public class MyMeassageFragment extends BaseRecyleviewFragment<LeaveMessage> imp
     @Override
     public void initEvents() {
         setmOnItemLongClickListener(this);
+    }
 
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        leaveMessageManager=new LeaveMessageManager(CCApplication.applicationContext);
+    }
+
+    public LeaveMessageManager getLeaveMessageManager(){
+        if(null==leaveMessageManager){
+            leaveMessageManager=new LeaveMessageManager(CCApplication.applicationContext);
+        }
+
+        return leaveMessageManager;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        leaveMessageManager.closeDataBase();
+        leaveMessageManager=null;
 
     }
 
@@ -81,7 +107,7 @@ public class MyMeassageFragment extends BaseRecyleviewFragment<LeaveMessage> imp
             action = REFERSH;
         } else {
             isGetCache = true;
-            mdata.addAll(leaveMessageDao.queryBuilder().orderDesc(LeaveMessageDao.Properties.CreateTime).list());
+            mdata.addAll(getLeaveMessageManager().getBdDaoSession(CCApplication.applicationContext).getLeaveMessageDao().queryBuilder().orderDesc(LeaveMessageDao.Properties.CreateTime).list());
             setDatas(mdata);
             dismissPd();
         }
@@ -156,7 +182,7 @@ public class MyMeassageFragment extends BaseRecyleviewFragment<LeaveMessage> imp
             action = INITDATA;
         } else {
             isGetCache = true;
-            mdata.addAll(leaveMessageDao.queryBuilder().orderDesc(LeaveMessageDao.Properties.CreateTime).list());
+            mdata.addAll(getLeaveMessageManager().getBdDaoSession(CCApplication.applicationContext).getLeaveMessageDao().queryBuilder().orderDesc(LeaveMessageDao.Properties.CreateTime).list());
             setDatas(mdata);
             dismissPd();
         }
@@ -189,15 +215,15 @@ public class MyMeassageFragment extends BaseRecyleviewFragment<LeaveMessage> imp
                     // 数据库缓存
                     for (LeaveMessage l : infoParentMessage.getParentMessageBoardList()) {
                         try {
-                            leaveMessageDao.insert(l);
+                            getLeaveMessageManager().getBdDaoSession(CCApplication.applicationContext).getLeaveMessageDao().insert(l);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
 
-                    List<LeaveMessage> list = leaveMessageDao.queryBuilder().orderDesc(LeaveMessageDao.Properties.CreateTime).offset((page - 1) * nums).limit(10).list();
+                    List<LeaveMessage> list = getLeaveMessageManager().getBdDaoSession(CCApplication.applicationContext).getLeaveMessageDao().queryBuilder().orderDesc(LeaveMessageDao.Properties.CreateTime).offset((page - 1) * nums).limit(10).list();
                     if(!list.isEmpty()){
-                        mdata.addAll(leaveMessageDao.queryBuilder().orderDesc(LeaveMessageDao.Properties.CreateTime).offset((page - 1) * nums).limit(10).list());
+                        mdata.addAll(getLeaveMessageManager().getBdDaoSession(CCApplication.applicationContext).getLeaveMessageDao().queryBuilder().orderDesc(LeaveMessageDao.Properties.CreateTime).offset((page - 1) * nums).limit(10).list());
                     }else{
                         mdata.addAll(infoParentMessage.getParentMessageBoardList());
                     }
@@ -226,7 +252,7 @@ public class MyMeassageFragment extends BaseRecyleviewFragment<LeaveMessage> imp
                     // 数据库缓存
                     for (LeaveMessage l : infoParentMessage.getParentMessageBoardList()) {
                         try {
-                            leaveMessageDao.insert(l);
+                            getLeaveMessageManager().getBdDaoSession(CCApplication.applicationContext).getLeaveMessageDao().insert(l);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -262,15 +288,15 @@ public class MyMeassageFragment extends BaseRecyleviewFragment<LeaveMessage> imp
                         // 数据库缓存
                         for (LeaveMessage l : infoParentMessage.getParentMessageBoardList()) {
                             try {
-                                leaveMessageDao.insert(l);
+                                getLeaveMessageManager().getBdDaoSession(CCApplication.applicationContext).getLeaveMessageDao().insert(l);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
 
-                        List<LeaveMessage> list = leaveMessageDao.queryBuilder().orderDesc(LeaveMessageDao.Properties.CreateTime).offset((page - 1) * nums).limit(10).list();
+                        List<LeaveMessage> list = getLeaveMessageManager().getBdDaoSession(CCApplication.applicationContext).getLeaveMessageDao().queryBuilder().orderDesc(LeaveMessageDao.Properties.CreateTime).offset((page - 1) * nums).limit(10).list();
                         if(!list.isEmpty()){
-                            mdata.addAll(leaveMessageDao.queryBuilder().orderDesc(LeaveMessageDao.Properties.CreateTime).offset((page - 1) * nums).limit(10).list());
+                            mdata.addAll(getLeaveMessageManager().getBdDaoSession(CCApplication.applicationContext).getLeaveMessageDao().queryBuilder().orderDesc(LeaveMessageDao.Properties.CreateTime).offset((page - 1) * nums).limit(10).list());
                         }else{
                             mdata.addAll(infoParentMessage.getParentMessageBoardList());
                         }
@@ -309,7 +335,7 @@ public class MyMeassageFragment extends BaseRecyleviewFragment<LeaveMessage> imp
 
     @Override
     public void onItemLongClick(int position1, View childView) {
-        //长按效果
+        //长按事件
         position = position1;
         DeleteItemPop pop = new DeleteItemPop(getActivity(), this);
         int[] location = {-1, -1};
@@ -320,7 +346,7 @@ public class MyMeassageFragment extends BaseRecyleviewFragment<LeaveMessage> imp
     static JSONArray jsonArray = new JSONArray(); //静态
     private CustomDialog dialog;
     /**
-     * 控制CustomDialog按钮效果.
+     * 控制CustomDialog按钮事件.
      */
     Handler handler = new Handler() {
         public void dispatchMessage(android.os.Message msg) {
@@ -365,7 +391,7 @@ public class MyMeassageFragment extends BaseRecyleviewFragment<LeaveMessage> imp
             new HttpRequestAsyncTask(jsonObject, this, CCApplication.applicationContext).execute(Constants.DELETE_PARENT_MESSAGE);
             action = 7;
         }
-        leaveMessageDao.delete(mdata.get(position));
+        getLeaveMessageManager().getBdDaoSession(CCApplication.applicationContext).getLeaveMessageDao().delete(mdata.get(position));
         mdata.remove(position);
         setDatas(mdata);
     }

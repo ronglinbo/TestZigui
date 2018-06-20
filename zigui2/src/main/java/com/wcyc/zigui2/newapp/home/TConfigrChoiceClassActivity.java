@@ -81,7 +81,7 @@ public class TConfigrChoiceClassActivity extends BaseActivity implements
 	}
 
 	/**
-	 * 设置效果监听
+	 * 设置事件监听
 	 */
 
 	private void initEvents() {

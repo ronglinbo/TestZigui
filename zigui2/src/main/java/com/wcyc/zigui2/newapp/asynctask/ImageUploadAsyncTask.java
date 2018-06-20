@@ -126,6 +126,8 @@ public class ImageUploadAsyncTask extends AsyncTask<String, Integer, String> {
                                 file.lastIndexOf("/") + 1, file.length());
                         multipartContent.addPart("fileName", new StringBody(
                                 filename, Charset.forName("UTF-8")));
+
+                        System.out.println(filename);
                     }
                 }
             } else {

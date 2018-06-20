@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -24,7 +25,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.wcyc.zigui2.core.CCApplication;
+import com.wcyc.zigui2.newapp.videoutils.VideoActivity;
 import com.wcyc.zigui2.utils.Constants;
+import com.wcyc.zigui2.utils.DataUtil;
 
 //2014-10-6
 /**
@@ -90,7 +93,7 @@ public class PickPhotoUtil {
 			mActivity.startActivityForResult(mIntent,
 					PickPhotoCode.PICKPHOTO_LOCAL);
 		} else {
-			Toast.makeText(mActivity, "未找到SD卡", Toast.LENGTH_LONG).show();
+			Toast.makeText(mActivity, "请检查sd卡或者是否开启存储权限", Toast.LENGTH_LONG).show();
 		}		
 	}
 	
@@ -101,6 +104,17 @@ public class PickPhotoUtil {
 	public String takePhoto(Activity mActivity, String userName, String path) {
 		boolean hasSD = isStorageState();
 		Log.i(Constants.TAKE_PHOTO,"hasSD:"+hasSD);
+
+		//自定义相机程序
+		try {
+			Camera camera = Camera.open();
+			camera.release();
+			camera = null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			DataUtil.getToast("没有获取摄像头权限!");
+		}
+
 		if (hasSD) {
 			File imgFile = new File(path);
 			Log.i(Constants.TAKE_PHOTO,"imgFile:" + imgFile);
@@ -125,7 +139,7 @@ public class PickPhotoUtil {
 				Toast.makeText(mActivity, "创建图片对象有误", Toast.LENGTH_LONG).show();
 			}
 		} else {
-			Toast.makeText(mActivity, "未找到SD卡", Toast.LENGTH_LONG).show();
+			Toast.makeText(mActivity, "请检查sd卡或者是否开启存储权限", Toast.LENGTH_LONG).show();
 		}	
 		return null;
 	}

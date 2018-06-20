@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">云智全课通</string>
+    <string name="app_name">子贵校园V2.0</string>
     <string name="text_ack_msg">已读</string>
     <string name="text_delivered_msg">送达</string>
     <string name="button_pushtotalk">按住说话</string>
@@ -118,9 +118,9 @@
     <string name="revise_password">修改密码</string>
     <string name="updatepassword_tips">限6-20位数字、字母、特殊符号，区分大小写，不能包含空格</string>
     <string name="update_email">请输入邮箱</string>
-    <string name="exit_app">您确定退出云智全课通?</string>
+    <string name="exit_app">您确定退出子贵校园?</string>
     <string name="eixt_text">不提示好友离线消息</string>
-    <string name="about_text">扫描二维码，您的朋友也可以安装云智全课通</string>
+    <string name="about_text">扫描二维码，您的朋友也可以安装子贵校园</string>
     <string name="advicefeedback_advice_content">有任何不爽的地方欢迎吐槽，感谢您给我们提出建议</string>
     <string name="img_selector_all">所有图片</string>
     <string name="selector_img_title">图片</string>
@@ -306,14 +306,14 @@
     <string-array name="title_listview">
         <item>设备名：</item>
         <item>通道名：</item>
-        <item>效果：</item>
+        <item>事件：</item>
         <item>类型：</item>
         <item>时间：</item>
     </string-array>
 
     <string name="device_name">设备名：</string>
     <string name="channel_name">通道名：</string>
-    <string name="event">效果：</string>
+    <string name="event">事件：</string>
     <string name="type">类型：</string>
     <string name="date">时间：</string>
 
@@ -375,7 +375,7 @@
     <string name="error_moniter">该摄像头故障，请联系管理员！</string>
     <string name="no_moniter_service">贵学校未对接监控！</string>
 
-    <string name="no_login_right">您没有登录云智全课通的权限！</string>
+    <string name="no_login_right">您没有登录子贵校园的权限！</string>
     <string name="verify">您的账号正在更换设备登录，请先验证您的身份</string>
     <string name="vip">此功能为VIP服务</string>
     <string name="vip_tip">立即开通VIP使用?</string>

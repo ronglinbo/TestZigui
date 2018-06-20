@@ -41,6 +41,7 @@ import com.tencent.bugly.crashreport.CrashReport;
 import com.wcyc.zigui2.R;
 //import com.wcyc.zigui2.bean.MemberBean;
 
+import com.wcyc.zigui2.newapp.bean.LauncherInfoBean;
 import com.wcyc.zigui2.newapp.bean.LoginBean;
 import com.wcyc.zigui2.newapp.bean.LoginVerifyBean;
 import com.wcyc.zigui2.newapp.home.ServiceAgreementActivity;
@@ -141,12 +142,7 @@ public class LoginActivity extends BaseActivity
 
             if ("1".equals(isNeedModifyPsd)) {
                 //修改密码
-
-                //和教育做了特殊处理
-//                changePassword(true);
-
-                afterLogin();
-
+                changePassword(true);
             } else {
 //				if(hasLoginRight(member)) {
 //					List<UserType> list = member.getUserTypeList();
@@ -231,9 +227,6 @@ public class LoginActivity extends BaseActivity
         loginButtonEnable(false);
 //		loginactivity_password_et.setText(getPhonePwd());
         initState();
-
-        //隐藏忘记密码
-        loginactivity_tv_forgetpassword.setVisibility(View.GONE);
     }
 
     private void initState() {
@@ -351,7 +344,7 @@ public class LoginActivity extends BaseActivity
 
 
     /**
-     * 设置监听效果.
+     * 设置监听事件.
      */
     private void initEvents() {
         loginactivity_btn_login.setOnClickListener(this);
@@ -388,7 +381,6 @@ public class LoginActivity extends BaseActivity
 //			if(DataUtil.isAPKDebugMode(this)) {
 //				json.put("isNeedVerify", "0");
 //			}
-            json.put("isNeedVerify", "0");
             System.out.println("login json:" + json);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -455,21 +447,19 @@ public class LoginActivity extends BaseActivity
     }
 
     private void parseQIDong(String data) {
-        System.out.print(data);
+        System.out.println("登录页面 启动页数据" + data);
         try {
-
-            JSONObject jsonObject = new JSONObject(data);
-            jsonObject = jsonObject.getJSONObject("imageUrlList");
-            String url = Constants.URL + "/" + jsonObject.get(getDpi());
-            Picasso.with(this).load(url);
-
-            CCApplication.dbsp.putString("QidongUrl", url);
-        } catch (JSONException e) {
-            //没有的话 默认 子贵校园
-            //没有的话 默认 子贵校园
-            CCApplication.dbsp.putString("QidongUrl", "zigui");
+            LauncherInfoBean launcherInfoBean = JsonUtils.fromJson(data, LauncherInfoBean.class);
+            if (Constants.SUCCESS_CODE == launcherInfoBean.getServerResult().getResultCode() && launcherInfoBean.getInfoSchoolStart() != null) {
+                CCApplication.getInstance().setLauncherInfo(launcherInfoBean);
+            } else {
+                CCApplication.getInstance().setDefaultLauncherInfo();
+            }
+        } catch (Exception e) {
+            CCApplication.getInstance().setDefaultLauncherInfo();
         }
     }
+
 
     private void parseLoginData(String data) {
         System.out.println("login:" + data);
@@ -600,8 +590,7 @@ public class LoginActivity extends BaseActivity
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-            new HttpRequestAsyncTask(json, httpRequestAsyncTaskListener, this).execute(Constants.GET_IMAGE_URL);
+            new HttpRequestAsyncTask(json, httpRequestAsyncTaskListener, this).execute(Constants.GET_SCHOOL_LAUNCHER_INFO);
 
         } catch (Exception e) {
 
@@ -714,27 +703,20 @@ public class LoginActivity extends BaseActivity
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        try {
-            if (getIntent().getBooleanExtra("conflict", false) && !isConflictDialogShow) {
-                System.out.println("环信onNewIntent:" + intent);
-                showConflictDialog();
-            }
-        } catch (Exception e) {
-
+        if (getIntent().getBooleanExtra("conflict", false) && !isConflictDialogShow) {
+            System.out.println("环信onNewIntent:" + intent);
+            showConflictDialog();
         }
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        try {
-            if (getIntent().getBooleanExtra("conflict", false) && !isConflictDialogShow) {
-                System.out.println("环信onResume:showConflictDialog");
-                showConflictDialog();
-            }
-        } catch (Exception e) {
 
+
+        if (getIntent().getBooleanExtra("conflict", false) && !isConflictDialogShow) {
+            System.out.println("环信onResume:showConflictDialog");
+            showConflictDialog();
         }
     }
 
@@ -867,8 +849,6 @@ public class LoginActivity extends BaseActivity
     }
 
     private void handleResponse() {
-
-        //去掉修改密码  去掉换机验证
         if ("1".equals(member.getIsNeedModifyPwd())) {
             changePassword(true);
         } else if ("1".equals(member.getIsVerification())) {
@@ -889,7 +869,7 @@ public class LoginActivity extends BaseActivity
             LoginEmob();
             loginDHMoniter();
             //提前预备 启动页
-            getLanucherPage();
+//            getLanucherPage();
             afterLogin();
         }
     }

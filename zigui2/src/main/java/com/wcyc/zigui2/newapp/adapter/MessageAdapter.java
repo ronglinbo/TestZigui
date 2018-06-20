@@ -362,7 +362,7 @@ public class MessageAdapter extends BaseAdapter {
 
 		if (message.direct == EMMessage.Direct.SEND) {
 			View statusView = convertView.findViewById(R.id.msg_status);
-			//重发按钮点击效果
+			//重发按钮点击事件
 			statusView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -469,7 +469,7 @@ public class MessageAdapter extends BaseAdapter {
 		Spannable span = SmileUtils.getSmiledText(context, txtBody.getMessage());
 		//设置内容
 		holder.tv.setText(span, BufferType.SPANNABLE);
-		//设置长按效果监听
+		//设置长按事件监听
 		holder.tv.setOnLongClickListener(new OnLongClickListener() {
 			@Override
 			public boolean onLongClick(View v) {

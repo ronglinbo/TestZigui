@@ -59,6 +59,16 @@ public class JsonUtils {
         Map<String, Object> map = g.fromJson(data, type); 
         return map;
     }
-    
+
+    /**
+     * 对象转json
+     * @param obj  需要转换成json的对象
+     * @return
+     */
+    public static String classToString(Object obj){
+        Gson gson = new Gson();
+        String data = gson.toJson(obj);
+        return data;
+    }
     
 }

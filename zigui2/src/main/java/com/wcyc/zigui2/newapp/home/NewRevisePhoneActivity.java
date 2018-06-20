@@ -132,7 +132,7 @@ public class NewRevisePhoneActivity extends BaseActivity implements
 	}
 
 	/**
-	 * 效果控制
+	 * 事件控制
 	 */
 
 	private void initEvents() {

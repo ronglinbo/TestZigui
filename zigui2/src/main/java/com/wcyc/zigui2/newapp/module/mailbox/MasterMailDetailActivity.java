@@ -144,11 +144,6 @@ public class MasterMailDetailActivity extends BaseActivity
 		if(webview != null){
 //			DataUtil.showHtmlSetting(webview,content);
 			new CustomWebView(this,webview,content);
-
-			webview.removeJavascriptInterface("searchBoxJavaBridge_");
-			webview.removeJavascriptInterface("accessibility");
-			webview.removeJavascriptInterface("accessibilityTraversal");
-
 		}
 		replyContent = (EditText)findViewById(R.id.reply_content);
 		addAttach = (Button) findViewById(R.id.add_attach);
@@ -170,11 +165,6 @@ public class MasterMailDetailActivity extends BaseActivity
 		RepliedContent = (WebView) findViewById(R.id.replied_content);
 		if(RepliedContent != null){
 			RepliedContent.getSettings().setDefaultTextEncodingName("UTF-8");//设置默认为utf-8
-			RepliedContent.getSettings().setSavePassword(false);
-
-			RepliedContent.removeJavascriptInterface("searchBoxJavaBridge_");
-			RepliedContent.removeJavascriptInterface("accessibility");
-			RepliedContent.removeJavascriptInterface("accessibilityTraversal");
 		}
 		initView();
 		

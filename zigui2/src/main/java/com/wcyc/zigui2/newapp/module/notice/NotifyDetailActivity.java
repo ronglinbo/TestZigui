@@ -269,7 +269,7 @@ public class NotifyDetailActivity extends BaseActivity
 				}catch (JSONException e){
 					e.printStackTrace();
 				}
-				DataUtil.getToast("查看人数正在加载中");
+				DataUtil.getToastShort("查看人数正在加载中");
 				String url = new StringBuilder(Constants.SERVER_URL).append(Constants.NOTICE_BROWSE_COUNT).toString();
 //				new HttpRequestAsyncTask(json,NotifyDetailActivity.this,NotifyDetailActivity.this)
 //						.execute(Constants.NOTICE_BROWSE_COUNT);
@@ -527,9 +527,6 @@ public class NotifyDetailActivity extends BaseActivity
 		@Override
 		public void onPageFinished(WebView view, String url) {
 			view.getSettings().setJavaScriptEnabled(true);
-			view.removeJavascriptInterface("searchBoxJavaBridge_");
-			view.removeJavascriptInterface("accessibility");
-			view.removeJavascriptInterface("accessibilityTraversal");
 			super.onPageFinished(view, url);
 			// html加载完成之后，添加监听图片的点击js函数
 			addImageClickListner();
@@ -538,9 +535,6 @@ public class NotifyDetailActivity extends BaseActivity
 		@Override
 		public void onPageStarted(WebView view, String url, Bitmap favicon) {
 			view.getSettings().setJavaScriptEnabled(true);
-			view.removeJavascriptInterface("searchBoxJavaBridge_");
-			view.removeJavascriptInterface("accessibility");
-			view.removeJavascriptInterface("accessibilityTraversal");
 			super.onPageStarted(view, url, favicon);
 //			aa();
 		}

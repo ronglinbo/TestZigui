@@ -142,7 +142,7 @@ public class ShowBigImage extends BaseActivity {
                 finish();
             }
         });
-        //photoView 点击效果不生效
+        //photoView 点击事件不生效
 /*
         image.setOnClickListener(new OnClickListener() {
 			@Override

@@ -263,7 +263,6 @@
                 android:id="@+id/my_information_exit_btn"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/big_button_height"
-                android:visibility="visible"
                 android:layout_gravity="bottom"
                 android:background="@drawable/my_exit_btn_selector_zgd"
                 android:padding="5dp"
@@ -274,7 +273,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/line_hight"
-                android:visibility="gone"
                 android:background="@color/line_darkyellow" />
 
         </LinearLayout>

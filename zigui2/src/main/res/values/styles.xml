@@ -16,25 +16,22 @@
         -->
     </style>
     <!-- 选择小孩页面checkbox -->
-    <style name="CustomCheckboxTheme" 
-        parent="@android:style/Widget.CompoundButton.CheckBox">
-         <item name="android:button">@drawable/checkbox_style</item>
+    <style name="CustomCheckboxTheme" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/checkbox_style</item>
     </style>
     <!-- 选择充值套餐checkbox -->
-    <style name="CustomProductCheckboxTheme"
-        parent="@android:style/Widget.CompoundButton.CheckBox">
+    <style name="CustomProductCheckboxTheme" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/product_checkbox_style</item>
     </style>
     <!-- 选择部分checkbox主题 -->
-    <style name="CustomCheckboxSelectPortionTheme"
-        parent="@android:style/Widget.CompoundButton.CheckBox">
+    <style name="CustomCheckboxSelectPortionTheme" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/checkbox_select_portion</item>
     </style>
     <!-- 选择接受通知消息班级 -->
     <style name="CustomCheckboxTheme2" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/checkbox_style2</item>
     </style>
-    
+
     <style name="Animation_dropdown" mce_bogus="1" parent="@android:style/Animation.Dialog">
         <item name="android:windowEnterAnimation">@anim/popup_enter</item>
         <item name="android:windowExitAnimation">@anim/popup_exit</item>
@@ -71,6 +68,7 @@
         <item name="android:textSize">12sp</item>
         <item name="android:gravity">center</item>
     </style>
+
     <style name="AnimFade" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/fade_in</item>
         <item name="android:activityOpenExitAnimation">@anim/hold</item>
@@ -207,33 +205,35 @@
         <item name="android:paddingRight">12dip</item>
         <item name="android:textColor">@color/btn_gray_normal</item>
         <item name="android:textSize">12sp</item>
-    <!--     <item name="android:background">@drawable/timestampe_bg</item> -->
+        <!--     <item name="android:background">@drawable/timestampe_bg</item> -->
     </style>
 
-        <style name="popwindow_delete_btn_anim_style">
+    <style name="popwindow_delete_btn_anim_style">
         <item name="android:windowEnterAnimation">@anim/delete_btn_show</item>
- <!-- 指定显示的动画xml -->
+        <!-- 指定显示的动画xml -->
         <item name="android:windowExitAnimation">@anim/delete_btn_hide</item>
- <!-- 指定消失的动画xml -->
+        <!-- 指定消失的动画xml -->
 
     </style>
-       <!--  这个是加入的代码 -->
-  <style name="mypopwindow_anim_style">
-    <item name="android:windowEnterAnimation">@anim/popshow_anim</item>
- <!-- 指定显示的动画xml -->
+    <!--  这个是加入的代码 -->
+    <style name="mypopwindow_anim_style">
+        <item name="android:windowEnterAnimation">@anim/popshow_anim</item>
+        <!-- 指定显示的动画xml -->
 
-    <item name="android:windowExitAnimation">@anim/pophidden_anim</item>
- <!-- 指定消失的动画xml -->
-  </style>
-  <style name="tab_item_background">  
+        <item name="android:windowExitAnimation">@anim/pophidden_anim</item>
+        <!-- 指定消失的动画xml -->
+    </style>
+
+    <style name="tab_item_background">
         <item name="android:background">@color/tab_color</item>
-        <item name="android:gravity">center_horizontal</item>  
+        <item name="android:gravity">center_horizontal</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:button">@null</item>         
+        <item name="android:button">@null</item>
 
         <item name="android:layout_weight">1.0</item>
     </style>
+
     <style name="dot_style">
         <item name="android:layout_width">5dip</item>
         <item name="android:layout_height">5dip</item>
@@ -241,15 +241,44 @@
         <item name="android:layout_marginLeft">1.5dip</item>
         <item name="android:layout_marginRight">1.5dip</item>
     </style>
-	
-	<style name="text_color" >
+
+    <style name="text_color">
         <item name="android:textColor">@color/black_txt</item>
     </style>
 
     <style name="Theme.MyAppTheme" parent="AppTheme">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowBackground">@drawable/splash</item>
+        <item name="android:windowBackground">@drawable/splash_tiny</item>
         <item name="android:windowFullscreen">true</item>
     </style>
+
+    <!--维修申请界面的popupWindow-->
+    <style name="PopupAnimDown" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/push_scale_in</item>
+        <item name="android:windowExitAnimation">@anim/push_scale_out</item>
+    </style>
+
+    <!--班级动态修改背景-->
+    <style name="alpha_popupWindow" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/alpha_in</item>
+        <item name="android:windowExitAnimation">@anim/alpha_exit</item>
+    </style>
+
+
+
+    <!--通用的dialog样式-->
+    <style name="customDialogStyle" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/dialog_bg</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+
+
+
+
 </resources>

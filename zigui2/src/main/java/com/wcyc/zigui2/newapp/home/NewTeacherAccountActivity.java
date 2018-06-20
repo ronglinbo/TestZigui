@@ -1,5 +1,6 @@
 package com.wcyc.zigui2.newapp.home;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -12,9 +13,13 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -41,8 +46,9 @@ import com.wcyc.zigui2.chooseContact.ChooseTeacherActivity;
 import com.wcyc.zigui2.newapp.activity.HomeActivity;
 import com.wcyc.zigui2.newapp.asynctask.HttpRequestAsyncTask;
 import com.wcyc.zigui2.newapp.asynctask.HttpRequestAsyncTaskListener;
-import com.wcyc.zigui2.newapp.bean.HeEducationUserBean;
+import com.wcyc.zigui2.newapp.bean.LauncherInfoBean;
 import com.wcyc.zigui2.newapp.fragment.AllMessageFragment;
+import com.wcyc.zigui2.newapp.module.classdynamics.NewClassDynamicsActivity;
 import com.wcyc.zigui2.newapp.service.ChatLoginService;
 import com.wcyc.zigui2.core.BaseActivity;
 import com.wcyc.zigui2.core.CCApplication;
@@ -61,12 +67,15 @@ import com.wcyc.zigui2.newapp.bean.UploadFileResult;
 import com.wcyc.zigui2.newapp.bean.UserType;
 import com.wcyc.zigui2.newapp.fragment.HomeFragment;
 import com.wcyc.zigui2.newapp.fragment.NewMyFragment;
+import com.wcyc.zigui2.newapp.widget.SelectPicturePop;
 import com.wcyc.zigui2.utils.CircleImageView;
 import com.wcyc.zigui2.utils.Constants;
 import com.wcyc.zigui2.utils.DataUtil;
 import com.wcyc.zigui2.utils.HttpHelper;
 import com.wcyc.zigui2.utils.JsonUtils;
 import com.wcyc.zigui2.utils.LocalUtil;
+import com.wcyc.zigui2.utils.MyLog;
+import com.wcyc.zigui2.utils.PhotoBitmapUtils;
 import com.wcyc.zigui2.widget.CustomDialog;
 import com.wcyc.zigui2.widget.MyListView;
 import com.wcyc.zigui2.widget.RoundImageView;
@@ -80,7 +89,7 @@ import com.wcyc.zigui2.widget.RoundImageView;
  * @version 2.0
  */
 public class NewTeacherAccountActivity extends BaseActivity implements
-        OnClickListener, ImageUploadAsyncTaskListener ,HttpRequestAsyncTaskListener{
+        OnClickListener, ImageUploadAsyncTaskListener ,HttpRequestAsyncTaskListener, SelectPicturePop.SelectPictureInterface {
 
     private TeacherInfoBean personalInfo;
     private String type = "1";
@@ -209,13 +218,10 @@ public class NewTeacherAccountActivity extends BaseActivity implements
             System.out.println("=url==" + url);
             getImageLoader().displayImage(url, icon, getImageLoaderOptions());
         }
-
-        //隐藏修改密码
-        password_item.setVisibility(View.GONE);
     }
 
     /**
-     * 效果控制.
+     * 事件控制.
      */
     private void initEvents() {
         email_item.setOnClickListener(this);
@@ -284,13 +290,13 @@ public class NewTeacherAccountActivity extends BaseActivity implements
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-
                     }
 
-                    // 登陆环信
+                    // 登陆百川
                     Intent intent = new Intent(
                             CCApplication.applicationContext,
                             ChatLoginService.class);
+
                     // 启动服务
                     startService(intent);
 
@@ -303,7 +309,7 @@ public class NewTeacherAccountActivity extends BaseActivity implements
                 Intent broadcast = new Intent(HomeFragment.INTENT_SWITCH_USER);
                 sendBroadcast(broadcast);
 
-                getLanucherPage();
+//                getLanucherPage();
                 // getAllContact();
                 CCApplication.getInstance().setAllContactList(null);
                 checkServiceExpired();
@@ -359,8 +365,8 @@ public class NewTeacherAccountActivity extends BaseActivity implements
                 e.printStackTrace();
             }
 
-           new HttpRequestAsyncTask(json,this,this).execute(Constants.GET_IMAGE_URL);
-
+//           new HttpRequestAsyncTask(json,this,this).execute(Constants.GET_IMAGE_URL);
+            new HttpRequestAsyncTask(json,this,this).execute(Constants.GET_SCHOOL_LAUNCHER_INFO);
         } catch (Exception e) {
 
         }
@@ -368,19 +374,19 @@ public class NewTeacherAccountActivity extends BaseActivity implements
     }
 
     private void parseQIDong(String data) {
-        System.out.print(data);
+        System.out.println("切换账号 启动页数据" + data);
         try {
-
-            JSONObject jsonObject = new JSONObject(data);
-            jsonObject = jsonObject.getJSONObject("imageUrlList");
-            String url = Constants.URL + "/" + jsonObject.get(getDpi());
-            Picasso.with(this).load(url);
-            CCApplication.dbsp.putString("QidongUrl",url);
-        } catch (JSONException e) {
-            //没有的话 默认 子贵校园
-            CCApplication.dbsp.putString("QidongUrl","zigui");
+            LauncherInfoBean launcherInfoBean = JsonUtils.fromJson(data, LauncherInfoBean.class);
+            if (Constants.SUCCESS_CODE == launcherInfoBean.getServerResult().getResultCode() && launcherInfoBean.getInfoSchoolStart() != null) {
+                CCApplication.getInstance().setLauncherInfo(launcherInfoBean);
+            } else {
+                CCApplication.getInstance().setDefaultLauncherInfo();
+            }
+        } catch (Exception e) {
+            CCApplication.getInstance().setDefaultLauncherInfo();
         }
     }
+
 
     private void checkServiceExpired() {
         UserType user = CCApplication.getInstance().getPresentUser();
@@ -400,7 +406,7 @@ public class NewTeacherAccountActivity extends BaseActivity implements
     }
 
     /**
-     * 点击效果.
+     * 点击事件.
      *
      * @param v 视图
      */
@@ -413,6 +419,10 @@ public class NewTeacherAccountActivity extends BaseActivity implements
                 intent.putExtra("limit", 1);
                 intent.putExtra("is_show_checkbox", false);
                 startActivityForResult(intent, 200);
+
+//                SelectPicturePop selectPop = new SelectPicturePop(NewTeacherAccountActivity.this, NewTeacherAccountActivity.this);
+//                selectPop.showAtLocation(v.getRootView(), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+
                 break;
             case R.id.teacher_mydeetail_item_password:// 修改密码入口
                 newActivity(NewRevisePasswordActivity.class, null);
@@ -465,7 +475,7 @@ public class NewTeacherAccountActivity extends BaseActivity implements
                 }
                 dialog = new CustomDialog(this, R.style.mystyle,
                         R.layout.customdialog, handler);
-                dialog.setCanceledOnTouchOutside(true);
+                dialog.setCanceledOnTouchOutside(false);
                 dialog.show();
                 break;
             default:
@@ -478,7 +488,8 @@ public class NewTeacherAccountActivity extends BaseActivity implements
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case 200:
-                    getPhotos(data);
+//                    getPhotos(data);
+                      toPhotoCrop(data);
                     break;
                 case 201:
                     if (data != null) {
@@ -502,6 +513,9 @@ public class NewTeacherAccountActivity extends BaseActivity implements
 
                         }
                     }
+                case REQUEST_CODE_CULT:  //裁剪返回
+                    getPhotos(imageUri.getPath());
+                    break;
                 default:
                     break;
             }
@@ -509,22 +523,71 @@ public class NewTeacherAccountActivity extends BaseActivity implements
 
     }
 
+
     /**
-     * 本地选择相片回调处理.
-     *
-     * @param data Intent类型
+     * 图片裁剪回调处理.上传到服务器
+     * @param photoPath tu
      */
-    private void getPhotos(final Intent data) {
+    private void getPhotos(String photoPath) {
+//        ArrayList<String> list = data.getExtras().getStringArrayList(
+//                "pic_paths");
+//        if (0 != list.size()) {
+//            imagePath = list.get(0).toString();
+            if(!TextUtils.isEmpty(photoPath)){
+                ImageUploadAsyncTask imagepost = new ImageUploadAsyncTask(this,
+                        Constants.PIC_TYPE, photoPath, Constants.UPLOAD_URL, this);
+                imagepost.execute();
+            }
+
+//        }
+    }
+
+
+    /**
+     * 跳转到图片裁剪
+     * @param data
+     */
+    private void toPhotoCrop(final Intent data){
         ArrayList<String> list = data.getExtras().getStringArrayList(
                 "pic_paths");
-        if (0 != list.size()) {
-            imagePath = list.get(0).toString();
+        String imPath=list.get(0).toString();
+        Uri imageUri = Uri.fromFile(new File(imPath));
 
-            ImageUploadAsyncTask imagepost = new ImageUploadAsyncTask(this,
-                    Constants.PIC_TYPE, imagePath, Constants.UPLOAD_URL, this);
-            imagepost.execute();
-        }
+        startPhotoZoom(imageUri);
     }
+
+
+    /**
+     * 裁剪图片方法实现
+     *
+     * @param uri
+     */
+    private final int REQUEST_CODE_CULT=10010;
+    private Uri imageUri;
+    public void startPhotoZoom(Uri uri) {
+        imageUri = Uri.fromFile(new File(PhotoBitmapUtils.getPhotoFileName(NewTeacherAccountActivity.this)));
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        // crop=true是设置在开启的Intent中设置显示的VIEW可裁剪
+        intent.putExtra("crop", "true");
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        // outputX outputY 是裁剪图片宽高
+//        intent.putExtra("outputX", 600);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+//        intent.putExtra("outputY", 200);
+        intent.putExtra("scale", true);
+        intent.putExtra("return-data", false);
+
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        intent.putExtra("noFaceDetection", true); // no face detection
+
+        startActivityForResult(intent, REQUEST_CODE_CULT);
+    }
+
+
+
 
     /**
      * 参数校验.
@@ -540,12 +603,11 @@ public class NewTeacherAccountActivity extends BaseActivity implements
      */
     private void parseFinishtData(String data) {
         DataUtil.clearDialog();
-
         ret = JsonUtils.fromJson(data, NewBaseBean.class);
         if (ret.getServerResult().getResultCode() != Constants.SUCCESS_CODE) {
             DataUtil.getToast(ret.getServerResult().getResultMessage());
         } else {
-            getImageLoader().displayImage("file://" + imagePath, icon,
+            getImageLoader().displayImage("file://" +imageUri.getPath() /*"file://" + imagePath*/, icon,
                     new ImageLoadingListener() {
                         @Override
                         public void onLoadingStarted(String arg0, View arg1) {
@@ -635,7 +697,7 @@ public class NewTeacherAccountActivity extends BaseActivity implements
     }
 
     /**
-     * 控制CustomDialog按钮效果.
+     * 控制CustomDialog按钮事件.
      */
     Handler handler = new Handler() {
         public void dispatchMessage(android.os.Message msg) {
@@ -679,5 +741,21 @@ public class NewTeacherAccountActivity extends BaseActivity implements
     @Override
     public void onRequstCancelled() {
 
+    }
+
+    /**
+     * 拍照上传图片
+     */
+    @Override
+    public void takePicture() {
+        DataUtil.getToast("拍照上传");
+    }
+
+    /**
+     * 相册选图上传图片
+     */
+    @Override
+    public void selectPicture() {
+        DataUtil.getToast("相册选图");
     }
 }

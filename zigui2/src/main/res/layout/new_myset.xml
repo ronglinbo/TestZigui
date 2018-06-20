@@ -109,7 +109,6 @@
                     android:id="@+id/myset_use_help"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/item_hight"
-                    android:visibility="gone"
                     android:background="@drawable/mysetitemselector"
                     android:gravity="center">
 
@@ -138,7 +137,6 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/line_height"
-                    android:visibility="gone"
                     android:layout_marginLeft="15dp"
                     android:background="@color/line_darkyellow" />
 
@@ -318,7 +316,6 @@
                     android:id="@+id/myset_shuoming"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/item_hight"
-                    android:visibility="gone"
                     android:background="@drawable/mysetitemselector"
                     android:gravity="center">
 

@@ -108,7 +108,7 @@ public class SearchChannelsAdapter extends BaseAdapter {
                 viewHolder.searchCb.setVisibility(View.GONE);
             }
 
-            // 复选框单击效果
+            // 复选框单击事件
             viewHolder.searchCb.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {

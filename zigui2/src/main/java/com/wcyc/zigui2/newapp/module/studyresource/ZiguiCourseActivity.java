@@ -42,7 +42,9 @@ import com.wcyc.zigui2.core.BaseActivity;
 import com.wcyc.zigui2.core.BaseWebviewActivity;
 import com.wcyc.zigui2.core.CCApplication;
 
+import com.wcyc.zigui2.greendao.db.ZiGuiVideoManager;
 import com.wcyc.zigui2.newapp.activity.testVideoActivity;
+import com.wcyc.zigui2.newapp.bean.MenuItem;
 import com.wcyc.zigui2.newapp.module.charge.NewPackageConfirmActivity;
 import com.wcyc.zigui2.newapp.module.charge2.NewPayPop;
 import com.wcyc.zigui2.newapp.module.charge2.NewRechargeProductActivity;
@@ -96,10 +98,14 @@ public class ZiguiCourseActivity extends BaseActivity {
     private String refreshUrl;//子贵课堂调用充值接口后跳转地址
     private static int clickBackTimes = 0;//在子贵课堂里按返回键的次数
     private ProgressDialog progressDialog;
-    private ZiGuiVideoDao ziGuiVideoDao = CCApplication.getDaoinstant().getZiGuiVideoDao();
+//    private ZiGuiVideoDao ziGuiVideoDao = CCApplication.getDaoinstant().getZiGuiVideoDao();
+
+    ZiGuiVideoManager ziGuiVideoManager=null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        ziGuiVideoManager=new ZiGuiVideoManager(CCApplication.applicationContext);
         clearWebViewCache();
         clearLoginCookies();
         startDate = null;
@@ -122,6 +128,17 @@ public class ZiguiCourseActivity extends BaseActivity {
         videowebview.setWebViewClient(new NoAdWebViewClient(this, url));
         videowebview.addJavascriptInterface(jsInterface, "android");
         videowebview.loadUrl(url);
+
+
+
+    }
+
+
+    public ZiGuiVideoManager getZiGuiVideoManager() {
+        if(null==ziGuiVideoManager){
+            ziGuiVideoManager=new ZiGuiVideoManager(CCApplication.applicationContext);
+        }
+        return ziGuiVideoManager;
     }
 
     @Override
@@ -139,7 +156,7 @@ public class ZiguiCourseActivity extends BaseActivity {
     }
 
     /**
-     * 重新获得焦点效果
+     * 重新获得焦点事件
      */
     @Override
     protected void onResume(){
@@ -162,13 +179,9 @@ public class ZiguiCourseActivity extends BaseActivity {
         ws.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
         ws.setUseWideViewPort(true);
 //		ws.setLoadWithOverviewMode(true);
-        ws.setSavePassword(false);
+        ws.setSavePassword(true);
         ws.setSaveFormData(true);
         ws.setJavaScriptEnabled(true);
-        videowebview.removeJavascriptInterface("searchBoxJavaBridge_");
-        videowebview.removeJavascriptInterface("accessibility");
-        videowebview.removeJavascriptInterface("accessibilityTraversal");
-
      //   if (DataUtil.isNetworkAvailable(this)) {
          // ws.setCacheMode(WebSettings.LOAD_DEFAULT);//默认
         ws.setCacheMode(WebSettings.LOAD_NO_CACHE);// 每次从网络获取
@@ -190,6 +203,8 @@ public class ZiguiCourseActivity extends BaseActivity {
         super.onDestroy();
         clearLoginCookies();
         videowebview.clearCache(true);
+        ziGuiVideoManager.closeDataBase();
+        ziGuiVideoManager=null;
     }
 
     /**
@@ -334,12 +349,15 @@ public class ZiguiCourseActivity extends BaseActivity {
             //301 是子贵课堂的小学，201 是初中，101 是高中
             if (packageCode.equals("101")) {
                 intent.putExtra("module", "子贵课堂(高中)");
+                intent.putExtra("moduleNumber", MenuItem.COURSE_NUMBER);
             }
             if (packageCode.equals("201")) {
                 intent.putExtra("module", "子贵课堂(初中)");
+                intent.putExtra("moduleNumber", MenuItem.COURSE_NUMBER);
             }
             if (packageCode.equals("301")) {
                 intent.putExtra("module", "子贵课堂(小学)");
+                intent.putExtra("moduleNumber", MenuItem.COURSE_NUMBER);
             }
             intent.putExtras(bundle);
             startActivityForResult(intent, CHARGE);
@@ -353,6 +371,7 @@ public class ZiguiCourseActivity extends BaseActivity {
             Intent intent = new Intent(ZiguiCourseActivity.this, NewRechargeProductActivity.class);
             bundle.putString("call", "html5");
             intent.putExtra("module", "子贵课堂");
+            intent.putExtra("moduleNumber", MenuItem.COURSE_NUMBER);
             intent.putExtras(bundle);
             startActivityForResult(intent, CHARGE);
         }
@@ -385,11 +404,11 @@ public class ZiguiCourseActivity extends BaseActivity {
         //播放
         @JavascriptInterface
         public void playVideo(String vid1, String time1) {
-            Log.i(TAG,"点击了播放--");
+            Log.i(TAG,"点击了播放--vid:"+vid1+"-------time1:"+time1);
 
             vid = vid1;
 
-            List<ZiGuiVideo> list = ziGuiVideoDao.queryBuilder().where(ZiGuiVideoDao.Properties.Vid.eq(vid1)).list();
+            List<ZiGuiVideo> list = getZiGuiVideoManager().getBdDaoSession(CCApplication.applicationContext).getZiGuiVideoDao().queryBuilder().where(ZiGuiVideoDao.Properties.Vid.eq(vid1)).list();
 
             if (list.size() > 0) {
 
@@ -429,9 +448,9 @@ public class ZiguiCourseActivity extends BaseActivity {
             }
 
             //删除对应本地存储
-            List<ZiGuiVideo> list = ziGuiVideoDao.queryBuilder().where(ZiGuiVideoDao.Properties.Vid.eq(vid)).list();
+            List<ZiGuiVideo> list = getZiGuiVideoManager().getBdDaoSession(CCApplication.applicationContext).getZiGuiVideoDao().queryBuilder().where(ZiGuiVideoDao.Properties.Vid.eq(vid)).list();
             if (list.size() > 0) {
-                ziGuiVideoDao.delete(list.get(0));
+                getZiGuiVideoManager().getBdDaoSession(CCApplication.applicationContext).getZiGuiVideoDao().delete(list.get(0));
             }
 
             return learningTime;
@@ -641,7 +660,7 @@ public class ZiguiCourseActivity extends BaseActivity {
             }
 
             if (++clickBackTimes < 2) {
-                DataUtil.getToast("再按一次退出在线课堂");
+                DataUtil.getToast("再按一次退出子贵课堂");
                 waitFor5s();
                 return true;
             }

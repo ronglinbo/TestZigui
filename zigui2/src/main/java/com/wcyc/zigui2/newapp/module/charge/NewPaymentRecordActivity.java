@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.allinpay.appayassistex.APPayAssistEx;
 import com.google.gson.Gson;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -442,12 +443,14 @@ public class NewPaymentRecordActivity extends BaseActivity
 	 * @param para 参数
 	 */
 	private void goTlApp(final String para){
+		APPayAssistEx.startPay(this, para.toString(), serverMode);
 	}
 	/**
 	 * 跳转到通联信用卡支付
 	 * @param para 参数
 	 */
 	private void goTlXYApp(final String para){
+		APPayAssistEx.startPay(this, para.toString(), serverMode);
 	}
 	
 	/**
@@ -455,6 +458,33 @@ public class NewPaymentRecordActivity extends BaseActivity
 	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (APPayAssistEx.REQUESTCODE == requestCode) {
+			if (null != data) {
+				String payRes = null;
+				String payAmount = null;
+				String payTime = null;
+				try {
+					JSONObject resultJson = new JSONObject(data.getExtras().getString("result"));
+					payRes = resultJson.getString(APPayAssistEx.KEY_PAY_RES);
+					payAmount = resultJson.getString("payAmount");
+					payTime = resultJson.getString("payTime");
+					System.out.println("payTime:"+payTime);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				if (null != payRes && payRes.equals(APPayAssistEx.RES_SUCCESS)) {
+					DataUtil.getToast("支付成功");
+					finish();
+//					CCApplication.app.finishAllActivity();
+//					newActivity(MyInformationActivity.class, null);
+					new PayResultAsyncTask(MOBILCXETLPAYSECURE, "1",req).execute();//写死的
+				}else {
+					DataUtil.getToast("支付失败");
+					newActivity(PayFailActivity.class, null);
+					finish();
+				}
+			}
+		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 	

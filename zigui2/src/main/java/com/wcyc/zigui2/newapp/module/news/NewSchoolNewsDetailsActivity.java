@@ -263,11 +263,6 @@ public class NewSchoolNewsDetailsActivity extends BaseActivity implements
 				content=head+content;
 				webView.getSettings().setDefaultTextEncodingName("UTF -8");// 设置默认为utf-8
 				webView.getSettings().setJavaScriptEnabled(true);
-				webView.getSettings().setSavePassword(false);
-				webView.removeJavascriptInterface("searchBoxJavaBridge_");
-				webView.removeJavascriptInterface("accessibility");
-				webView.removeJavascriptInterface("accessibilityTraversal");
-
 				// webView.loadData(data, "text/html",
 				// "UTF -8");//API提供的标准用法，无法解决乱码问题
 				webView.loadData(content, "text/html; charset=UTF-8", null);//
@@ -341,7 +336,7 @@ public class NewSchoolNewsDetailsActivity extends BaseActivity implements
 
 	}
 
-	// 设置点击效果监听器
+	// 设置点击事件监听器
 	private void initEvents() {
 		title_back.setVisibility(View.VISIBLE);
 		title_back.setOnClickListener(this);
@@ -672,9 +667,6 @@ public class NewSchoolNewsDetailsActivity extends BaseActivity implements
 		@Override
 		public void onPageFinished(WebView view, String url) {
 			view.getSettings().setJavaScriptEnabled(true);
-			view.removeJavascriptInterface("searchBoxJavaBridge_");
-			view.removeJavascriptInterface("accessibility");
-			view.removeJavascriptInterface("accessibilityTraversal");
 			super.onPageFinished(view, url);
 			// html加载完成之后，添加监听图片的点击js函数
 			addImageClickListner();
@@ -683,9 +675,6 @@ public class NewSchoolNewsDetailsActivity extends BaseActivity implements
 		@Override
 		public void onPageStarted(WebView view, String url, Bitmap favicon) {
 			view.getSettings().setJavaScriptEnabled(true);
-			view.removeJavascriptInterface("searchBoxJavaBridge_");
-			view.removeJavascriptInterface("accessibility");
-			view.removeJavascriptInterface("accessibilityTraversal");
 			super.onPageStarted(view, url, favicon);
 //			aa();
 		}

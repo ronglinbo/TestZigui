@@ -157,7 +157,7 @@ public class contactMainActivity extends BaseActivity implements OnClickListener
 				.setOnTouchingLetterChangedListener(new LetterListViewListener());
 		choiceAll.setOnClickListener(this);
 		sureButton.setOnClickListener(this);
-		// 给listview设置条目监听效果
+		// 给listview设置条目监听事件
 		listview.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override

@@ -24,6 +24,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 
+import com.allinpay.appayassistex.APPayAssistEx;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tencent.mm.sdk.modelpay.PayReq;
@@ -124,10 +125,11 @@ public class NewRechargeProductActivity extends BaseActivity implements
         Intent intent = getIntent();
         if (intent != null) {
             String moduleStr = intent.getStringExtra("module");
+            int moduleNumber=intent.getIntExtra("moduleNumber",0);
             call = intent.getStringExtra("call");
             NewPayPop.call = call;
             if (!DataUtil.isNullorEmpty(moduleStr)) {
-                moduleIntegerId = CCApplication.getInstance().getIntegerServiceKind2(moduleStr);
+                moduleIntegerId = CCApplication.getInstance().getIntegerServiceKind2(moduleStr,moduleNumber);
             }
         }
         buttonEnable(recharge_center_bt,false);
@@ -152,7 +154,7 @@ public class NewRechargeProductActivity extends BaseActivity implements
         }
     }
 
-    // 设置点击效果监听器
+    // 设置点击事件监听器
     private void initEvents() {
         title_back.setOnClickListener(this);
         title_right_tv.setOnClickListener(this);
@@ -361,14 +363,14 @@ public class NewRechargeProductActivity extends BaseActivity implements
     private void exitOrNot() {
         dialog = new CustomDialog(this, R.style.mystyle,
                 R.layout.customdialogzgd, handler);
-        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
         dialog.setTitle("");
         dialog.setContent("子贵课堂/微课网属于中学资源服务，您确定要购买吗？");
     }
 
     /**
-     * 控制CustomDialog按钮效果.
+     * 控制CustomDialog按钮事件.
      */
     Handler handler = new Handler() {
         public void dispatchMessage(Message msg) {

@@ -18,7 +18,7 @@ public class NotificationInitSampleHelper extends IMNotification {
 
     @Override
     public String getAppName() {
-        return "云智全课通";
+        return "子贵校园";
     }
 
     /**
@@ -27,6 +27,6 @@ public class NotificationInitSampleHelper extends IMNotification {
      */
     @Override
     public int getNotificationIconResID() {
-        return R.drawable.ic_quanketong_small;
+        return R.drawable.app_icon_small;
     }
 }

@@ -95,7 +95,7 @@ public class CMDMessageBroadcastReceiver extends BroadcastReceiver {
         builder.setSmallIcon(R.drawable.app_icon);
         builder.setDefaults(Notification.DEFAULT_ALL);
         builder.setAutoCancel(true);
-        builder.setContentTitle("云智全课通");
+        builder.setContentTitle("子贵校园");
         builder.setTicker(type + content);
         builder.setContentInfo(type);
 

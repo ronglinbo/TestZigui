@@ -43,7 +43,7 @@ public class ProgressWebView extends WebView {
         setWebChromeClient(new WebChromeClient());
         setWebViewClient(new WebClient());
         
-        //webview屏蔽长按效果，如果不屏蔽会有在网页上长按相应复印等操作的bug
+        //webview屏蔽长按事件，如果不屏蔽会有在网页上长按相应复印等操作的bug
 //        setOnLongClickListener(new OnLongClickListener() {
 //			@Override
 //			public boolean onLongClick(View v) {

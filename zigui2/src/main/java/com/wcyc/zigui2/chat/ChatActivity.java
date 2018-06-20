@@ -623,7 +623,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     }
 
     /**
-     * 消息图标点击效果
+     * 消息图标点击事件
      *
      * @param view
      */
@@ -1101,7 +1101,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener {
     private class NewMessageBroadcastReceiver extends BroadcastReceiver {
 
         /**
-         * 处理接收效果.
+         * 处理接收事件.
          *
          * @param context 正文
          * @param intent  响应意图

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@color/delete_bg"
+    android:orientation="vertical">
+
+
+    <Button
+        android:id="@+id/bt_change"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_change_background"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="更换背景图片"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+</FrameLayout>

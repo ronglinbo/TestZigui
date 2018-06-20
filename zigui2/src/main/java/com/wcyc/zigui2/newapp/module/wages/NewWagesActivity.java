@@ -104,7 +104,7 @@ public class NewWagesActivity extends BaseActivity implements OnClickListener {
 
 	}
 
-	// 设置点击效果监听器
+	// 设置点击事件监听器
 	private void initEvents() {
 		title_back.setVisibility(View.VISIBLE);
 		title_back.setOnClickListener(this);

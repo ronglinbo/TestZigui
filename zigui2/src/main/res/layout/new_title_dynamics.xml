@@ -28,6 +28,7 @@
         android:paddingLeft="70dp"
         android:paddingRight="70dp"
         android:text="标题"
+        style="?android:attr/borderlessButtonStyle"
         android:singleLine="true"
         android:maxWidth="280dp"
         android:textColor="#000000"

@@ -162,39 +162,41 @@ public class AllMessageFragment extends Fragment
     //阿里百川消息类型
     private NewMessageBean aliMessageContainer;
 
-    private String[][] func =
-            {{"1", "系统消息"}, {"33", "订单催缴"}, {"34", "缴费"},
+//    private String[][] func =
+//            {{"1", "系统消息"}, {"33", "订单催缴"}, {"34", "缴费"},
+//
+//                    {"2", "通知1"}, {"3", "资源状态改变消息"}, {"4", "版本更新"}, {"5", "续费提醒"},
+//                    {"6", "成绩"}, {"7", "点评"}, {"8", "作业"}, {"9", "校园风采"},
+//                    {"10", "班级动态"}, {"11", "考勤"}, {"12", "回复意见"}, {"13", MenuItem.CONSUME},
+//                    {"14", "邮件"}, {"15", "待办事项"}, {"16", "工资条"}, {"17", "值班查询"},
+//                    {"18", "校长信箱"}, {"19", "日志"}, {"20", "总结"}, {"21", "考试"},
+//                    {"22", "业务办理"}, {"23", "学生请假单"}, {"24", "业务办理"}, {"25", "业务办理"}, {"29", "班牌留言"}};
 
-                    {"2", "通知"}, {"3", "资源状态改变消息"}, {"4", "版本更新"}, {"5", "续费提醒"},
-                    {"6", "成绩"}, {"7", "点评"}, {"8", "作业"}, {"9", "校园风采"},
-                    {"10", "班级动态"}, {"11", "考勤"}, {"12", "回复意见"}, {"13", MenuItem.CONSUME},
-                    {"14", "邮件"}, {"15", "待办事项"}, {"16", "工资条"}, {"17", "值班查询"},
-                    {"18", "校长信箱"}, {"19", "日志"}, {"20", "总结"}, {"21", "考试"},
-                    {"22", "业务办理"}, {"23", "学生请假单"}, {"24", "业务办理"}, {"25", "业务办理"}, {"29", "班牌留言"}};
+    private String[] messageTypeList = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34"};
 
-    //消息列表 Item 点击之后会跳转到相应的Activity
-    private HashMap activities = new HashMap() {
-        {
-            put("通知", NotifyActivity.class);
-            put("校长信箱", SchoolMasterMailActivity.class);
-            put("总结", SummaryActivity.class);
-            put("日志", DailyRecordActivity.class);
-            put("邮件", EmailActivity.class);
-            put("工资条", NewWagesActivity.class);//
-            put("请假条", NewMyLeaveActivity.class);//
-            put("值班查询", NewDutyInquiryActivity.class);
-            put(MenuItem.CONSUME, NewConsumeActivity.class);
-            put("班级动态", NewClassDynamicsActivity.class);
-            put("校园新闻", NewSchoolNewsActivity.class);
-//            put("教育资讯", EducationInforActivity.class);
-            put("教育资讯", NewEducationInfoActivity.class); //新版的教育资讯页面
-            put("班牌留言", LeaveMeassageActivity.class);
-
-            put("系统消息", SystemMessageActivity.class);
-            put("订单催缴", PayNoticeActivity.class);
-            put("缴费", PaymentListActivity.class);
-        }
-    };
+    //    //消息列表 Item 点击之后会跳转到相应的Activity
+//    private HashMap activities = new HashMap() {
+//        {
+//            put(MenuItem.NOTICE/*"通知1"*/, NotifyActivity.class);
+//            put(MenuItem.SCHOOLMAIL/*"校长信箱"*/, SchoolMasterMailActivity.class);
+//            put("总结"/*"总结"*/, SummaryActivity.class);
+//            put("日志"/*"日志"*/, DailyRecordActivity.class);
+//            put(MenuItem.EMAIL/*"邮件"*/, EmailActivity.class);
+//            put("工资条"/*"工资条"*/, NewWagesActivity.class);//
+//            put(MenuItem.LEAVE/*"请假条"*/, NewMyLeaveActivity.class);//
+//            put("值班查询"/*"值班查询"*/, NewDutyInquiryActivity.class);
+//            put(MenuItem.CONSUME, NewConsumeActivity.class);
+//            put(MenuItem.DYNAMICS/*"班级动态"*/, NewClassDynamicsActivity.class);
+//            put(MenuItem.SCHOOLNEWS/*"校园新闻"*/, NewSchoolNewsActivity.class);
+////            put("教育资讯", EducationInforActivity.class);
+//            put("教育资讯"/*"教育资讯"*/, NewEducationInfoActivity.class); //新版的教育资讯页面
+//            put(MenuItem.LEAVE_MESSAGE/*"班牌留言"*/, LeaveMeassageActivity.class);
+//
+//            put("系统消息"/*"系统消息"*/, SystemMessageActivity.class);
+//            put("订单催缴"/*"订单催缴"*/, PayNoticeActivity.class);
+//            put(MenuItem.PAYMENT/*"缴费"*/, PaymentListActivity.class);
+//        }
+//    };
     private IYWConversationService conversationService;
 
     public static Fragment newInstance(int index) {
@@ -230,7 +232,7 @@ public class AllMessageFragment extends Fragment
     public void onDestroy() {
         super.onDestroy();
         //注销广播
-        if (refreshBanner != null) {
+        if (refreshBanner != null && mContext != null) {
             mContext.unregisterReceiver(refreshBanner);
             refreshBanner = null;
         }
@@ -266,11 +268,24 @@ public class AllMessageFragment extends Fragment
         getSystemMessage();
     }
 
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mContext = null;
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mContext = getActivity();
+//        mContext = getActivity();
         //ad = new Advertisement();
 
         ad = (WebView) getView().findViewById(R.id.ad);
@@ -278,12 +293,6 @@ public class AllMessageFragment extends Fragment
 //        ad.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);    //设置缓存模式
         ad.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
         ad.getSettings().setJavaScriptEnabled(true);    //设置WebView属性，能够执行JavaScript脚本
-
-        ad.removeJavascriptInterface("searchBoxJavaBridge_");
-        ad.removeJavascriptInterface("accessibility");
-        ad.removeJavascriptInterface("accessibilityTraversal");
-
-        ad.getSettings().setSavePassword(false);
         jsInterface = new JsInterface();
         ad.addJavascriptInterface(jsInterface, "android");
         ad.setWebViewClient(new WebViewClient() {        //web 视图
@@ -522,19 +531,26 @@ public class AllMessageFragment extends Fragment
      * @param messageType
      */
     private void gotoActivity(String messageTypeName, String messageType) {
+        Log.i("临时TAG", "messageTypeName:" + messageTypeName + "-----messageType:" + messageType);
         if (DataUtil.isNullorEmpty(messageTypeName)) {
             messageTypeName = DataUtil.convertTypeToName(messageType);
         }
-        boolean ret = CCApplication.app.CouldFunctionBeUseFromConfig(messageTypeName, 0);
+        int functionNumber = MenuItem.nameToNumber(messageTypeName);
+        boolean ret = CCApplication.app.CouldFunctionBeUseFromConfig(messageTypeName, functionNumber, 0);
         if (ret == true) {
-            if (CCApplication.app.couldClearRemind(messageTypeName)) {
+            if (CCApplication.app.couldClearRemind(functionNumber)) {
                 clearRemind(messageType);
             }
 
             Intent intent = new Intent();
             Class cls;
 //			if(isAdmin()){
-            cls = (Class) activities.get(messageTypeName);
+            cls = MenuItem.getMessageToClass(messageType);
+            if (cls == null) {
+                cls = MenuItem.getMessageToClass(messageTypeName);
+            }
+
+//            cls = (Class) activities.get(messageTypeName);
 //			}else{
 //				cls = (Class) activities1.get(messageTypeName);
 //			}
@@ -543,18 +559,18 @@ public class AllMessageFragment extends Fragment
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             } else {
-                GoHtml5Function.goToHtmlApp(mContext, messageTypeName);
+                GoHtml5Function.goToHtmlApp(mContext, messageTypeName, MenuItem.nameToNumber(messageTypeName));
             }
         } else {
-            chargePop(messageTypeName);
+            chargePop(messageTypeName, functionNumber);
         }
     }
 
     //弹出充值提示框
-    public void chargePop(String messageTypeName) {
+    public void chargePop(String messageTypeName, int functionNumber) {
         dialog = new CustomDialog(mContext, R.style.mystyle,
-                R.layout.customdialog, handler, messageTypeName);
-        dialog.setCanceledOnTouchOutside(true);
+                R.layout.customdialog, handler, messageTypeName, functionNumber);
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
         dialog.setTitle(getResources().getString(R.string.vip));
         dialog.setContent(getResources().getString(R.string.vip_tip));
@@ -574,6 +590,7 @@ public class AllMessageFragment extends Fragment
                         String para = bundle.getString("para");
                         Intent intent = new Intent(mContext, NewRechargeProductActivity.class);
                         intent.putExtra("module", para);
+                        intent.putExtra("moduleNumber", MenuItem.COURSE_NUMBER);
                         mContext.startActivity(intent);
                         dialog.dismiss();
                     }
@@ -839,7 +856,7 @@ public class AllMessageFragment extends Fragment
                     json.put("childId", user.getChildId());
                 }
                 System.out.println("AllMessageFragment getNewMessage:" + json);
-                new HttpRequestAsyncTask(json, this, getActivity())
+                new HttpRequestAsyncTask(json, this, getActivity(),true)
                         .execute(Constants.GET_ALL_MESSAGE_URL);
                 action = ACTION_GET_MESSAGE;
             }
@@ -915,16 +932,19 @@ public class AllMessageFragment extends Fragment
             for (NewMessageBean message : messageList) {
                 String name = message.getMessageTypeName();
                 String messageType = message.getMessageType();
-                //填充消息名称
-                if (name == null) {
-                    for (int i = 0; i < func.length; i++) {
-                        String type = func[i][0];
-                        if (type.equals(messageType)) {
-                            message.setMessageTypeName(func[i][1]);
-                        }
-                    }
-                }
-                if (!DataUtil.isFunctionEnable(name))
+//                //填充消息名称
+//                if (name == null) {
+//                    for (int i = 0; i < messageTypeList.length; i++) {
+//                        String type = messageTypeList[i];
+//                        if (type.equals(messageType)) {
+//                            message.setMessageTypeName(MenuItem.getMessageName());
+//                        }
+//                    }
+//                }
+
+
+                message.setMessageTypeName(MenuItem.getMessageName(messageType, name));
+                if (!DataUtil.isFunctionEnable(MenuItem.nameToNumber(name)))
                     continue;
 
                 //合并消息（22，24，25）为业务办理
@@ -934,9 +954,9 @@ public class AllMessageFragment extends Fragment
                     message.setMessageTypeName("业务办理");
                     fill.add(message);
                 } else {
-                    if (messageType.equals("23")) {
-                        message.setMessageTypeName("请假条");
-                    }
+//                    if (messageType.equals("23")) {
+//                        message.setMessageTypeName("请假条");
+//                    }
                     if (!Constants.hasEmailFunc) {
                         if (messageType.equals(Constants.EMAIL)) {
                             continue;

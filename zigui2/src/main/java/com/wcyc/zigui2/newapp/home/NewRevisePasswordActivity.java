@@ -82,7 +82,7 @@ public class NewRevisePasswordActivity extends BaseActivity implements OnClickLi
 		textFilter3.setEditeTextClearListener(revise_password_new_b,
 				revise_password_new_b_delete_icon);
 		revise_password_btn = (Button) findViewById(R.id.revise_password_btn);//修改密码确定按钮
-		revise_password_btn.setOnClickListener(this);//修改密码的确定按钮设置监听效果
+		revise_password_btn.setOnClickListener(this);//修改密码的确定按钮设置监听事件
 		revise_password_btn.setClickable(false);
 		revise_password_btn.setBackgroundResource(R.drawable.fogetpassworld_btn_send_shape_gray);
 	}
@@ -95,7 +95,7 @@ public class NewRevisePasswordActivity extends BaseActivity implements OnClickLi
 		new_content.setText("修改密码");
 	}
 	/**
-	 * 效果控制
+	 * 事件控制
 	 */
 
 	private void initEvents() {

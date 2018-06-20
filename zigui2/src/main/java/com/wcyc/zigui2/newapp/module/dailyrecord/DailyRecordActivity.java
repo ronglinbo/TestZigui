@@ -451,13 +451,13 @@ public class DailyRecordActivity extends BaseActivity
 	private void deleteOrNot(){
 		dialog = new CustomDialog(this, R.style.mystyle,
 				R.layout.customdialog, handler);
-		dialog.setCanceledOnTouchOutside(true);
+		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
 		dialog.setTitle("确定删除吗？");
 		dialog.setContent("");
 	}
 	/**
-	 * 控制CustomDialog按钮效果.
+	 * 控制CustomDialog按钮事件.
 	 */
 	Handler handler = new Handler() {
 		public void dispatchMessage(android.os.Message msg) {

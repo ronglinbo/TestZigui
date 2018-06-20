@@ -79,7 +79,7 @@ OnClickListener{
 		new_content.setText("修改邮箱地址");
 	}
 	/**
-	 * 效果控制
+	 * 事件控制
 	 */
 
 	private void initEvents() {

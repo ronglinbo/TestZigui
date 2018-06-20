@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.Gravity;
 
 import com.wcyc.zigui2.R;
@@ -115,6 +116,7 @@ public class HttpRequestAsyncTask extends AsyncTask<String, Integer, String> {
 		super.onPostExecute(result);
 		dismissPd();
 		if(result != null){
+//			Log.i("临时LOG","onPostExecute返回结果："+result);
 			httpRequestAsyncTaskListener.onRequstComplete(result);
 		}else{
 			httpRequestAsyncTaskListener.onRequstCancelled();

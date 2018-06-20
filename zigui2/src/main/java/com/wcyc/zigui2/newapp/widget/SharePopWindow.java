@@ -8,36 +8,21 @@ package com.wcyc.zigui2.newapp.widget;
 
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
-import android.os.Environment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.Toast;
 
 import com.wcyc.zigui2.R;
 import com.wcyc.zigui2.newapp.bean.ShareModel;
-import com.wcyc.zigui2.newapp.module.educationinfor.EducationDetailsActivity;
 import com.wcyc.zigui2.utils.DataUtil;
-import com.wcyc.zigui2.utils.HttpHelper;
+import com.wcyc.zigui2.utils.PhotoBitmapUtils;
 
-import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
@@ -177,21 +162,22 @@ public class SharePopWindow extends PopupWindow {
         oks.setCallback(new PlatformActionListener() {
             @Override
             public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-                Log.i("ssss", "onComplete");
                 DataUtil.getToast("分享完成");
+                //删除本地分享图片缓存
+                PhotoBitmapUtils.deleteTempAlum();
             }
 
             @Override
             public void onError(Platform platform, int i, Throwable throwable) {
-                Log.i("ssss", "onError" + throwable);
                 throwable.printStackTrace();
                 DataUtil.getToast("分享失败");
+                PhotoBitmapUtils.deleteTempAlum();
             }
 
             @Override
             public void onCancel(Platform platform, int i) {
-                Log.i("ssss", "oncancel");
                 DataUtil.getToast("分享取消");
+                PhotoBitmapUtils.deleteTempAlum();
             }
         });
 

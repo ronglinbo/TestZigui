@@ -99,7 +99,7 @@ public class NewUpdateVer {
 	}
 
 	/**
-	 * 控制CustomDialog按钮效果.
+	 * 控制CustomDialog按钮事件.
 	 */
 	Handler handler = new Handler() {
 		public void dispatchMessage(android.os.Message msg) {

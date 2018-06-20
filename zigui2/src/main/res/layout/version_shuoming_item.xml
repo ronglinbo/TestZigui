@@ -6,7 +6,7 @@
 <TextView
     android:textColor="@color/text_color_dark"
     android:id="@+id/title"
-    android:text="云智全课通.0增加了充值说明"
+    android:text="子贵校园6.0增加了充值说明"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
 

@@ -41,6 +41,7 @@ import com.wcyc.zigui2.newapp.bean.AllContactListBean;
 import com.wcyc.zigui2.newapp.bean.ClassList;
 import com.wcyc.zigui2.newapp.bean.GetAllContactsReq;
 import com.wcyc.zigui2.newapp.bean.MemberDetailBean;
+import com.wcyc.zigui2.newapp.bean.MenuItem;
 import com.wcyc.zigui2.newapp.bean.ModelRemindList;
 import com.wcyc.zigui2.newapp.bean.NewClasses;
 import com.wcyc.zigui2.newapp.bean.NewMemberBean;
@@ -72,6 +73,8 @@ import com.wcyc.zigui2.utils.DataUtil;
 import com.wcyc.zigui2.utils.HttpHelper;
 import com.wcyc.zigui2.utils.JsonUtils;
 import com.wcyc.zigui2.utils.LocalUtil;
+import com.wcyc.zigui2.utils.SPConstants;
+import com.wcyc.zigui2.utils.SPUtils;
 import com.wcyc.zigui2.widget.CustomDialog;
 
 import android.content.BroadcastReceiver;
@@ -147,6 +150,7 @@ public class HomeActivity extends BaseActivity
     public static final String INTENT_NEW_MESSAGE = "com.wcyc.zigui2.action.NEW_MESSAGE";//新通知消息
     public static final String CONNECTIVITY_CHANGE_ACTION = "android.net.conn.CONNECTIVITY_CHANGE";//网络变化
     private JSONObject jsonObject;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -792,7 +796,7 @@ public class HomeActivity extends BaseActivity
     private class NewMessageBroadcastReceiver extends BroadcastReceiver {
 
         /**
-         * 处理接收效果.
+         * 处理接收事件.
          *
          * @param context 正文
          * @param intent  响应意图
@@ -918,11 +922,18 @@ public class HomeActivity extends BaseActivity
                 .build();
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), json.toString());
         ApiManager apiManager = retrofit.create(ApiManager.class);
-        Call<MenuConfigBean> call = apiManager.getPersonalApplyList(body);
+        Call call = apiManager.getPersonalApplyList(body);
         call.enqueue(new Callback<MenuConfigBean>() {
             @Override
             public void onResponse(Call<MenuConfigBean> call, Response<MenuConfigBean> response) {
                 MenuConfigBean config = response.body();
+                Log.i("临时TAG","获取功能列表");
+                if(CCApplication.getInstance().isCurUserParent()){
+                    setMenuItemName(config);
+                }else{
+                    MenuItem.initMenuItemName();
+                }
+
                 if (config != null && config.getServerResult() != null) {
                     if (config.getServerResult().getResultCode() == Constants.SUCCESS_CODE) {
                         handleResponse(config);
@@ -937,6 +948,19 @@ public class HomeActivity extends BaseActivity
 
             }
         });
+
+    }
+
+    public void setMenuItemName(MenuConfigBean menuItemName){
+        if(null!=menuItemName){
+            List<MenuConfigBean.MenuConfig> menuConfigs=menuItemName.getPersonalConfigList();
+            if(null!=menuConfigs){
+                for (int i=0;i<menuConfigs.size();i++){
+                    SPUtils.put(CCApplication.applicationContext, SPConstants.MENUITEM_NAME_FILE,String.valueOf(menuConfigs.get(i).getFunctionNumber()),menuConfigs.get(i).getFunctionName());
+                }
+                MenuItem.getMenuItemName();
+            }
+        }
     }
 
     private BroadcastReceiver NetChangeReceiver = new BroadcastReceiver() {

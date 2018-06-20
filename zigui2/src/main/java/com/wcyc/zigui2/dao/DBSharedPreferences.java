@@ -15,11 +15,13 @@ public class DBSharedPreferences {
 
 	private Context context;
 	public static final String _NAME = "DIARY_DB";
+	public static final String _NAME_CLASS_STUDENT="CLASS_STUDENT";
 	public static final String _USERD = "_USERD";
 
 	public DBSharedPreferences(Context context) {
 		this.context = context;
 	}
+
 	/**
 	 * 清除所有数据
 	 */
@@ -28,10 +30,29 @@ public class DBSharedPreferences {
 		Editor editor = sp.edit();
 		editor.clear();
 		editor.commit();
+
+		SharedPreferences sp1 = context.getSharedPreferences(_NAME_CLASS_STUDENT, Context.MODE_PRIVATE);
+		Editor editor1 = sp1.edit();
+		editor1.clear();
+		editor1.commit();
 	}
 	public boolean checkUser() {
 		return getBoolean("login");
 	}
+
+	//保存全校学生信息
+	public void putStringCS(String key,String value){
+		SharedPreferences sp = context.getSharedPreferences(_NAME_CLASS_STUDENT, Context.MODE_PRIVATE);
+		Editor editor = sp.edit();
+		editor.putString(key, value);
+		editor.commit();
+	}
+	//获取全校学生信息
+	public String getStringCS(String key) {
+		SharedPreferences sp = context.getSharedPreferences(_NAME_CLASS_STUDENT, Context.MODE_PRIVATE);
+		return sp.getString(key, "");
+	}
+
 
 	public void putString(String key, String value) {
 		SharedPreferences sp = context.getSharedPreferences(_NAME, Context.MODE_PRIVATE);

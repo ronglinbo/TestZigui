@@ -194,7 +194,7 @@ public class RefreshableView extends LinearLayout implements OnTouchListener {
 	}
 
 	/**
-	 * 进行一些关键性的初始化操作，比如：将下拉头向上偏移进行隐藏，给ListView注册touch效果。
+	 * 进行一些关键性的初始化操作，比如：将下拉头向上偏移进行隐藏，给ListView注册touch事件。
 	 */
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
@@ -223,7 +223,7 @@ public class RefreshableView extends LinearLayout implements OnTouchListener {
 			case MotionEvent.ACTION_MOVE:
 				float yMove = event.getRawY();
 				int distance = (int) (yMove - yDown);
-				// 如果手指是下滑状态，并且下拉头是完全隐藏的，就屏蔽下拉效果
+				// 如果手指是下滑状态，并且下拉头是完全隐藏的，就屏蔽下拉事件
 				if (distance <= 0 && headerLayoutParams.topMargin <= hideHeaderHeight) {
 					return false;
 				}
@@ -261,7 +261,7 @@ public class RefreshableView extends LinearLayout implements OnTouchListener {
 				listView.setFocusable(false);
 				listView.setFocusableInTouchMode(false);
 				lastStatus = currentStatus;
-				// 当前正处于下拉或释放状态，通过返回true屏蔽掉ListView的滚动效果
+				// 当前正处于下拉或释放状态，通过返回true屏蔽掉ListView的滚动事件
 				return true;
 			}
 		}

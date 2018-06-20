@@ -139,7 +139,7 @@ public class NotifyActivity extends BaseActivity
 		if(notice != null){
 			list = notice.getNoticeList();
 		}
-		add.setOnClickListener(new OnClickListener(){       //编辑通知按钮点击效果
+		add.setOnClickListener(new OnClickListener(){       //编辑通知按钮点击事件
 
 			@Override
 			public void onClick(View arg0) {
@@ -167,7 +167,7 @@ public class NotifyActivity extends BaseActivity
 			}
 
 		});
-		listView.setOnItemClickListener(new OnItemClickListener(){      //通知条目点击效果
+		listView.setOnItemClickListener(new OnItemClickListener(){      //通知条目点击事件
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
@@ -496,7 +496,7 @@ public class NotifyActivity extends BaseActivity
 	public void showDeleteConfirmDialog(){
 		dialog = new CustomDialog(NotifyActivity.this,R.style.mystyle,
 				R.layout.customdialog, handler);
-		dialog.setCanceledOnTouchOutside(true);
+		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
 		dialog.setTitle("通知撤回");
 		dialog.setContent("通知撤回后其他人无法查看，确定撤回吗?");

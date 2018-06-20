@@ -25,7 +25,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.hardware.Camera;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -34,6 +36,7 @@ import android.os.Message;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -45,6 +48,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 //import com.bugtags.library.Bugtags;
+import com.allinpay.appayassistex.APPayAssistEx;
 import com.easemob.chat.EMChatManager;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -176,6 +180,19 @@ public abstract class BaseActivity extends TaskBaseActivity {
             userName = CCApplication.app.getUserName();
         }
 
+    }
+
+
+    // 通过WindowManager获取
+    public void getScreenDensity_ByWindowManager(){
+        DisplayMetrics mDisplayMetrics = new DisplayMetrics();//屏幕分辨率容器
+        getWindowManager().getDefaultDisplay().getMetrics(mDisplayMetrics);
+        int width = mDisplayMetrics.widthPixels;
+        int height = mDisplayMetrics.heightPixels;
+        float density = mDisplayMetrics.density;
+        int densityDpi = mDisplayMetrics.densityDpi;
+        Log.d("临时TAG","Screen Ratio: ["+width+"x"+height+"],density="+density+",densityDpi="+densityDpi);
+        Log.d("临时TAG","Screen mDisplayMetrics: "+mDisplayMetrics);
     }
 
     @Override
@@ -429,8 +446,8 @@ public abstract class BaseActivity extends TaskBaseActivity {
         return version;
     }
 
-    public void showProgessBar(){
-        if(pd==null){
+    public void showProgessBar() {
+        if (pd == null) {
             pd = new ProgressDialog(this);
             pd.setCanceledOnTouchOutside(false);
             pd.setCancelable(true);
@@ -446,8 +463,8 @@ public abstract class BaseActivity extends TaskBaseActivity {
             pd.setContentView(R.layout.progress_bar);
             pd.getWindow().setGravity(Gravity.CENTER);
             pd.getWindow().setBackgroundDrawableResource(R.color.transparent);
-        }else {
-            if(!pd.isShowing()){
+        } else {
+            if (!pd.isShowing()) {
                 pd.show();
             }
         }
@@ -488,7 +505,7 @@ public abstract class BaseActivity extends TaskBaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-          dismissPd();
+        dismissPd();
 
     }
 
@@ -532,10 +549,100 @@ public abstract class BaseActivity extends TaskBaseActivity {
                     sendBroadcast(intent);
                 }
                 break;
+            case APPayAssistEx.REQUESTCODE:
+                if (null != data) {
+                    String payRes = null;
+                    String payAmount = null;
+                    String payTime = null;
+                    try {
+                        JSONObject resultJson = new JSONObject(data.getExtras().getString("result"));
+                        payRes = resultJson.getString(APPayAssistEx.KEY_PAY_RES);
+                        payAmount = resultJson.getString("payAmount");
+                        payTime = resultJson.getString("payTime");
+                        System.out.println("payTime:" + payTime);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    if (null != payRes && payRes.equals(APPayAssistEx.RES_SUCCESS)) {
+                        DataUtil.getToast("支付成功");
+                        setResult(RESULT_OK);
+                        String call = getIntent().getStringExtra("call");
+                        Activity newrechargeProductActivity = null;
+                        Activity newrechargePriceActivity = null;
+                        for (int i = 0; i < CCApplication.activityList.size(); i++) {
+                            if (CCApplication.activityList.get(i) instanceof NewRechargeProductActivity) {
+                                newrechargeProductActivity = CCApplication.activityList.get(i);
+                            }
+                            if (CCApplication.activityList.get(i) instanceof NewRechargePriceActivity) {
+                                newrechargePriceActivity = CCApplication.activityList.get(i);
+                            }
+                            ;
+                        }
+                        if (newrechargePriceActivity != null) {
+                            newrechargePriceActivity.finish();
+                        }
+                        if (newrechargeProductActivity != null) {
+                            newrechargeProductActivity.setResult(RESULT_OK);
+                            newrechargeProductActivity.finish();
+                        }
 
+                        if (call != null) {
+                            finish();
+
+                        } else {
+                            if (this instanceof MyOrderActivity) {
+                                MyOrderActivity myOrderActivity = (MyOrderActivity) this;
+                                myOrderActivity.radioGroup.check(R.id.have_pay);
+                            } else {
+                                Intent intent = new Intent(this, MyOrderActivity.class);
+                                intent.putExtra("status", 1);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+
+
+                        //					CCApplication.app.finishAllActivity();
+                        //					newActivity(MyInformationActivity.class, null);
+                        //	new PayUtil.PayResultAsyncTask(PayUtil.MOBILCXETLPAYSECURE, "1", LocalUtil.req).execute();//写死的
+                    } else {
+                        DataUtil.getToast("支付失败");
+                        newActivity(PayFailActivity.class, null);
+                        setResult(RESULT_CANCELED);
+                        finish();
+                    }
+                }
+                break;
         }
     }
 
+
+    /**
+     * 判断是否拥有照相权限  如果手机被root了 开启了权限管理,就永远返回false
+     *
+     * @return 是否拥有
+     */
+    public static boolean isHavePermissionToUseCamera() {
+        boolean isCanUse = true;
+        Camera mCamera = null;
+        try {
+            mCamera = Camera.open();
+            Camera.Parameters mParameters = mCamera.getParameters();
+            mCamera.setParameters(mParameters);
+        } catch (Exception e) {
+            isCanUse = false;
+        }
+
+        if (mCamera != null) {
+            try {
+                mCamera.release();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return isCanUse;
+            }
+        }
+        return isCanUse;
+    }
 }
 
 

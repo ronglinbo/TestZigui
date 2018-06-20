@@ -134,6 +134,11 @@ public class NewHomeworkActivity extends BaseActivity implements
 				transmitImagePaths.remove(p);
 				nowImageNumber = imagePaths.size();
 				gvAdapter.notifyDataSetChanged();
+				if(transmitImagePaths.size()>0){
+					isCanSubmit(true);
+				}else{
+					isCanSubmit(false);
+				}
 			}
 			
 			switch (msg.what) {
@@ -392,13 +397,9 @@ public class NewHomeworkActivity extends BaseActivity implements
 				String ed_homework_str=ed_homework.getText().toString();
 //				System.out.println("==="+courese+"==="+ed_homework_str+"===");
 				if(ed_homework_str.length()>0&&courese.length()>0){
-					title2_ok.setClickable(true);
-					title2_ok.setTextColor(getResources().getColor(
-							R.color.font_darkblue));
+					isCanSubmit(true);
 				}else {
-					title2_ok.setClickable(false);
-					title2_ok.setTextColor(getResources().getColor(
-							R.color.font_lightgray));
+					isCanSubmit(false);
 				}
 			}
 
@@ -451,13 +452,18 @@ public class NewHomeworkActivity extends BaseActivity implements
 		});
 
 		if (cList_aa != null) {
-			spinnerButton.setText(cList_aa.get(0).getGradeName()
-					+ cList_aa.get(0).getClassName());
+			if(!cList_aa.isEmpty()){
+				spinnerButton.setText(cList_aa.get(0).getGradeName()
+						+ cList_aa.get(0).getClassName());
 
-			choose_couser(0, cList_aa.get(0).getIsAdviser());
+				choose_couser(0, cList_aa.get(0).getIsAdviser());
 
-			if (couse_name_list != null && couse_name_list.size() > 0) {
-				spinnerButton_course.setText(couse_name_list.get(0));
+				if (couse_name_list != null && couse_name_list.size() > 0) {
+					spinnerButton_course.setText(couse_name_list.get(0));
+				}
+			}else{
+				DataUtil.getToast("您无任教班级，不能发布作业！");
+				finish();
 			}
 		}
 	}
@@ -736,15 +742,17 @@ public class NewHomeworkActivity extends BaseActivity implements
 			if (class_i_course == -1) {
 				class_i_course = 0;
 			}
-			if (content.length() == 0) {
-				DataUtil.getToast("请输入作业内容");
-			} else {
+
+
+//			if (content.length() == 0) {
+//				DataUtil.getToast("请输入作业内容");
+//			} else {
 
 				// 上传图片 如果成功执行... 如果失败执行....
 				ImageUploadAsyncTask upload = new ImageUploadAsyncTask(this,
 						"1", imagePaths, Constants.UPLOAD_URL, this);
 				upload.execute();
-			}
+//			}
 			break;
 
 		}
@@ -753,7 +761,7 @@ public class NewHomeworkActivity extends BaseActivity implements
 	private void exitOrNot(){
 		dialog = new CustomDialog(this, R.style.mystyle,
 				R.layout.customdialog, handler);
-		dialog.setCanceledOnTouchOutside(true);
+		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
 		dialog.setTitle("退出此次编辑?");
 		dialog.setContent("");
@@ -845,13 +853,15 @@ public class NewHomeworkActivity extends BaseActivity implements
 	private void httpBusiInerface() {
 		// 获得作业编辑器的内容
 		String content = ed_homework.getText().toString();
+		if(content.length()==0){
+			content=" ";
+		}
+
 		if (class_i == -1) {
 			DataUtil.getToast("请选择班级");
 		} else if (class_i_course == -1) {
 			DataUtil.getToast("请选择课程");
-		} else if (content.length() == 0) {
-			DataUtil.getToast("请输入作业内容");
-		} else {
+		}else {
 			classId = cList_aa.get(class_i).getClassID();
 			courseId = couse_id_list.get(class_i_course);
 
@@ -929,6 +939,11 @@ public class NewHomeworkActivity extends BaseActivity implements
 			}
 			gvAdapter.setData(transmitImagePaths);
 			gvAdapter.notifyDataSetChanged();
+			if(transmitImagePaths.size()>0){
+			   	isCanSubmit(true);
+			}else{
+				isCanSubmit(false);
+			}
 			is_compress = data.getBooleanExtra("is_compress", true);
 		}
 	}
@@ -958,7 +973,21 @@ public class NewHomeworkActivity extends BaseActivity implements
 		httpBusiInerface();
 
 	}
-	
+
+	//设置是否可以提交
+	private void isCanSubmit(boolean can){
+		if(can){
+			title2_ok.setClickable(true);
+			title2_ok.setTextColor(getResources().getColor(
+					R.color.font_darkblue));
+		}else{
+			title2_ok.setClickable(false);
+			title2_ok.setTextColor(getResources().getColor(
+					R.color.font_lightgray));
+		}
+	}
+
+
 	private void inputState() {
 		
 		ed_homework.addTextChangedListener(new TextWatcher() {
@@ -977,13 +1006,9 @@ public class NewHomeworkActivity extends BaseActivity implements
 				String courese=spinnerButton_course.getText().toString().trim();
 
 				if (s.length() > 0&&!DataUtil.isNullorEmpty(courese)) {
-					title2_ok.setClickable(true);
-					title2_ok.setTextColor(getResources().getColor(
-							R.color.font_darkblue));
+					isCanSubmit(true);
 				} else {
-					title2_ok.setClickable(false);
-					title2_ok.setTextColor(getResources().getColor(
-							R.color.font_lightgray));
+					isCanSubmit(false);
 				}
 
 				if (s.length() > 499) {

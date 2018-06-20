@@ -9,18 +9,23 @@ import android.os.Environment;
 
 /**
  * 常量类
- * 环境配置
- * <p>
- * 1.阿里百川账号
- *
+ * *
+ * ********************************
+ * 1.阿里百川 BAI_CHUAN_APPKEY
+ * *
+ * ********************************
  * 2.根目录 URL
- *
- * 3.下载地址 DLS
- *
- * 4.子贵课堂 url
- *
- * (2.1.9之前配置环信_清单文件里面)
- * (2.1.9之后 配置Constants的阿里百川)
+ * *
+ * ********************************
+ * 3.文件下载上传 DLS_URL
+ * *
+ * ********************************
+ * 4 子贵课堂 ziguiUrl
+ * *
+ * ********************************
+ * 5.保利威视 POLYV
+ * *
+ * ********************************
  */
 public interface Constants {
     String WEB_MIMETYPE_HTML = "text/html";
@@ -31,10 +36,10 @@ public interface Constants {
 
 
     //阿里百川测试账号__子贵校园
-//    String BAI_CHUAN_APPKEY = "24742717";
+    String BAI_CHUAN_APPKEY = "24742717";
 
     //阿里百川正式账号__子贵教育
-    String BAI_CHUAN_APPKEY = "24746441";
+//    String BAI_CHUAN_APPKEY = "24746441";
 
     /**
      * 根地址
@@ -47,8 +52,6 @@ public interface Constants {
 //    String URL = "http://cs.ziguiw.cn:8028/zgwps";//映射到外网
     //   String URL = "http://home.ziguiw.com";//---正式线
 //   String URL = "https://home.ziguiw.com";//---正式线____https
-   String URL = "https://qkthome.ziguiw.com";//---全课通正式线____https
-
 
 //      String URL = "http://10.0.7.92:8080/zgwps";//龙哥
     // String URL = "http://10.0.2.87:8028/zgwps";//测试环境
@@ -60,21 +63,24 @@ public interface Constants {
     //	String URL = "http://10.0.6.161:8080/zgwps";//chenx
     //  String URL = "http://10.0.7.89:8088/zgwps";//chenx
     //String URL ="https://10.0.2.80/zgwps"; //刘松Https
-//    String URL = "https://wcyc.ziguiw.com/zgwps"; //内网测试线____https
+    String URL = "https://wcyc.ziguiw.com/zgwps"; //内网测试线____https
+//    String URL ="http://10.0.7.235:8082/zgwps";  //周琨
+//     String URL="http://10.0.7.25:8080/zgwps";  //许吟秋
 //    String URL ="http://10.0.7.104:8088/zgwps"; //石力强
-//    String URL ="http://10.0.7.233:8080/zgwps"; //彭进
+//    String URL = "http://10.0.7.233:8080/zgwps"; //彭进
 //    String URL = "http://10.0.7.92:8080/zgwps" ;//龙竹桑
 //    String URL = "https://homecs.ziguiw.com/zgwps" ;//阿里测试Https
 //    String URL = "http://homecs.ziguiw.com/zgwps" ;//阿里测试Http
 //    String URL = "http://10.0.7.115:8080/zgwps" ;//刘松本地
+//    String URL = "http://10.0.7.235:8082/zgwps" ;//周坤本地
 
 
     String BASE_URL = URL + "/clientApi";
     //     String DLS_URL = "http://10.0.7.92:8080/dls";//龙哥
     //  String DLS_URL = "http://dls.ziguiw.com";//新域名正式线dls
-      String DLS_URL = "https://dls.ziguiw.com";//新域名正式线dls_______https
+//      String DLS_URL = "https://dls.ziguiw.com";//新域名正式线dls_______https
 //     String DLS_URL = "http://10.0.2.82:8021/dls";//开发环 境dls
-//    String DLS_URL = "https://wcyc.ziguiw.com/dls";//内网测试线DLS_________Https
+    String DLS_URL = "https://wcyc.ziguiw.com/dls";//内网测试线DLS_________Https
 //    String DLS_URL = "http://10.0.7.233:8080/dls";//彭进
 //   String DLS_URL = "http://cs.ziguiw.cn:8021/dls";//映射到外网
     //String DLS_URL = "http://10.0.7.117:8080/dls";//谭元君 http://10.0.7.25:8080/zgwps/clientApi
@@ -97,17 +103,20 @@ public interface Constants {
 //        String ziguiUrl = "http://10.0.2.85:8024/zgkt/app/coursecenter/index?";//子贵课堂 测试服务器
     //	String ziguiUrl = "http://10.0.7.51:8080/zgkt/app/coursecenter/index?";
 //String ziguiUrl = "http://learn.ziguiw.com/zgkt/app/coursecenter/index?";//子贵课堂 正式服务器
-    String ziguiUrl = "https://learn.ziguiw.com/zgkt/app/coursecenter/index?";//子贵课堂 正式服务器______https
+//    String ziguiUrl = "https://learn.ziguiw.com/zgkt/app/coursecenter/index?";//子贵课堂 正式服务器______https
 
-//    String ziguiUrl = "https://wcyc.ziguiw.com/zgkt/app/coursecenter/index?";//子贵课堂_____内网测试https
+    String ziguiUrl = "https://wcyc.ziguiw.com/zgkt/app/coursecenter/index?";//子贵课堂_____内网测试https
     //String ziguiUrl = "http://10.0.7.117:8080/zgkt/app/coursecenter/index?" ;
     // http://10.0.7.117:8080/zgkt/app/coursecenter/index?";//谭
 //    String ziguiUrl = "https://learncs.ziguiw.com/zgkt/app/coursecenter/index?";//阿里测试子贵课堂 HTTPS
 //    String ziguiUrl = "http://learncs.ziguiw.com/zgkt/app/coursecenter/index?";//阿里测试子贵课堂 HTTP
 
 
-    //  String AD_SLIDE_URL = "http://10.0.2.87:8028/zgwps/html/index1.html";//广告地址 测试
-    String AD_SLIDE_URL = "http://home.ziguiw.com/zgwps/html/index1.html";//广告地址 正式
+    //保利威视_正式线o
+    String POLYV = "5LRvSl9xppuvHXYX4pc/7hwlLqoH67i13aiXKW13nHlnHj//oEUlWJ6bwwf2UgLYTBgK0cMDiYPOUlcIfH5viHq2IkCVCfrIzaG2X4pX1tvhCEubSjjhjgl/QIvnHho1jS6AWZdNWPKlmntJIdUA==";
+
+    //保利威视_测试线_刘佼账号
+//    String POLYV = "ABawlst4zaLgx8Bm099tzJcVOdZDDl7MSUbOLpDeBuxe0PaYVTCMfixKQ5LxCPNYgUMXIRMbpo/5T1NVB5BMe9S5Gz/GQvZnzRbQ9/OPSLjvBR2tyzY5LRWHiOZrYEh8rPbOTFcGsB8QyVeDWOA/1g==";
 
 
     int MSG_PUSHTIME = 90 * 1000;
@@ -395,6 +404,14 @@ public interface Constants {
     String GET_PARENT_MESSAGE_BOARD_LIST = "/getParentMessageBoardList"; //获取家长留言
     String DELETE_PARENT_MESSAGE = "/deleteParentMessageBoard";//删除家长留言
 
+
+    String POST_TYPE_REPAIRMAN = "/getRepairTypeList";//获取维修类型及维修人
+    String PUBLISH_REPAIR = "/publishRepair";  //申请维修
+
+
+    String GET_SCH_STUDENT_LIST = "/getSchStudentList";  //获取用户有权限的班级学生列表
+
+
     //======================================
 
     String AUTHID = "&authId=MB";
@@ -543,13 +560,17 @@ public interface Constants {
     //在线充值记录
     String GET_ONLINE_RECORD = "/getCardRechargeInfo";
 
+    //学校启动页查询
+    String GET_SCHOOL_LAUNCHER_INFO = "/getAppInfoSchoolStart";
 
-    //和教育_获取手机号码
-    String GET_HE_EDU_USER_INFO = "/app_qkt/getUserInfoWithPhoneList.do";
+    //班级动态默认分享的图标ID
+    String SHARE_CLASS_DYNAMICS_PICTURE_ID = "1800083";
 
+    //班级动态默认分享的图标ID
+    String UPDATE_CLASS_DYNAMIC_BACKGROUND = "/updateClassDynamicBground";
 
-    //注册账号.
-    String REGIST_QKT_INFO ="/app_qkt/registQktInfo.do";
+    //更新班级动态的访客数
+    String UPDATE_CLASS_DYNAMIC_VISITOR_COUNT = "/updateClassDynamicVisitorCount";
 }
 
 

@@ -90,6 +90,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.easemob.chat.EMGroup;
+import com.easemob.util.HanziToPinyin;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
@@ -128,6 +129,28 @@ public class DataUtil {
     //	public static final String IMG_SERVER_URL = "http://10.0.6.22:8080/ws/upload/uploadFile";
     public static boolean hasUnfinishedTask = false;
     public static boolean isAlert = false;
+
+
+    /**
+     * 把文本转成拼音
+     *
+     * @param name
+     * @return
+     */
+    public static String getHeader(String name) {
+        String header = "";
+        for (int i = 0; i < name.length(); i++) {
+            try {
+                header += HanziToPinyin.getInstance().get(name).get(i)
+                        .target.substring(0, 1).toLowerCase();
+            } catch (Exception e) {
+                System.out.println("name" + name);
+                e.printStackTrace();
+            }
+        }
+        return header;
+    }
+
 
     /**
      * 将流转换成字符串.
@@ -840,7 +863,7 @@ public class DataUtil {
 	 * @param dy
 	 * @return
 	 */
-	/*
+    /*
 	 * public static String getDistatce(GPSPoint gpsPoint) { if (gpsPoint ==
 	 * null) { return SYApplication.NOSET; } double GPS_W = gpsPoint.getW_gps();
 	 * double GPS_J = gpsPoint.getJ_gps(); GPSPoint point =
@@ -1354,7 +1377,10 @@ public class DataUtil {
         if (phone.length() != 11) {
             return false;
         }
-        Pattern pattern = Pattern.compile("^1[345789]\\d{9}$");
+//        Pattern pattern = Pattern.compile("^1[3456789]\\d{9}$");
+//        Matcher matcher = pattern.matcher(phone);
+
+        Pattern pattern = Pattern.compile("^[\\d]{11}");
         Matcher matcher = pattern.matcher(phone);
 
         return matcher.matches();
@@ -2735,6 +2761,7 @@ public class DataUtil {
         return "";
     }
 
+
     public static MemberDetailBean sortUserList(MemberDetailBean detail) {
         //班级排序，班主任的班级排前面
         if (detail != null) {
@@ -2820,22 +2847,28 @@ public class DataUtil {
         return unreadMsgCountTotal;
     }
 
-    public static boolean isFunctionEnable(String name) {
-        if (name != null) {
-            MenuConfigBean config = CCApplication.getInstance().getMenuConfig();
-            if (config != null) {
-                List<MenuConfigBean.MenuConfig> list = config.getPersonalConfigList();
-                if (list != null) {
-                    for (MenuConfigBean.MenuConfig item : list) {
-                        if (item != null && name.equals(item.getFunctionName())) {
-                            if (item.getStatus() == MenuItem.INVALID) {
-                                return false;
-                            }
+    /**
+     * 判断是否启用这个功能
+     *
+     * @param number
+     * @return
+     */
+    public static boolean isFunctionEnable(int number) {
+//        if (name != null) {
+        MenuConfigBean config = CCApplication.getInstance().getMenuConfig();
+        if (config != null) {
+            List<MenuConfigBean.MenuConfig> list = config.getPersonalConfigList();
+            if (list != null) {
+                for (MenuConfigBean.MenuConfig item : list) {
+                    if (item != null && number == item.getFunctionNumber()) {
+                        if (item.getStatus() == MenuItem.INVALID) {
+                            return false;
                         }
                     }
                 }
             }
         }
+//        }
         return true;
     }
 
@@ -2944,9 +2977,9 @@ public class DataUtil {
             }
             Date validData = sdf.parse(validTime);
             //如果服务器时间  早于有效期  表示有效
-            if(serverData.before(validData)){
-                return  true;
-            }else{
+            if (serverData.before(validData)) {
+                return true;
+            } else {
                 return false;
             }
         } catch (Exception e) {
@@ -2961,7 +2994,7 @@ public class DataUtil {
      * @return String 格式化后的文本
      */
     public static String getStringDateFromLong(long longTime) {
-        Date date = new Date(longTime*1000);
+        Date date = new Date(longTime * 1000);
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String time = format.format(date);
         return time;
@@ -2969,7 +3002,8 @@ public class DataUtil {
 
     /**
      * date类型转换为String类型
-     * @param data Date类型的时间
+     *
+     * @param data       Date类型的时间
      * @param formatType formatType格式为yyyy-MM-dd HH:mm:ss//yyyy年MM月dd日 HH时mm分ss秒
      */
     public static String dateToString(Date data, String formatType) {
@@ -2979,8 +3013,9 @@ public class DataUtil {
 
     /**
      * long类型转换为String类型
+     *
      * @param currentTime currentTime要转换的long类型的时间
-     * @param formatType formatType要转换的string类型的时间格式
+     * @param formatType  formatType要转换的string类型的时间格式
      * @throws ParseException
      */
     public static String longToString(long currentTime, String formatType)
@@ -2992,7 +3027,8 @@ public class DataUtil {
 
     /**
      * String类型转换为date类型
-     * @param strTime strTime要转换的string类型的时间，formatType要转换的格式yyyy-MM-dd HH:mm:ss//yyyy年MM月dd日HH时mm分ss秒，
+     *
+     * @param strTime    strTime要转换的string类型的时间，formatType要转换的格式yyyy-MM-dd HH:mm:ss//yyyy年MM月dd日HH时mm分ss秒，
      * @param formatType strTime的时间格式必须要与formatType的时间格式相同
      */
     public static Date stringToDate(String strTime, String formatType)
@@ -3006,8 +3042,9 @@ public class DataUtil {
 
     /**
      * long转换为Date类型
+     *
      * @param currentTime currentTime要转换的long类型的时间
-     * @param formatType formatType要转换的时间格式yyyy-MM-dd HH:mm:ss//yyyy年MM月dd日 HH时mm分ss秒
+     * @param formatType  formatType要转换的时间格式yyyy-MM-dd HH:mm:ss//yyyy年MM月dd日 HH时mm分ss秒
      */
     public static Date longToDate(long currentTime, String formatType)
             throws ParseException {
@@ -3020,7 +3057,8 @@ public class DataUtil {
 
     /**
      * string类型转换为long类型
-     * @param strTime strTime要转换的String类型的时间 strTime的时间格式和formatType的时间格式必须相同
+     *
+     * @param strTime    strTime要转换的String类型的时间 strTime的时间格式和formatType的时间格式必须相同
      * @param formatType formatType时间格式
      */
     public static long stringToLong(String strTime, String formatType)
@@ -3036,6 +3074,7 @@ public class DataUtil {
 
     /**
      * date类型转换为long类型
+     *
      * @param date date要转换的date类型的时间
      */
     public static long dateToLong(Date date) {

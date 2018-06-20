@@ -30,7 +30,7 @@ public class NewDutyDiaryBean {
 	private String classTeacher;//老师上午
 	private String nightStudyStu;//学生晚上
 	private String nightStudyTea;//老师晚上
-	private String schoolStory;//学校大效果
+	private String schoolStory;//学校大事件
 	
 	
 	

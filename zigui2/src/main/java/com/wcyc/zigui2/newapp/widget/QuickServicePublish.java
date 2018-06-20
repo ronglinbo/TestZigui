@@ -53,19 +53,19 @@ public class QuickServicePublish extends PopupWindow{
 	private Button cancel;
 	private View view;
 	private GridView gridview;
-	Map<String, MenuItem> map = new HashMap<String, MenuItem>();
-	MenuItem email = new MenuItem("14","邮件",R.drawable.sheet_icon_youjian,ComposeEmailActivity.class);
-	MenuItem notice = new MenuItem("02","通知",R.drawable.sheet_icon_tongzhi,PublishNotifyActivity.class);
-	MenuItem homework = new MenuItem("08","作业",R.drawable.sheet_icon_zuoye,NewHomeworkActivity.class);
-	MenuItem dailyRecord = new MenuItem("19","日志",R.drawable.sheet_icon_rizhi,PublishDailyRecordActivity.class);
-	MenuItem summary = new MenuItem("20","总结",R.drawable.sheet_icon_zongjie,PublishSummaryActivity.class);
-	MenuItem attend = new MenuItem("11","考勤",R.drawable.sheetl_icon_kaoqin,NewAttendanceActivity.class);
-	MenuItem comment = new MenuItem("07","点评",R.drawable.sheet_iocn_dianping,NewCommentActivity.class);
-	MenuItem dyn = new MenuItem("10","班级动态",R.drawable.sheet_iocn_banjiquan,NewPublishDynamicActivity.class);
+	Map<Integer, MenuItem> map = new HashMap<Integer, MenuItem>();
+	MenuItem email = new MenuItem("14","邮件",MenuItem.EMAIL_NUMBER,R.drawable.sheet_icon_youjian,ComposeEmailActivity.class);
+	MenuItem notice = new MenuItem("02","通知",MenuItem.NOTICE_NUMBER,R.drawable.sheet_icon_tongzhi,PublishNotifyActivity.class);
+	MenuItem homework = new MenuItem("08","作业",MenuItem.HOMEWORK_NUMBER,R.drawable.sheet_icon_zuoye,NewHomeworkActivity.class);
+	MenuItem dailyRecord = new MenuItem("19","日志",MenuItem.DAILY_RECORD_NUMBER,R.drawable.sheet_icon_rizhi,PublishDailyRecordActivity.class);
+	MenuItem summary = new MenuItem("20","总结",MenuItem.SUMMARY_NUMBER,R.drawable.sheet_icon_zongjie,PublishSummaryActivity.class);
+	MenuItem attend = new MenuItem("11","考勤",MenuItem.ATTENDANCE_NUMBER,R.drawable.sheetl_icon_kaoqin,NewAttendanceActivity.class);
+	MenuItem comment = new MenuItem("07","点评",MenuItem.COMMENT_NUMBER,R.drawable.sheet_iocn_dianping,NewCommentActivity.class);
+	MenuItem dyn = new MenuItem("10","班级动态",MenuItem.DYNAMICS_NUMBER,R.drawable.sheet_iocn_banjiquan,NewPublishDynamicActivity.class);
 
-	MenuItem emailParent = new MenuItem("14","邮件",R.drawable.sheet_icon_youjian,ComposeEmailByParentActivity.class);
-	MenuItem schoolmasterParent = new MenuItem("18","给校长写信",R.drawable.sheetl_icon_xzxx, ComposeEmailToMasterActivity.class);
-	MenuItem leaveParent = new MenuItem("","请假申请",R.drawable.sheetl_icon_qingjiatiao, NewMyLeaveAskActivity.class);
+	MenuItem emailParent = new MenuItem("14","邮件",MenuItem.EMAILPARENT_NUMBER,R.drawable.sheet_icon_youjian,ComposeEmailByParentActivity.class);
+	MenuItem schoolmasterParent = new MenuItem("18","给校长写信",MenuItem.SCHOOLMASTERPARENT_NUMBER,R.drawable.sheetl_icon_xzxx, ComposeEmailToMasterActivity.class);
+	MenuItem leaveParent = new MenuItem("","请假申请",MenuItem.LEAVEPARENT_NUMBER,R.drawable.sheetl_icon_qingjiatiao, NewMyLeaveAskActivity.class);
 
 	List<MenuItem> list = new ArrayList<MenuItem>();
 	List<MenuItem> parentItem = new ArrayList<MenuItem>();
@@ -105,8 +105,8 @@ public class QuickServicePublish extends PopupWindow{
 		gridview.setAdapter(adapter);
 	}
 	private void initMenuItem(){
-		map.put(MenuItem.LEAVE,leaveParent);
-		map.put(MenuItem.SCHOOLMAIL,schoolmasterParent);
+		map.put(MenuItem.LEAVE_NUMBER,leaveParent);
+		map.put(MenuItem.SCHOOLMAIL_NUMBER,schoolmasterParent);
 	}
 	private void initParentMenu(Activity context) {
 		MenuConfigBean config = CCApplication.getInstance().getMenuConfig();
@@ -114,7 +114,7 @@ public class QuickServicePublish extends PopupWindow{
 		if(list != null) {
 			for (MenuConfigBean.MenuConfig item : list) {
 				if (item != null && item.getStatus() == MenuItem.VALID) {
-					MenuItem menuItem = map.get(item.getFunctionName());
+					MenuItem menuItem = map.get(item.getFunctionNumber());
 					if (menuItem != null) {
 						if (MenuItem.FREE.equals(item.getType())) {
 							menuItem.setFree(true);

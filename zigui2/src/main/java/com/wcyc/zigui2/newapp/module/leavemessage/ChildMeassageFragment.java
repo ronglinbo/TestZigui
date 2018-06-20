@@ -3,6 +3,7 @@ package com.wcyc.zigui2.newapp.module.leavemessage;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
@@ -17,6 +18,8 @@ import com.wcyc.zigui2.core.BaseActivity;
 import com.wcyc.zigui2.core.BaseRecycleAdapter;
 import com.wcyc.zigui2.core.BaseRecyleviewFragment;
 import com.wcyc.zigui2.core.CCApplication;
+import com.wcyc.zigui2.greendao.db.ChildMessageManager;
+import com.wcyc.zigui2.greendao.db.ZiGuiVideoManager;
 import com.wcyc.zigui2.newapp.asynctask.HttpRequestAsyncTask;
 import com.wcyc.zigui2.newapp.asynctask.HttpRequestAsyncTaskListener;
 import com.wcyc.zigui2.newapp.module.classdynamics.NewClassDynamicsAdapter;
@@ -57,12 +60,37 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ChildMeassageFragment extends BaseRecyleviewFragment<ChildMessage> implements View.OnClickListener, HttpRequestAsyncTaskListener, BaseRecyleviewFragment.OnItemLongClickListener, DeleteItemPop.OnLongClick {
 
     private List<ChildMessage> mdata = new ArrayList<>();
-    private ChildMessageDao childMessageDao = CCApplication.getDaoinstant().getChildMessageDao();
+//    private ChildMessageDao childMessageDao = CCApplication.getDaoinstant().getChildMessageDao();
+
+    private ChildMessageManager  childMessageManager;
+
 
     @Override
     public int getAdapterLayoutId() {
         //适配器 item 布局
         return R.layout.my_child_message_item;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        childMessageManager=new ChildMessageManager(CCApplication.applicationContext);
+    }
+
+    public ChildMessageManager getChildMessageManager(){
+        if(null==childMessageManager){
+            childMessageManager=new ChildMessageManager(CCApplication.applicationContext);
+        }
+        return childMessageManager;
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //关闭数据库
+        childMessageManager.closeDataBase();
+        childMessageManager=null;
     }
 
     @Override
@@ -86,7 +114,7 @@ public class ChildMeassageFragment extends BaseRecyleviewFragment<ChildMessage> 
             action = INITDATA;
         } else {
             isGetCache = true;
-            mdata.addAll(childMessageDao.queryBuilder().orderDesc(ChildMessageDao.Properties.CreateTime).list());
+            mdata.addAll(getChildMessageManager().getBdDaoSession(CCApplication.applicationContext).getChildMessageDao().queryBuilder().orderDesc(ChildMessageDao.Properties.CreateTime).list());
             setDatas(mdata);
             dismissPd();
 
@@ -106,7 +134,7 @@ public class ChildMeassageFragment extends BaseRecyleviewFragment<ChildMessage> 
             jsonObject.put("pageSize", 10);
             if (isGetCache) {
                 //从无网环境过来
-                List<ChildMessage> list = childMessageDao.queryBuilder().orderAsc(ChildMessageDao.Properties.CreateTime).build().list();
+                List<ChildMessage> list = getChildMessageManager().getBdDaoSession(CCApplication.applicationContext).getChildMessageDao().queryBuilder().orderAsc(ChildMessageDao.Properties.CreateTime).build().list();
                 String date = list.get(0).getCreateTime();
                 System.out.println("最前面的一次时间" + date);
                 jsonObject.put("minDateString", date);
@@ -153,7 +181,7 @@ public class ChildMeassageFragment extends BaseRecyleviewFragment<ChildMessage> 
             action = INITDATA;
         } else {
             isGetCache = true;
-            mdata.addAll(childMessageDao.queryBuilder().orderDesc(ChildMessageDao.Properties.CreateTime).list());
+            mdata.addAll(getChildMessageManager().getBdDaoSession(CCApplication.applicationContext).getChildMessageDao().queryBuilder().orderDesc(ChildMessageDao.Properties.CreateTime).list());
             setDatas(mdata);
             dismissPd();
         }
@@ -182,7 +210,7 @@ public class ChildMeassageFragment extends BaseRecyleviewFragment<ChildMessage> 
 //        imageView.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                //点击效果
+//                //点击事件
 //                PictureURL pictureURL = null;
 //                List<PictureURL> datas = new ArrayList<PictureURL>();
 //                pictureURL = new PictureURL();
@@ -203,7 +231,7 @@ public class ChildMeassageFragment extends BaseRecyleviewFragment<ChildMessage> 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //点击效果
+                //点击事件
                 PictureURL pictureURL = null;
                 List<PictureURL> datas = new ArrayList<PictureURL>();
                 pictureURL = new PictureURL();
@@ -219,9 +247,9 @@ public class ChildMeassageFragment extends BaseRecyleviewFragment<ChildMessage> 
 
                             //处理下标越界
                             WhereCondition eq = ChildMessageDao.Properties.Id.eq(childMessage.getId());
-                            List<ChildMessage> list = childMessageDao.queryBuilder().where(eq).list();
+                            List<ChildMessage> list = getChildMessageManager().getBdDaoSession(CCApplication.applicationContext).getChildMessageDao().queryBuilder().where(eq).list();
                             if(!list.isEmpty()){
-                                ChildMessage childMessage1 = childMessageDao.queryBuilder().where(ChildMessageDao.Properties.Id.eq(childMessage.getId())).list().get(0);
+                                ChildMessage childMessage1 = getChildMessageManager().getBdDaoSession(CCApplication.applicationContext).getChildMessageDao().queryBuilder().where(ChildMessageDao.Properties.Id.eq(childMessage.getId())).list().get(0);
 
                                 if (childMessage1.getFilelength() == cacheFile.length()) {
                                     //已经缓存全部  从缓存取
@@ -314,7 +342,7 @@ public class ChildMeassageFragment extends BaseRecyleviewFragment<ChildMessage> 
     }
 
     private void gotoVideoView() {
-        //点击效果
+        //点击事件
         PictureURL pictureURL = null;
         List<PictureURL> datas = new ArrayList<PictureURL>();
         pictureURL = new PictureURL();
@@ -348,7 +376,7 @@ public class ChildMeassageFragment extends BaseRecyleviewFragment<ChildMessage> 
                 long fileSize = body.contentLength();
                 //更新数据库文件大小
                 current_childMessage.setFilelength(fileSize);
-                childMessageDao.update(current_childMessage);
+                getChildMessageManager().getBdDaoSession(CCApplication.applicationContext).getChildMessageDao().update(current_childMessage);
                 long fileSizeDownloaded = 0;
                 inputStream = body.byteStream();
                 outputStream = new FileOutputStream(futureStudioIconFile);
@@ -412,7 +440,7 @@ public class ChildMeassageFragment extends BaseRecyleviewFragment<ChildMessage> 
                     // 数据库缓存
                     for (ChildMessage c : infoStudentBoardMessage.getInfoStudentBoardMessageList()) {
                         try {
-                            childMessageDao.insert(c);
+                            getChildMessageManager().getBdDaoSession(CCApplication.applicationContext).getChildMessageDao().insert(c);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -434,7 +462,7 @@ public class ChildMeassageFragment extends BaseRecyleviewFragment<ChildMessage> 
                     //数据库缓存
                     for (ChildMessage c : infoStudentBoardMessage.getInfoStudentBoardMessageList()) {
                         try {
-                            childMessageDao.insert(c);
+                            getChildMessageManager().getBdDaoSession(CCApplication.applicationContext).getChildMessageDao().insert(c);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -459,7 +487,7 @@ public class ChildMeassageFragment extends BaseRecyleviewFragment<ChildMessage> 
                     // 数据库缓存
                     for (ChildMessage c : infoStudentBoardMessage.getInfoStudentBoardMessageList()) {
                         try {
-                            childMessageDao.insert(c);
+                            getChildMessageManager().getBdDaoSession(CCApplication.applicationContext).getChildMessageDao().insert(c);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -487,7 +515,7 @@ public class ChildMeassageFragment extends BaseRecyleviewFragment<ChildMessage> 
     private static JSONArray jsonArray = new JSONArray();
     private CustomDialog dialog;
     /**
-     * 控制CustomDialog按钮效果.
+     * 控制CustomDialog按钮事件.
      */
     Handler handler = new Handler() {
         public void dispatchMessage(android.os.Message msg) {
@@ -530,7 +558,7 @@ public class ChildMeassageFragment extends BaseRecyleviewFragment<ChildMessage> 
             new HttpRequestAsyncTask(jsonObject, this, CCApplication.applicationContext).execute(Constants.DELETE_STUDENTBOARD_MESSAGE);
             action = 7;
         }
-        childMessageDao.delete(mdata.get(position));
+        getChildMessageManager().getBdDaoSession(CCApplication.applicationContext).getChildMessageDao().delete(mdata.get(position));
         deleteCacheVideo(mdata.get(position).getPcitureAddress());
         mdata.remove(position);
         setDatas(mdata);
@@ -568,7 +596,7 @@ public class ChildMeassageFragment extends BaseRecyleviewFragment<ChildMessage> 
 
     @Override
     public void onItemLongClick(int position1, View childView) {
-        //长按效果
+        //长按事件
         position = position1;
         DeleteItemPop pop = new DeleteItemPop(getActivity(), this);
         int[] location = {-1, -1};

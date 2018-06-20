@@ -250,7 +250,7 @@ public class ComposeEmailActivity extends BaseActivity
 		if(userType != null){
 			if(userType.equals(Constants.STUDENT_STR_TYPE)){
 				chooseStudentList = new ArrayList<Student>();
-				Student student = new ClassStudent(). new Student();
+				Student student = new Student();
 				String id = data.getCreateUserId();
 				student.setId(Integer.parseInt(id));
 				student.setName(data.getCreateUserName());
@@ -307,7 +307,7 @@ public class ComposeEmailActivity extends BaseActivity
 		if(studentList != null){
 			chooseStudentList = new ArrayList<Student>();
 			for(Recipient item:studentList){
-				Student student = new ClassStudent(). new Student();
+				Student student = new Student();
 				String id = item.getReceiveObjectId();
 				student.setId(Integer.parseInt(id));
 				student.setName(item.getReceiveObjectName());
@@ -1681,13 +1681,13 @@ public class ComposeEmailActivity extends BaseActivity
 	private void publishOrNot(){
 		dialog = new CustomDialog(this, R.style.mystyle,
 				R.layout.customdialog, handler);
-		dialog.setCanceledOnTouchOutside(true);
+		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
 		dialog.setTitle("您的邮件未填写主题，确定要发送吗？");
 		dialog.setContent("");
 	}
 	/**
-	 * 控制CustomDialog按钮效果.
+	 * 控制CustomDialog按钮事件.
 	 */
 	Handler handler = new Handler() {
 		public void dispatchMessage(android.os.Message msg) {

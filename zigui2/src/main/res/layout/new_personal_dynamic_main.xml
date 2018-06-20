@@ -3,63 +3,59 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f1f1f1"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
-    <include
-        android:layout_height="0dip"
-        android:layout_weight="0"
-        layout="@layout/new_title" />
+    <include layout="@layout/new_title" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@drawable/bg_banjidongtai" >
+        android:layout_height="100dp"
+        android:background="@drawable/bg_banjidongtai">
 
-           <com.wcyc.zigui2.widget.RoundImageView
+        <com.wcyc.zigui2.widget.RoundImageView
             android:id="@+id/personal_circleImageView"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/pho_touxiang"
-            android:layout_marginTop="10dp"
-
             android:layout_centerHorizontal="true"
-           />
-           <LinearLayout 
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:orientation="horizontal"
-               android:layout_below="@id/personal_circleImageView"
-               >
-               
-               <TextView 
-                   android:id="@+id/danamics_name"
-                   android:layout_weight="1"
-                   android:layout_width="fill_parent"
-                   android:layout_height="wrap_content"
-                   android:text=""
-                   android:textColor="#ffffff"
-                   android:gravity="right"
-                   android:layout_marginRight="5dp"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/pho_touxiang" />
 
-                   />
-               <TextView 
-                   android:id="@+id/danamics_class"
-                   android:layout_weight="1"
-                   android:layout_width="fill_parent"
-                   android:layout_height="wrap_content"
-                   android:text=""
-                   android:textColor="#ffffff"
- 				   android:layout_marginLeft="5dp"
-                   />
-           </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/personal_circleImageView"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/danamics_name"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text=""
+                android:textColor="#ffffff"
+
+                />
+
+            <TextView
+                android:id="@+id/danamics_class"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:text=""
+                android:textColor="#ffffff" />
+        </LinearLayout>
     </RelativeLayout>
 
-    
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:visibility="gone"
-        android:background="@color/line_darkyellow" />
+        android:background="@color/line_darkyellow"
+        android:visibility="gone" />
 
     <!--
          RelativeLayout
@@ -72,7 +68,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <!--
             com.wcyc.zigui2.utils.RefreshableView
@@ -86,9 +82,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:descendantFocusability="afterDescendants"
+            android:divider="#ffffff"
             android:listSelector="#00000000"
-            android:scrollbarSize="10dip"
-            android:divider="#ffffff" />
+            android:scrollbarSize="10dip" />
 
         <ImageView
             android:id="@+id/iv_bg"
@@ -98,9 +94,8 @@
             android:layout_marginTop="150dp"
             android:contentDescription="无动态列表"
             android:src="@drawable/dongtai_no"
-            android:visibility="gone" 
-             />
-        
+            android:visibility="gone" />
+
         <!--
              ProgressBar           
              android:layout_marginTop="150dp"

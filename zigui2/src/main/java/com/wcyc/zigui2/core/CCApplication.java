@@ -22,20 +22,17 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.AlertDialog;
 import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -44,8 +41,6 @@ import android.preference.PreferenceManager;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Window;
-import android.view.WindowManager;
 
 //import com.bugtags.library.Bugtags;
 //import com.bugtags.library.BugtagsOptions;
@@ -106,9 +101,11 @@ import com.wcyc.zigui2.bean.DaoMaster;
 import com.wcyc.zigui2.bean.DaoSession;
 import com.wcyc.zigui2.bean.User;
 import com.wcyc.zigui2.chat.ChatActivity;
+import com.wcyc.zigui2.greendao.db.ChildMessageManager;
+import com.wcyc.zigui2.greendao.db.LeaveMessageManager;
 import com.wcyc.zigui2.newapp.adapter.MenuAdapter;
 import com.wcyc.zigui2.newapp.bean.EasemobGroupInfo;
-import com.wcyc.zigui2.newapp.bean.HeEducationUserBean;
+import com.wcyc.zigui2.newapp.bean.LauncherInfoBean;
 import com.wcyc.zigui2.newapp.bean.MenuItem;
 import com.wcyc.zigui2.newapp.bean.MoniterListInfo;
 import com.wcyc.zigui2.newapp.module.email.MenuConfigBean;
@@ -157,13 +154,13 @@ import com.wcyc.zigui2.utils.DataUtil;
 import com.wcyc.zigui2.utils.HttpHelper;
 import com.wcyc.zigui2.utils.JsonUtils;
 import com.wcyc.zigui2.utils.LocalUtil;
+import com.wcyc.zigui2.utils.MyLog;
 import com.wcyc.zigui2.utils.RequestHeader;
-import com.wcyc.zigui2.utils.SignCheck;
+import com.wcyc.zigui2.utils.SPConstants;
+import com.wcyc.zigui2.utils.SPUtils;
 import com.wcyc.zigui2.widget.CustomDialog;
 
 
-import me.leolin.shortcutbadger.ShortcutBadgeException;
-import me.leolin.shortcutbadger.ShortcutBadger;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -200,6 +197,7 @@ public class CCApplication extends Application {
     private NewEmailBean recycle;
     private UserType presentUser;
     public static DBSharedPreferences dbsp;
+    public static DBSharedPreferences dbspClassAndStudent;
     public static Context applicationContext;
     // login user name
     public final String PREF_USERNAME = "username";
@@ -215,7 +213,7 @@ public class CCApplication extends Application {
     private String deviceToken = "";
     private CustomDialog dialog;
 
-    private List<NewClasses> schoolAllClassList;
+    private List<NewClasses> schoolAllClassList = null;
     //	private List<GradeMap> gradeMapList;
     private AllGradeClass allGradeClass;
     private AllTeacherList teacherList;
@@ -241,7 +239,6 @@ public class CCApplication extends Application {
     private int m_loginHandle = 0;   //标记登录是否成功   1登录成功   0登录失败
     private int m_nLastError = 0;
     private Return_Value_Info_t m_ReValue = new Return_Value_Info_t();
-    private boolean isSignCheck;
 
     public static synchronized CCApplication get() {
         return app;
@@ -254,25 +251,15 @@ public class CCApplication extends Application {
      */
     public void onCreate() {
         super.onCreate();
-
-        CrashReport.UserStrategy userStrategy = new CrashReport.UserStrategy(this);
-        userStrategy.setAppChannel("正式线");
-        CrashReport.initCrashReport(getApplicationContext(), "22415148a8", true, userStrategy); //bugly
-
-        SignCheck signCheck = new SignCheck(this, "AE:CE:E4:67:06:A8:92:4C:76:04:C8:CA:E5:C6:A4:9E:9D:B5:38:F2");
-        if (signCheck.check()) {
-            isSignCheck = true;
-        } else {
-            isSignCheck = false;
-        }
-
         //设置友盟
 //        MultiDex.install(this); // 解决小米手机 混淆
         MobclickAgent.openActivityDurationTrack(false);
         MobclickAgent.updateOnlineConfig(this);
         initPush();
         initDHMoniter();
-
+        CrashReport.UserStrategy userStrategy = new CrashReport.UserStrategy(this);
+        userStrategy.setAppChannel("正式线");
+        CrashReport.initCrashReport(getApplicationContext(), "22415148a8", true, userStrategy); //bugly
         //班牌留言缓存路径
         File futureStudioIconFile = new File(Constants.CACHE_PATH + "video-cache");
         if (!futureStudioIconFile.exists()) {
@@ -294,6 +281,7 @@ public class CCApplication extends Application {
         app = this;
         applicationContext = this;
         dbsp = new DBSharedPreferences(this);
+        dbspClassAndStudent = new DBSharedPreferences(this);
         File cacheDir = new File(savePath);
         if (!cacheDir.exists()) {
             cacheDir.mkdirs();
@@ -321,9 +309,9 @@ public class CCApplication extends Application {
             strictMode();
         }
 
-        boolean is = deleteDatabase("leavemessage.db");
+//        boolean is = deleteDatabase("leavemessage.db");
         // 创建数据库对象
-        setupDatabase();
+//        setupDatabase();
 
         //初始化Mob
         MobSDK.init(this);
@@ -404,24 +392,24 @@ public class CCApplication extends Application {
     private YWIMKit mIMKit;
 
 
-    private void setupDatabase() {
+//    private void setupDatabase() {
+//
+//        //创建数据库DB
+//        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "leavemessage.db", null);
+//        //获取写数据库
+//        SQLiteDatabase sqLiteDatabase = helper.getWritableDatabase();
+//        //从数据库获取对象
+//        DaoMaster daoMaster = new DaoMaster(sqLiteDatabase);
+//        //Dao对象管理者
+//        daoSession = daoMaster.newSession();
+//
+//    }
 
-        //创建数据库DB
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "leavemessage.db", null);
-        //获取写数据库
-        SQLiteDatabase sqLiteDatabase = helper.getWritableDatabase();
-        //从数据库获取对象
-        DaoMaster daoMaster = new DaoMaster(sqLiteDatabase);
-        //Dao对象管理者
-        daoSession = daoMaster.newSession();
-
-    }
-
-    private static DaoSession daoSession;
-
-    public static DaoSession getDaoinstant() {
-        return daoSession;
-    }
+//    private static DaoSession daoSession;
+//
+//    public static DaoSession getDaoinstant() {
+//        return daoSession;
+//    }
 
 
     private void strictMode() {
@@ -455,17 +443,18 @@ public class CCApplication extends Application {
                 System.out.println("友盟 DeviceToken:" + s);
                 CCApplication.getInstance().setDeviceToken(s);
                 //友盟注册后再注册环信
-//                initEmobNotify();
+                initEmobNotify();
             }
 
             @Override
             public void onFailure(String s, String s1) {
                 System.out.println("友盟 onFailure:" + s + " :" + s1);
-//                initEmobNotify();
+                initEmobNotify();
             }
         });
         mPushAgent.setDisplayNotificationNumber(10);
         mPushAgent.setPushIntentServiceClass(UmengPushService.class);
+
     }
 
     /**
@@ -519,18 +508,18 @@ public class CCApplication extends Application {
                 // 可以根据message的类型提示不同文字
 //				String id = message.getFrom();
 //				TextMessageBody txtBody = (TextMessageBody) message.getBody();
-                return "云智全课通发来了一条新消息";
+                return "子贵校园发来了一条新消息";
             }
 
             @Override
             public String onLatestMessageNotify(EMMessage message, int fromUsersNum, int messageNum) {
-                return "云智全课通有新的消息";
+                return "子贵校园有新的消息";
             }
 
             @Override
             public String onSetNotificationTitle(EMMessage message) {
                 //修改标题
-                return "云智全课通";
+                return "子贵校园";
             }
 
 //            @Override
@@ -580,15 +569,6 @@ public class CCApplication extends Application {
             e.printStackTrace();
         }
     }
-
-    public boolean isSignCheck() {
-        return isSignCheck;
-    }
-
-    public void setSignCheck(boolean signCheck) {
-        this.isSignCheck = signCheck;
-    }
-
 
     /**
      * 新消息广播接收者. <P>本类主要是新消息广播接受者。
@@ -910,12 +890,13 @@ public class CCApplication extends Application {
      * 保存  和获取 该学校 所有年级的所有班级
      */
     public void setSchoolAllClassList(List<NewClasses> schoolAllClassList) {
+        Log.i(TAG, "保存学生信息");
         if (schoolAllClassList != null) {
             Gson gson = new Gson();
             String data = gson.toJson(schoolAllClassList);
-            dbsp.putString("schoolAllClassList", data);
+            dbspClassAndStudent.putStringCS("schoolAllClassList", data);
         } else {
-            dbsp.putString("schoolAllClassList", null);
+            dbspClassAndStudent.putStringCS("schoolAllClassList", null);
         }
         this.schoolAllClassList = schoolAllClassList;
     }
@@ -923,7 +904,7 @@ public class CCApplication extends Application {
     public List<NewClasses> getSchoolAllClassList() {
         if (schoolAllClassList == null) {
             try {
-                String data = dbsp.getString("schoolAllClassList");
+                String data = dbspClassAndStudent.getStringCS("schoolAllClassList");
                 if (!DataUtil.isNull(data)) {
                     schoolAllClassList = new ArrayList<NewClasses>();
                     JSONArray json = new JSONArray(data);
@@ -1749,17 +1730,6 @@ public class CCApplication extends Application {
     public String getPhonePwd() {
         SharedPreferences sp = getSharedPreferences("little_data", 1);
         return sp.getString("phonePwd", "");
-//        return "123456";
-    }
-
-    /**
-     * 保存账号
-     */
-    public void savePhoneNum(String phoneNum) {
-        SharedPreferences sp = getSharedPreferences("little_data", 1);
-        Editor editor = sp.edit();
-        editor.putString("phoneNum", phoneNum);
-        editor.apply();
     }
 
     /**
@@ -1770,7 +1740,7 @@ public class CCApplication extends Application {
         Editor editor = sp.edit();
 //		editor.putString("phoneNum", phoneNum);
         editor.putString("phonePwd", phonePwd);
-        editor.apply();
+        editor.commit();
     }
 
     //	设置班级动态最新的更新图片地址
@@ -1900,6 +1870,8 @@ public class CCApplication extends Application {
         info = null;
         groupInfo = null;
         dbsp.clear();
+        dbspClassAndStudent.clear();
+        SPUtils.clear(applicationContext, SPConstants.CLASS_STUDENT_FLIE);
         //删除自己存储的数据
         SharedPreferences sp = getSharedPreferences("userData.dat", Context.MODE_PRIVATE);
         Editor editor = sp.edit();
@@ -1909,12 +1881,20 @@ public class CCApplication extends Application {
         DataUtil.cleanCacheFile();
         //数据库的信息
         try {
-            daoSession.getLeaveMessageDao().deleteAll();
-            daoSession.getChildMessageDao().deleteAll();
+            //daoSession.getLeaveMessageDao().deleteAll();
+            //daoSession.getChildMessageDao().deleteAll();
+            LeaveMessageManager leaveMessageManager = new LeaveMessageManager(CCApplication.applicationContext);
+            leaveMessageManager.getBdDaoSession(CCApplication.applicationContext).getLeaveMessageDao().deleteAll();
+            leaveMessageManager.closeDataBase();
+            leaveMessageManager = null;
+
+            ChildMessageManager childMessageManager = new ChildMessageManager(CCApplication.applicationContext);
+            childMessageManager.getBdDaoSession(CCApplication.applicationContext).getChildMessageDao().deleteAll();
+            childMessageManager.closeDataBase();
+            childMessageManager = null;
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
-
         //	DataUtil.cleanWebViewCacheFile();
     }
 
@@ -1998,11 +1978,30 @@ public class CCApplication extends Application {
     }
 
     //该功能是否可以使用
-    public boolean CouldFunctionBeUse(String functionName) {
+    public boolean CouldFunctionBeUse(String functionName, int functionNumber) {
         UserType userType = getPresentUser();
         if (userType != null && Constants.TEACHER_STR_TYPE.endsWith(userType.getUserType())) {
             return true;
         }
+
+        switch (functionNumber) {
+            case MenuItem.NOTICE_NUMBER:
+            case MenuItem.LEAVE_NUMBER:
+            case MenuItem.LEAVEPARENT_NUMBER:
+            case MenuItem.SCHOOLMASTERPARENT_NUMBER:
+            case MenuItem.EMAIL_NUMBER:
+            case MenuItem.SCHEDULE_NUMBER:
+            case MenuItem.SCHOOLMAIL_NUMBER:
+            case MenuItem.CALENDAR_NUMBER:
+            case MenuItem.TIMETABLE_NUMBER:
+            case MenuItem.COURSE_NUMBER:
+            case MenuItem.PARENTSCHOOL_NUMBER:
+            case MenuItem.WEIKE_NUMBER:
+            case MenuItem.SCHOOLNEWS_NUMBER:
+                return true;
+        }
+
+
         if ("通知".equals(functionName)
                 || "请假条".equals(functionName)
                 || "请假申请".equals(functionName)
@@ -2021,19 +2020,17 @@ public class CCApplication extends Application {
                 || "教育资讯".equals(functionName)) {
             return true;
         }
-        return isServiceExpired(functionName, 0);
+        return isServiceExpired(functionName, functionNumber, 0);
     }
 
     //该菜单是否可以使用
-    public boolean CouldFunctionBeUseFromConfig(String functionName, int b) {
+    public boolean CouldFunctionBeUseFromConfig(String functionName, int functionNumber, int b) {
         UserType userType = getPresentUser();
         if (userType != null && Constants.TEACHER_STR_TYPE.endsWith(userType.getUserType())) {
             return true;
         }
         //微课网和小学资源是在模块里面判断是否收费
-        if (MenuItem.WEIKE.equals(functionName)
-                || MenuItem.PRIMARYSCHOOL.equals(functionName)
-                || MenuItem.COURSE.equals(functionName)) {
+        if (MenuItem.WEIKE_NUMBER == functionNumber || MenuItem.PRIMARYSCHOOL_NUMBER == functionNumber || MenuItem.COURSE_NUMBER == functionNumber) {
             return true;
         }
         boolean isFree = true;
@@ -2044,7 +2041,7 @@ public class CCApplication extends Application {
             Iterator iterator = list.iterator();
             while (iterator.hasNext()) {
                 MenuConfigBean.MenuConfig menuConfig = (MenuConfigBean.MenuConfig) iterator.next();
-                if (menuConfig.getFunctionName().equals("子贵探视")) {
+                if (menuConfig.getFunctionNumber() == MenuItem.MONITER1_NUMBER || menuConfig.getFunctionNumber() == MenuItem.MONITER_NUMBER) {
                     if (menuConfig.getType().equals("4")) {
                         iterator.remove();
                     }
@@ -2052,7 +2049,7 @@ public class CCApplication extends Application {
             }
             if (list != null) {
                 for (MenuConfigBean.MenuConfig item : list) {
-                    if (item != null && functionName.equals(item.getFunctionName())) {
+                    if (item != null && functionNumber == item.getFunctionNumber()) {
                         if ("1".equals(item.getType())) {
                             isFree = true;
                         } else {
@@ -2065,13 +2062,13 @@ public class CCApplication extends Application {
         if (isFree) {
             return true;
         } else {
-            return isServiceExpired(functionName, b);
+            return isServiceExpired(functionName, functionNumber, b);
         }
     }
 
-    public boolean isServiceExpired(String functionName, int b) {
+    public boolean isServiceExpired(String functionName, int functionNumber, int b) {
         MenuAdapter.b = 2;
-        String kind = getServiceKind(functionName); //子贵探视 返回id 为1
+        String kind = getServiceKind(functionName, functionNumber); //子贵探视 返回id 为1
         ServiceExpiredBean serviceinfo = getServiceExpiredInfo();
         if (serviceinfo != null) {
             List<ServiceInfo> infoList = serviceinfo.getServiceList();
@@ -2093,9 +2090,9 @@ public class CCApplication extends Application {
         return false;
     }
 
-    public boolean isServiceExpired(String functionName) {
+    public boolean isServiceExpired(int functionNumber, String functionName) {
 
-        String kind = getServiceKind(functionName);
+        String kind = getServiceKind(functionName, functionNumber);
         ServiceExpiredBean serviceinfo = getServiceExpiredInfo();
         if (serviceinfo != null) {
             List<ServiceInfo> infoList = serviceinfo.getServiceList();
@@ -2117,8 +2114,8 @@ public class CCApplication extends Application {
         return false;
     }
 
-    public String getServiceExpired(String functionName) {
-        String kind = getServiceKind(functionName);
+    public String getServiceExpired(String functionName, int functionNumber) {
+        String kind = getServiceKind(functionName, functionNumber);
         ServiceExpiredBean serviceinfo = getServiceExpiredInfo();
         if (serviceinfo != null) {
             List<ServiceInfo> infoList = serviceinfo.getServiceList();
@@ -2134,12 +2131,17 @@ public class CCApplication extends Application {
     }
 
     //能够删除模块所有未读数__ 点击Item就可以删除相应Item上的个数
-    public boolean couldClearRemind(String typeName) {
+    public boolean couldClearRemind(int functionNumber/*String typeName*/) {
         String[] func = {"作业", "考勤", "点评", "值班查询", "校长信箱", MenuItem.CONSUME, "班牌留言",
-                "人工考勤", "宿舍考勤", "进出校考勤", "校车考勤"};
-        if (typeName == null) return false;
-        for (String str : func) {
-            if (str.equals(typeName) || str.contains(typeName)) {
+                "人工考勤", "宿舍考勤", "进出校考勤", "校车考勤", "班级动态"};
+
+        int[] funcNumber = {MenuItem.HOMEWORK_NUMBER, MenuItem.ATTENDANCE_NUMBER, MenuItem.COMMENT_NUMBER, MenuItem.ATTENDANCE_INQUIRE_NUMBER, MenuItem.SCHOOLMAIL_NUMBER, MenuItem.CONSUME_NUMBER, MenuItem.LEAVE_MESSAGE_NUMBER, MenuItem.MANUAL_ATTE_NUMBER, MenuItem.DORMITORY_ATTE_NUMBER
+                , MenuItem.OUTINTO_SOL_ATTE_NUMBER, MenuItem.SCHOOL_BUS_ATTE_NUMBER, MenuItem.DYNAMICS_NUMBER};
+
+
+//        if (typeName == null) return false;
+        for (int str : funcNumber) {
+            if (functionNumber == str) {
                 return true;
             }
         }
@@ -2147,17 +2149,22 @@ public class CCApplication extends Application {
     }
 
     //需要支付才可以查看___支付了之后需要确认
-    public String getServiceKind(String functionName) {
-        String[] service = {"通知", "邮件", "作业", "考勤", "点评", "成绩",
-                "课程表", "请假条", MenuItem.CONSUME, "校长信箱", "校历", "作息时间", "班级动态"
-                , MenuItem.PARENTSCHOOL, MenuItem.SCHOOLNEWS, "班牌留言", "人工考勤", "宿舍考勤", "校车考勤", "进出校考勤", "常用网址", "兴趣班选课", "缴费", MenuItem.ONE_CARD};
+    public String getServiceKind(String functionName, int functionNumber) {
+//        String[] service = {"通知", "邮件", "作业", "考勤", "点评", "成绩",
+//                "课程表", "请假条", MenuItem.CONSUME, "校长信箱", "校历", "作息时间", "班级动态"
+//                , MenuItem.PARENTSCHOOL, MenuItem.SCHOOLNEWS, "班牌留言", "人工考勤", "宿舍考勤", "校车考勤", "进出校考勤", "常用网址", "兴趣班选课", "缴费", MenuItem.ONE_CARD};
+        int[] serviceNumber = {MenuItem.NOTICE_NUMBER, MenuItem.EMAIL_NUMBER, MenuItem.HOMEWORK_NUMBER, MenuItem.ATTENDANCE_NUMBER, MenuItem.COMMENT_NUMBER, MenuItem.SCORE_NUMBER, MenuItem.SCHEDULE_NUMBER, MenuItem.LEAVE_NUMBER, MenuItem.CONSUME_NUMBER, MenuItem.SCHOOLMAIL_NUMBER
+                , MenuItem.CALENDAR_NUMBER, MenuItem.TIMETABLE_NUMBER, MenuItem.DYNAMICS_NUMBER, MenuItem.PARENTSCHOOL_NUMBER, MenuItem.SCHOOLNEWS_NUMBER, MenuItem.LEAVE_MESSAGE_NUMBER, MenuItem.MANUAL_ATTE_NUMBER, MenuItem.DORMITORY_ATTE_NUMBER, MenuItem.SCHOOL_BUS_ATTE_NUMBER,
+                MenuItem.OUTINTO_SOL_ATTE_NUMBER, MenuItem.WEBSITE_NUMBER, MenuItem.INTEREST_COURSE_NUMBER, MenuItem.PAYMENT_NUMBER, MenuItem.ONE_CARD_NUMBER};
+
+
         String[] resource = {"年级套餐", "同步学习", "同步试题", "推荐课程"};
         //小学资源
         String[] primaryResource = {"同步练习", "专项练习", "在线课程", "口算王",
                 "听写助手", "汉语大词典", "汉字笔画"};
 
-        for (String str : service) {
-            if (str.equals(functionName) || str.contains(functionName)) {
+        for (int str : serviceNumber) {
+            if (str == functionNumber) {
                 return "1";//家校服务
             }
         }
@@ -2171,25 +2178,31 @@ public class CCApplication extends Application {
                 return "5";
             }
         }
-        if ("子贵课堂".equals(functionName)) {
+        if ("子贵课堂".equals(functionName) || MenuItem.COURSE_NUMBER == functionNumber) {
             return "3";//子贵课堂
-        } else if ("子贵探视".equals(functionName)) {
+        } else if ("子贵探视".equals(functionName) || MenuItem.MONITER_NUMBER == functionNumber || MenuItem.MONITER1_NUMBER == functionNumber) {
             return "1"; //现在子贵探视也属于 个性服务 serviceId=1
         }
         return "";
     }
 
-    public Integer getIntegerServiceKind2(String functionName) { //新的对应关系
-        String[] service = {"通知", "邮件", "作业", "考勤", "点评", "成绩",
-                "课程表", "请假条", MenuItem.CONSUME, "校长信箱", "校历", "作息时间", "班级动态"
-                , MenuItem.PARENTSCHOOL, MenuItem.SCHOOLNEWS, "班牌留言", "人工考勤", "宿舍考勤", "校车考勤", "进出校考勤", "常用网址", "兴趣班选课", "缴费", "子贵探视", MenuItem.ONE_CARD};
+    public Integer getIntegerServiceKind2(String functionName, int functionNumber) { //新的对应关系
+//        String[] service = {"通知", "邮件", "作业", "考勤", "点评", "成绩",
+//                "课程表", "请假条", MenuItem.CONSUME, "校长信箱", "校历", "作息时间", "班级动态"
+//                , MenuItem.PARENTSCHOOL, MenuItem.SCHOOLNEWS, "班牌留言", "人工考勤", "宿舍考勤", "校车考勤", "进出校考勤", "常用网址", "兴趣班选课", "缴费", "子贵探视", MenuItem.ONE_CARD};
+
+
+        int[] serviceNumber = {MenuItem.NOTICE_NUMBER, MenuItem.EMAIL_NUMBER, MenuItem.HOMEWORK_NUMBER, MenuItem.ATTENDANCE_NUMBER, MenuItem.COMMENT_NUMBER, MenuItem.SCORE_NUMBER, MenuItem.SCHEDULE_NUMBER, MenuItem.LEAVE_NUMBER, MenuItem.CONSUME_NUMBER, MenuItem.SCHOOLMAIL_NUMBER
+                , MenuItem.CALENDAR_NUMBER, MenuItem.TIMETABLE_NUMBER, MenuItem.DYNAMICS_NUMBER, MenuItem.PARENTSCHOOL_NUMBER, MenuItem.SCHOOLNEWS_NUMBER, MenuItem.LEAVE_MESSAGE_NUMBER, MenuItem.MANUAL_ATTE_NUMBER, MenuItem.DORMITORY_ATTE_NUMBER, MenuItem.SCHOOL_BUS_ATTE_NUMBER,
+                MenuItem.OUTINTO_SOL_ATTE_NUMBER, MenuItem.WEBSITE_NUMBER, MenuItem.INTEREST_COURSE_NUMBER, MenuItem.PAYMENT_NUMBER, MenuItem.MONITER_NUMBER, MenuItem.MONITER1_NUMBER, MenuItem.ONE_CARD_NUMBER};
+
         String[] resource = {"微课网", "年级套餐", "同步学习", "同步试题", "推荐课程"};
         //小学资源
         String[] primaryResource = {"小学宝", "小学资源", "同步练习", "专项练习", "在线课程", "口算王",
                 "听写助手", "汉语大词典", "汉字笔画"};
 
-        for (String str : service) {
-            if (str.equals(functionName) || str.contains(functionName)) {
+        for (int str : serviceNumber) {
+            if (str == functionNumber) {
                 return 1;//个性服务
             }
         }
@@ -2569,9 +2582,10 @@ public class CCApplication extends Application {
 //		new LoadConfigTask().execute();
         PolyvSDKClient client = PolyvSDKClient.getInstance();
         //使用SDK加密串来配置
-        client.setConfig("5LRvSl9xppuvHXYX4pc/7hwlLqoH67i13aiXKW13nHlnHj//oEUlWJ6bwwf2UgLYTBgK0cMDiYPOUlcIfH5viHq2IkCVCfrIzaG2X4pX1tvhCEubSjjhjgl/QIvnHho1jS6AWZdNWPKlmntJIdUA==", aeskey, iv, getApplicationContext());  //正式
-        //    client.setConfig("AJhmwduphe2AoXohVGUfWteFKsbhOq2MF6m+UhvfcIp8cCY2vHYcN3wfbE0EYiFlC4wNn6nMRTxYPyFuxXtNVmxE3ZvERsOJoToX2+M6PvOI59kCs7LE8DX/iF/SLYDf5fe7veAKTwca55ZocIAcDg==", aeskey, iv, getApplicationContext()); //测试
-        // client.setConfig("CMWht3MlpVkgpFzrLNAebYi4RdQDY/Nhvk3Kc+qWcck6chwHYKfl9o2aOVBvXVTRZD/14XFzVP7U5un43caq1FXwl0cYmTfimjTmNUYa1sZC1pkHE8gEsRpwpweQtEIiTGVEWrYVNo4/o5jI2/efzA==", aeskey, iv, getApplicationContext());
+
+        //配置保利威视
+        client.setConfig(Constants.POLYV, aeskey, iv, getApplicationContext());
+
         //初始化SDK设置
         client.initSetting(getApplicationContext());
         //启动Bugly
@@ -2642,50 +2656,83 @@ public class CCApplication extends Application {
         }
     }
 
-    //和教育数据存储
-    private HeEducationUserBean heEducationUserBean;
+    //阿里最新一条消息
+    private NewMessageBean aliMessageContainer;
 
-    public void setHeEducationDetail(String data) {
-        if (data != null) {
-            heEducationUserBean = JsonUtils.fromJson(data, HeEducationUserBean.class);
+    public void setAliLastMessage(NewMessageBean aliMessageContainer) {
+        if (aliMessageContainer != null) {
+            Gson gson = new Gson();
+            this.aliMessageContainer = aliMessageContainer;
+            try {
+                String data = gson.toJson(aliMessageContainer);
+                dbsp.putString("aliMessageContainer", data);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
-            heEducationUserBean = null;
+            dbsp.putString("aliMessageContainer", null);
         }
-        dbsp.putString("HeEducationUser", data);
+        this.aliMessageContainer = aliMessageContainer;
     }
 
-    public HeEducationUserBean getHeEducationDetail() {
-        if (heEducationUserBean == null) {
-            String member = dbsp.getString("HeEducationUser");
-            if (!DataUtil.isNull(member)) {
-                heEducationUserBean = JsonUtils.fromJson(member, HeEducationUserBean.class);
+    public NewMessageBean getAliLastMessage() {
+        if (aliMessageContainer == null) {
+            String data = dbsp.getString("aliMessageContainer");
+            if (!DataUtil.isNull(data)) {
+                aliMessageContainer = JsonUtils.fromJson(data, NewMessageBean.class);
             }
         }
-        return heEducationUserBean;
+        return aliMessageContainer;
     }
 
 
-    private String appToken;
+    private LauncherInfoBean launcherInfoBean;
 
-    public void setAppToken(String appToken) {
-        dbsp.putString("appToken", appToken);
-    }
-
-
-    public String getAppToken() {
-        appToken = dbsp.getString("appToken");
-        if (appToken != null) {
-            return appToken;
+    /**
+     * 存储学校启动页信息
+     */
+    public void setLauncherInfo(LauncherInfoBean launcherInfoBean) {
+        if (launcherInfoBean != null) {
+            Gson gson = new Gson();
+            this.launcherInfoBean = launcherInfoBean;
+            try {
+                String data = gson.toJson(launcherInfoBean);
+                dbsp.putString("launcherInfoBean", data);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
-            return "";
+            dbsp.putString("launcherInfoBean", null);
         }
+        this.launcherInfoBean = launcherInfoBean;
     }
 
-    public void setHeAutoLogin(boolean flag) {
-        dbsp.putBoolean("heLogin", flag);
+    /**
+     * 获取学校启动页信息
+     */
+    public LauncherInfoBean getLauncherInfo() {
+        if (launcherInfoBean == null) {
+            String data = dbsp.getString("launcherInfoBean");
+            if (!DataUtil.isNull(data)) {
+                launcherInfoBean = JsonUtils.fromJson(data, LauncherInfoBean.class);
+            }
+        }
+        return launcherInfoBean;
     }
 
-    public boolean getHeAutoLogin() {
-        return dbsp.getBoolean("heLogin");
+    /**
+     * 存储默认学校
+     */
+    public void setDefaultLauncherInfo() {
+        CCApplication.dbsp.putString("default_launcher_picture", "zigui");
+    }
+
+    /**
+     * 获取默认学校信息
+     *
+     * @return
+     */
+    public String getDefautLauncherInfo() {
+        return CCApplication.dbsp.getString("default_launcher_picture");
     }
 }

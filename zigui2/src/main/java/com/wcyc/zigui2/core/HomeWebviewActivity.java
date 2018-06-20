@@ -108,7 +108,7 @@ public class HomeWebviewActivity extends TaskBaseActivity implements
 	}
 
 	/**
-	 * button点击效果
+	 * button点击事件
 	 * 
 	 * @param view
 	 */

@@ -120,7 +120,7 @@ public class SlideListView extends ListView{
 			xDown = x;
 			yDown = y;
 			/**
-			 * 如果当前popupWindow显示，则直接隐藏，然后屏蔽ListView的touch效果的下传
+			 * 如果当前popupWindow显示，则直接隐藏，然后屏蔽ListView的touch事件的下传
 			 */
 			if (mPopupWindow.isShowing())
 			{
@@ -199,7 +199,7 @@ public class SlideListView extends ListView{
 				isSliding = false;
 
 			}
-			// 相应滑动期间屏幕itemClick效果，避免发生冲突
+			// 相应滑动期间屏幕itemClick事件，避免发生冲突
 			return true;
 		}
 		return super.onTouchEvent(ev);

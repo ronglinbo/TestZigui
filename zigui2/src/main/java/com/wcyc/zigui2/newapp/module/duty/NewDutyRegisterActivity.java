@@ -143,7 +143,7 @@ public class NewDutyRegisterActivity extends BaseActivity implements
 		}
 	}
 
-	// 设置点击效果监听器
+	// 设置点击事件监听器
 	private void initEvents() {
 		title2_off.setVisibility(View.VISIBLE);
 		title2_off.setOnClickListener(this);
@@ -239,7 +239,7 @@ public class NewDutyRegisterActivity extends BaseActivity implements
 	private void exitOrNot(){
 		dialog = new CustomDialog(this, R.style.mystyle,
 				R.layout.customdialog, handler);
-		dialog.setCanceledOnTouchOutside(true);
+		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
 		dialog.setTitle("退出此次编辑?");
 		dialog.setContent("");
@@ -259,7 +259,7 @@ public class NewDutyRegisterActivity extends BaseActivity implements
 	}
 	
 	/**
-	 * 控制CustomDialog按钮效果.
+	 * 控制CustomDialog按钮事件.
 	 */
 	Handler handler = new Handler() {
 		public void dispatchMessage(android.os.Message msg) {
@@ -445,7 +445,7 @@ public class NewDutyRegisterActivity extends BaseActivity implements
 				}
 			}
 		});
-		//学校效果记载编辑框监听
+		//学校事件记载编辑框监听
 		school_event_record_et.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void afterTextChanged(Editable s) {

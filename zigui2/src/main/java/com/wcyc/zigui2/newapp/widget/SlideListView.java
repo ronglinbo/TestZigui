@@ -105,7 +105,7 @@ public class SlideListView extends ListView
 	private GestureDetector gesture;
 	
 	/** 
-	* 点击删除按钮时删除每一行的效果监听器
+	* 点击删除按钮时删除每一行的事件监听器 
 	*/  
 	private OnItemDeleteListener onItemDeleteListener; 
 
@@ -197,7 +197,7 @@ public class SlideListView extends ListView
 				isSliding = false;
 
 			}
-			// 相应滑动期间屏幕itemClick效果，避免发生冲突
+			// 相应滑动期间屏幕itemClick事件，避免发生冲突
 			return true;
 		}
 
@@ -216,8 +216,8 @@ public class SlideListView extends ListView
 			isDeleteShow = false;  
 			return false;  
 		}else{  
-		//如果按钮没显示，则触发手势效果
-		//由此去触发GestureDetector的效果，可以查看其源码得知，onTouchEvent中进行了手势判断，调用onFling
+		//如果按钮没显示，则触发手势事件  
+		//由此去触发GestureDetector的事件，可以查看其源码得知，onTouchEvent中进行了手势判断，调用onFling  
 			return gesture.onTouchEvent(event);  
 		}  
 	}  
@@ -227,7 +227,7 @@ public class SlideListView extends ListView
 		//如果删除按钮没有显示，并且手势滑动符合我们的条件  
 		//此处可以根据需要进行手势滑动的判断，如限制左滑还是右滑，我这里是左滑右滑都可以  
 		if (!isDeleteShow && Math.abs(velocityX) > Math.abs(velocityY)) {  
-			//在当前布局上，动态添加我们的删除按钮，设置按钮的各种参数、效果，按钮的点击效果响应我们的删除项监听器
+			//在当前布局上，动态添加我们的删除按钮，设置按钮的各种参数、事件，按钮的点击事件响应我们的删除项监听器  
 			btnDelete = LayoutInflater.from(getContext()).inflate(R.layout.btn_delete, null);  
 			btnDelete.setOnClickListener(new OnClickListener() {  
 			

@@ -6,6 +6,7 @@ import com.wcyc.zigui2.R;
 
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,8 +76,7 @@ public class NewWagesDetailsAdapter extends BaseAdapter  {
 		}
 		
 		viewholder.new_wages_details_name_tv.setText(wagesDetailsList.get(position).getKey());
-		viewholder.new_wages_details_money_tv.setText(wagesDetailsList.get(position).getValue());
-		
+		viewholder.new_wages_details_money_tv.setText("¥"+wagesDetailsList.get(position).getValue());
 		return convertView;
 	}
 

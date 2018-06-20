@@ -22,7 +22,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="47dp"
             android:layout_weight="1"
-            android:src="@drawable/logo_01" />
+            android:src="@drawable/login_logo" />
     </LinearLayout>
     
     <LinearLayout
@@ -121,7 +121,7 @@
         android:id="@+id/loginactivity_tv_forgetpassword"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignRight="@+id/loginactivity_btn_login"
         android:layout_below="@+id/loginactivity_et"
         android:layout_gravity="center"

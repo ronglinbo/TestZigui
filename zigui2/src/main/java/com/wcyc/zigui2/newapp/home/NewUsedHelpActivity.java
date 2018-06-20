@@ -82,7 +82,7 @@ public class NewUsedHelpActivity extends BaseActivity implements HttpRequestAsyn
 	}
 	
 	/**
-	 * 效果控制
+	 * 事件控制
 	 */
 
 	private void initEvents() {

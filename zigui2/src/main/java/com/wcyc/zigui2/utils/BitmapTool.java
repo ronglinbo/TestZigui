@@ -112,15 +112,15 @@ public class BitmapTool {
 		return BitmapTool.getBitmapByPath(path, BitmapTool.getOptions(path),
 				dm.widthPixels, dm.heightPixels);
 	}
-	
+
 	//保存图片
 	public static File saveImage(Context context,Bitmap bm,String name) throws IOException {
-		String subForder = Environment.getExternalStorageDirectory()+"/ZIGUI_Photos/";
+		String subForder = Environment.getExternalStorageDirectory()+"/ZIGUI_TEMP/";
 		File foder = new File(subForder);
 		if (!foder.exists()) {
 			foder.mkdirs();
 		}
-		
+
 		File file = new File(subForder, name);
 		if (!file.exists()) {
 			file.createNewFile();
@@ -129,12 +129,12 @@ public class BitmapTool {
 		bm.compress(Bitmap.CompressFormat.JPEG, 100, bos);
 		bos.flush();
 		bos.close();
-	
+
 		Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
 		Uri uri = Uri.fromFile(file);
 		intent.setData(uri);
 		context.sendBroadcast(intent);
-		
+
 		return file;
 	}
 

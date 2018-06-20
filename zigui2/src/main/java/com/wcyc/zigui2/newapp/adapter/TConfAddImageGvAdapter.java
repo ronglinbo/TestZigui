@@ -1,11 +1,11 @@
-/**   
- * 文件名：com.wcyc.zigui.adapter.TConfAddImageGvAdapter.java   
- *   
- * 版本信息：   
- * 日期：2014年10月15日 下午8:27:37  
+/**
+ * 文件名：com.wcyc.zigui.adapter.TConfAddImageGvAdapter.java
+ *
+ * 版本信息：
+ * 日期：2014年10月15日 下午8:27:37
  * Copyright 2014-2015 惟楚有有才网络股份有限公司
- * 版权所有   
- *   
+ * 版权所有
+ *
  */
 
 package com.wcyc.zigui2.newapp.adapter;
@@ -44,7 +44,7 @@ public class TConfAddImageGvAdapter extends BaseAdapter {
 
 	/**
 	 * 创建一个新的实例 TConfAddImageGvAdapter.
-	 * 
+	 *
 	 * @param context
 	 * @param imagePaths
 	 */
@@ -86,7 +86,7 @@ public class TConfAddImageGvAdapter extends BaseAdapter {
 		holder.photo = (ImageView) convertView
 				.findViewById(R.id.classinteraction_gridview_item_image);
 		convertView.setTag(holder);
-		
+
 		if (position >= imagePaths.size() -1) {
 			holder.photo.setImageResource(R.drawable.notification_addimage);
 			holder.photo.setTag("");
@@ -102,7 +102,7 @@ public class TConfAddImageGvAdapter extends BaseAdapter {
 			holder.deleteIv.setImageResource(R.drawable.delete_image);
 			holder.deleteIv.setVisibility(View.VISIBLE);
 		}
-		
+
 		holder.deleteIv.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -129,7 +129,7 @@ public class TConfAddImageGvAdapter extends BaseAdapter {
         if (imagePaths != null && !imagePaths.isEmpty()) {
         	imagePaths.clear();
         }else{
-        	imagePaths = new ArrayList<String>();	
+        	imagePaths = new ArrayList<String>();
         }
 		if(imagePath == null){
 			imagePaths.add("");

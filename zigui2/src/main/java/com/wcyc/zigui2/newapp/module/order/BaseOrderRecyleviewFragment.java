@@ -69,8 +69,8 @@ public abstract class BaseOrderRecyleviewFragment<T> extends Fragment implements
                 mSwipeRefreshLayout = (SwipeRefreshLayout) layoutView.findViewById(R.id.srl);
                 mRecyclerView = (RecyclerView) layoutView.findViewById(R.id.recyclerView);
                 mSwipeRefreshLayout = (SwipeRefreshLayout) layoutView.findViewById(R.id.srl);
-                // 刷新监听效果，必须有
-                // 刷新监听效果，必须有
+                // 刷新监听事件，必须有
+                // 刷新监听事件，必须有
                 mSwipeRefreshLayout.setOnRefreshListener(this);
 
 
@@ -124,7 +124,7 @@ public abstract class BaseOrderRecyleviewFragment<T> extends Fragment implements
     public abstract void initDatas();
 
     /**
-     * 效果控制.
+     * 事件控制.
      */
     public abstract void initEvents();
 
@@ -159,7 +159,7 @@ public abstract class BaseOrderRecyleviewFragment<T> extends Fragment implements
     }
 
     /**
-     * Resume效果.
+     * Resume事件.
      */
     @Override
     public void onResume() {
@@ -173,7 +173,7 @@ public abstract class BaseOrderRecyleviewFragment<T> extends Fragment implements
 
     }
 
-    // RecyclerView的滑动监听效果
+    // RecyclerView的滑动监听事件
     private RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
         private int lastVisibleItem;
 

@@ -59,14 +59,14 @@ public class VideoFileUploadAsyncTask extends AsyncTask<String, Integer, String>
 
     public VideoFileUploadAsyncTask(Context context, String Type, List<String> fileList, String requestUrl,
                                     ImageUploadAsyncTaskListener mImageUploadAsyncTaskListener) {
-    	
+
     	this.mImageUploadAsyncTaskListener = mImageUploadAsyncTaskListener;
         this.context = context;
         this.fileList = fileList;
         this.requestUrl = requestUrl;
         this.Type = Type;
     }
- 
+
     @Override
     protected void onPreExecute() {
     	pd = new ProgressDialog(context);
@@ -84,7 +84,7 @@ public class VideoFileUploadAsyncTask extends AsyncTask<String, Integer, String>
 		pd.getWindow().setGravity(Gravity.CENTER);
 		pd.getWindow().setBackgroundDrawableResource(R.color.transparent);
     }
- 
+
     @Override
     protected String doInBackground(String... params) {
         String serverResponse = null;
@@ -104,7 +104,7 @@ public class VideoFileUploadAsyncTask extends AsyncTask<String, Integer, String>
                             publishProgress((int) ((num / (float) totalSize) * 100));
                         }
                     });
-            
+
             multipartContent.addPart("dirType",new StringBody(Type));
 
             if (!isSingle) {
@@ -128,7 +128,7 @@ public class VideoFileUploadAsyncTask extends AsyncTask<String, Integer, String>
                 multipartContent.addPart("fileName", new StringBody(filename,
                         Charset.forName("UTF-8")));
             }
-            
+
             totalSize = multipartContent.getContentLength();
             httpPost.setEntity(multipartContent);
             HttpResponse response = httpClient.execute(httpPost, httpContext);
@@ -170,7 +170,7 @@ public class VideoFileUploadAsyncTask extends AsyncTask<String, Integer, String>
     @Override
     protected void onProgressUpdate(Integer... progress) {
     }
- 
+
     @Override
     protected void onPostExecute(String result) {
     	dismissPd();
@@ -178,7 +178,7 @@ public class VideoFileUploadAsyncTask extends AsyncTask<String, Integer, String>
     		mImageUploadAsyncTaskListener.onImageUploadComplete(result);
     	}
     }
-    
+
     @Override
     protected void onCancelled() {
     	dismissPd();

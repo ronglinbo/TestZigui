@@ -126,6 +126,10 @@ public class ChatLoginService extends Service
 //        loginHx(username, password);
 
         //登录阿里百川
+        //获取到sdk对象
+
+        //如果账号为空__有提示
+
         if (!DataUtil.isNullorEmpty(username) && !DataUtil.isNullorEmpty(password)) {
             final YWIMKit mIMKit = YWAPI.getIMKitInstance(username, Constants.BAI_CHUAN_APPKEY);
 
@@ -277,7 +281,7 @@ public class ChatLoginService extends Service
                 json.put("userId", user.getUserId());
                 String type = user.getUserType();
                 json.put("userType", type);
-                if (Constants.PARENT_STR_TYPE.equals(type)) {
+                if (type.equals(Constants.PARENT_STR_TYPE)) {
                     json.put("childId", user.getChildId());
                 }
                 System.out.println("AllMessageFragment getNewMessage:" + json);
@@ -670,7 +674,7 @@ public class ChatLoginService extends Service
                         }
                     }
                 }
-                if (!DataUtil.isFunctionEnable(name))
+                if (!DataUtil.isFunctionEnable(MenuItem.nameToNumber(name)))
                     continue;
                 //合并消息（22，24，25）为业务办理
                 if (messageType.equals(Constants.LEAVE)//请假审批

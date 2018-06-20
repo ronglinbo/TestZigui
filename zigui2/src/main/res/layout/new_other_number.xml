@@ -4,17 +4,17 @@
     android:layout_height="match_parent"
     android:background="@color/background_color"
     android:gravity="center_horizontal"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <include layout="@layout/new_title3" />
 
     <ListView
         android:id="@+id/other_number_lv"
-        android:layout_marginTop="20dp"
-        android:dividerHeight="0.5dp"
-        android:divider="#f5f5f5"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:divider="#f5f5f5"
+        android:dividerHeight="0.5dp">
 
     </ListView>
 

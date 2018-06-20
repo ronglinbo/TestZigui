@@ -174,7 +174,7 @@ public class TimeBarHorizontalScrollView extends HorizontalScrollView implements
     }
 
     /**
-     * 滚动效果监听器
+     * 滚动事件监听器
      * 
      * @author mlianghua
      * @Data 2013-1-14

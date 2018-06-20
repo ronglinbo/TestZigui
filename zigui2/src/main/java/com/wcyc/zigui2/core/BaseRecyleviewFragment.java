@@ -107,8 +107,8 @@ public abstract class BaseRecyleviewFragment<T> extends Fragment implements View
         mSwipeRefreshLayout = (SwipeRefreshLayout) layoutView.findViewById(R.id.srl);
         mRecyclerView = (RecyclerView) layoutView.findViewById(R.id.recyclerView);
         mSwipeRefreshLayout = (SwipeRefreshLayout) layoutView.findViewById(R.id.srl);
-        // 刷新监听效果，必须有
-        // 刷新监听效果，必须有
+        // 刷新监听事件，必须有
+        // 刷新监听事件，必须有
         mSwipeRefreshLayout.setOnRefreshListener(this);
         addmRecyclerViewItemLongclick();
         setmRecyclerViewPadding();
@@ -149,9 +149,9 @@ public abstract class BaseRecyleviewFragment<T> extends Fragment implements View
     public void setmOnItemClickListener(OnItemClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
     }
-    //长按效果
+    //长按事件
         public void addmRecyclerViewItemLongclick() {
-            //以下是添加点击、长按效果的关键代码
+            //以下是添加点击、长按事件的关键代码
 
             mRecyclerView.addOnItemTouchListener(new RecyclerView.SimpleOnItemTouchListener() {
                 @Override
@@ -163,7 +163,7 @@ public abstract class BaseRecyleviewFragment<T> extends Fragment implements View
                 }
             });
             mGestureDetector = new GestureDetector(getActivity(), new GestureDetector.SimpleOnGestureListener() {
-                //长按效果
+                //长按事件
                 @Override
                 public void onLongPress(MotionEvent e) {
                     super.onLongPress(e);
@@ -176,7 +176,7 @@ public abstract class BaseRecyleviewFragment<T> extends Fragment implements View
                     }
                 }
 
-                //单击效果
+                //单击事件
                 @Override
                 public boolean onSingleTapUp(MotionEvent e) {
                     if (mOnItemClickListener != null) {
@@ -195,12 +195,12 @@ public abstract class BaseRecyleviewFragment<T> extends Fragment implements View
         }
 
 
-    //长按效果接口
+    //长按事件接口
     public interface OnItemLongClickListener {
         public void onItemLongClick(int position, View childView);
     }
 
-    //单击效果接口
+    //单击事件接口
     public interface OnItemClickListener {
         public void onItemClick(int position, View childView);
     }
@@ -229,7 +229,7 @@ public abstract class BaseRecyleviewFragment<T> extends Fragment implements View
     public abstract void initDatas();
 
     /**
-     * 效果控制.
+     * 事件控制.
      */
     public abstract void initEvents();
 
@@ -269,7 +269,7 @@ public abstract class BaseRecyleviewFragment<T> extends Fragment implements View
     }
 
     /**
-     * Resume效果.
+     * Resume事件.
      */
     @Override
     public void onResume() {
@@ -283,7 +283,7 @@ public abstract class BaseRecyleviewFragment<T> extends Fragment implements View
 
     }
 
-    // RecyclerView的滑动监听效果
+    // RecyclerView的滑动监听事件
     private RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
         private int lastVisibleItem;
 

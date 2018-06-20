@@ -5,7 +5,7 @@ import  android.content.Context;
         import android.widget.ScrollView;
 
 /**
- * 监听ScrollView滚动到顶部或者底部做相关效果拦截
+ * 监听ScrollView滚动到顶部或者底部做相关事件拦截
  */
 public class SmartScrollView extends ScrollView {
 

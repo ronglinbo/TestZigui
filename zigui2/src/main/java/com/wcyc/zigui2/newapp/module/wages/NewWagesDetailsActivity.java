@@ -9,6 +9,8 @@ import org.json.JSONObject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
@@ -35,6 +37,8 @@ import com.wcyc.zigui2.widget.MyListView;
  */
 public class NewWagesDetailsActivity extends BaseActivity implements
 		OnClickListener {
+
+	String TAG="NewWagesDetailsTAG";
 
 	private LinearLayout title_back;
 	private TextView new_content;
@@ -115,7 +119,7 @@ public class NewWagesDetailsActivity extends BaseActivity implements
 
 	}
 
-	// 设置点击效果监听器
+	// 设置点击事件监听器
 	private void initEvents() {
 		title_back.setVisibility(View.VISIBLE);
 		title_back.setOnClickListener(this);
@@ -135,6 +139,7 @@ public class NewWagesDetailsActivity extends BaseActivity implements
 
 	@Override
 	protected void getMessage(String data) {
+		Log.i(TAG,"工资详情返回数据："+data);
 		NewBaseBean ret = JsonUtils.fromJson(data, NewBaseBean.class);
 		if (ret.getServerResult().getResultCode() != 200) {// 请求失败
 			DataUtil.getToast(ret.getServerResult().getResultMessage());
@@ -149,7 +154,9 @@ public class NewWagesDetailsActivity extends BaseActivity implements
 						NewWagesDetailsBean newWagesDetailsBean = JsonUtils
 								.fromJson(json2.get(i).toString(),
 										NewWagesDetailsBean.class);
-						newWagesDetailsBeanList.add(newWagesDetailsBean);
+						if(!TextUtils.isEmpty(newWagesDetailsBean.getValue())){
+							newWagesDetailsBeanList.add(newWagesDetailsBean);
+						}
 					}
 				}
 				// 设置adapter

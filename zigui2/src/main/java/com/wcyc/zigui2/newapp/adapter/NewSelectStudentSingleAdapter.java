@@ -32,6 +32,7 @@ import com.wcyc.zigui2.widget.RoundImageView;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -88,7 +89,9 @@ public class NewSelectStudentSingleAdapter extends BaseExpandableListAdapter{
 		this.studentList = studentList;
 		this.v = v;
 		this.cList=cList;
+		Log.i("临时TAG","处理数据7777");
 		initDatas();
+		Log.i("临时TAG","处理数据8888");
 	}
 	
 	private boolean isClassIdExist(List<NewClasses> classlist,String classId){
@@ -102,11 +105,13 @@ public class NewSelectStudentSingleAdapter extends BaseExpandableListAdapter{
 	}
 	
 	public void initDatas(){
+		Log.i("临时TAG","处理数据77771111");
 //		classList.get(0).ge
 		cList_aa=CCApplication.app.getMemberDetail().getClassList();
 		if(cList_aa==null||cList_aa.size()==0){
 			cList_aa=cList;
 		}
+		Log.i("临时TAG","处理数据77772222");
 		if (cList_aa != null) {//去重复
 			classList = new ArrayList<NewClasses>();
 			
@@ -122,6 +127,7 @@ public class NewSelectStudentSingleAdapter extends BaseExpandableListAdapter{
 //					classList=schoolAllClassList;
 //				}
 //			}
+			Log.i("临时TAG","处理数据77773333");
 			if(classList.get(0).getContactList()==null){
 				for (int i = 0; i < classList.size(); i++) {
 					
@@ -133,7 +139,9 @@ public class NewSelectStudentSingleAdapter extends BaseExpandableListAdapter{
 						json.put("classId", classId);
 						//请求地址
 						String url = new StringBuilder(Constants.SERVER_URL).append(http_getClassStudentList).toString();
+						Log.i("临时TAG","处理数据777744444");
 						String result = HttpHelper.httpPostJson(activity,url, json);
+						Log.i("临时TAG","处理数据777755555");
 						JSONObject json3 = new JSONObject(result);
 
 						//活动学生list
@@ -195,7 +203,7 @@ public class NewSelectStudentSingleAdapter extends BaseExpandableListAdapter{
 		viewHolder.avatar.setImageResource(R.drawable.pho_touxiang);
 		if(list.getImgUrl()!=null){
 			String url = DataUtil.getDownloadURL(myContext, list.getImgUrl());
-			((BaseActivity) myContext).getImageLoader().displayImage(url, viewHolder.avatar, 
+			((BaseActivity) myContext).getImageLoader().displayImage(url, viewHolder.avatar,
 					((BaseActivity) myContext).getImageLoaderOptions());
 		}
 		

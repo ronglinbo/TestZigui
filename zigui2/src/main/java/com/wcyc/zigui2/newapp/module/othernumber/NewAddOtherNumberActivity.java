@@ -114,7 +114,7 @@ public class NewAddOtherNumberActivity extends BaseActivity implements OnClickLi
     }
 
     /**
-     * 设置点击效果监听器
+     * 设置点击事件监听器
      */
     private void initEvents() {
         title_back.setOnClickListener(this);
@@ -260,7 +260,7 @@ public class NewAddOtherNumberActivity extends BaseActivity implements OnClickLi
     }
 
     /**
-     * 点击效果. 当点击视图中的标题按钮，则表明
+     * 点击事件. 当点击视图中的标题按钮，则表明
      *
      * @param v 点击的视图
      */

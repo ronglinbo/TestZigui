@@ -210,14 +210,14 @@ public class NewMyFragment extends Fragment implements
             vip_services_ll.setVisibility(View.GONE);
             recharge_center_ll.setVisibility(View.GONE);
         } else {
-            vip_services_ll.setVisibility(View.GONE);
-            recharge_center_ll.setVisibility(View.GONE);
+            vip_services_ll.setVisibility(View.VISIBLE);
+            recharge_center_ll.setVisibility(View.VISIBLE);
         }
 
     }
 
     /**
-     * 效果控制.
+     * 事件控制.
      */
     private void initEvents() {
         myDetail.setOnClickListener(this);
@@ -266,7 +266,7 @@ public class NewMyFragment extends Fragment implements
     }
 
     /**
-     * Resume效果.
+     * Resume事件.
      */
     @Override
     public void onResume() {

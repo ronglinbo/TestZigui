@@ -45,6 +45,7 @@ import com.wcyc.zigui2.newapp.activity.ImagePagerActivity;
 import com.wcyc.zigui2.newapp.activity.LoginActivity;
 import com.wcyc.zigui2.newapp.bean.AttachmentBean;
 import com.wcyc.zigui2.newapp.bean.AttachmentBean.Attachment;
+import com.wcyc.zigui2.newapp.bean.MenuItem;
 import com.wcyc.zigui2.newapp.home.NewAttendanceActivity;
 import com.wcyc.zigui2.newapp.home.NewCommentActivity;
 import com.wcyc.zigui2.newapp.home.NewHomeworkActivity;
@@ -240,7 +241,7 @@ public class WebviewActivity extends TaskBaseActivity {
 	}
 
 	/**
-	 * 重新获得焦点效果
+	 * 重新获得焦点事件
 	 */
 	@SuppressLint("NewApi") @Override
 	protected void onResume() {
@@ -472,7 +473,7 @@ public class WebviewActivity extends TaskBaseActivity {
 		 * 网页跳转到修改作业页面.
 		 * @param teacherId 老师ID
 		 * @param workID  课程ID
-		 * @param courseDate 课程效果
+		 * @param courseDate 课程事件
 		 */
 		@JavascriptInterface
 		public void jumpUpdateHomeWork(String teacherId,String workID,String courseDate) {
@@ -668,6 +669,7 @@ public class WebviewActivity extends TaskBaseActivity {
 			bundle.putString("call","html5");
 			intent.putExtras(bundle);
 			intent.putExtra("module","子贵课堂");
+			intent.putExtra("moduleNumber", MenuItem.COURSE_NUMBER);
 			startActivityForResult(intent,CHARGE);
 		}
 
@@ -681,6 +683,7 @@ public class WebviewActivity extends TaskBaseActivity {
 			bundle.putString("call","html5");
 			intent.putExtras(bundle);
 			intent.putExtra("module",module);
+			intent.putExtra("moduleNumber", MenuItem.nameToNumber(module));
 			startActivityForResult(intent,CHARGE);
 		}
 		@JavascriptInterface

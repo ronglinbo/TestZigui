@@ -75,6 +75,7 @@ import com.wcyc.zigui2.bean.ZiGuiVideo;
 
 import com.wcyc.zigui2.bean.ZiGuiVideoDao;
 import com.wcyc.zigui2.core.CCApplication;
+import com.wcyc.zigui2.greendao.db.ZiGuiVideoManager;
 import com.wcyc.zigui2.newapp.module.studyresource.ZiguiCourseActivity;
 
 import org.greenrobot.greendao.database.Database;
@@ -90,7 +91,10 @@ public class testVideoActivity extends FragmentActivity {
     private PolyvPlayerTabFragment tabFragment;
     private PolyvPlayerViewPagerFragment viewPagerFragment;
     private PolyvPlayerDanmuFragment danmuFragment;
-    private ZiGuiVideoDao ziGuiVideoDao = CCApplication.getDaoinstant().getZiGuiVideoDao();
+//    private ZiGuiVideoDao ziGuiVideoDao = CCApplication.getDaoinstant().getZiGuiVideoDao();
+
+    private ZiGuiVideoManager ziGuiVideoManager;
+
 
     /**
      * 播放器的parentView
@@ -209,6 +213,15 @@ public class testVideoActivity extends FragmentActivity {
         mediaController.changeToLandscape();
         play(vid, 0, true, false);
         polyvPermission.applyPermission(testVideoActivity.this, PolyvPermission.OperationType.play);
+
+        ziGuiVideoManager=new ZiGuiVideoManager(CCApplication.applicationContext);
+    }
+
+    public ZiGuiVideoManager getZiGuiVideoManager() {
+        if(null==ziGuiVideoManager){
+            ziGuiVideoManager=new ZiGuiVideoManager(CCApplication.applicationContext);
+        }
+        return ziGuiVideoManager;
     }
 
     @Override
@@ -616,7 +629,7 @@ public class testVideoActivity extends FragmentActivity {
 
             @Override
             public void callback(boolean start, boolean end) {
-                // 左滑效果
+                // 左滑事件
                 Log.d(TAG, String.format("SwipeLeft %b %b", start, end));
                 if (fastForwardPos == 0) {
                     fastForwardPos = videoView.getCurrentPosition();
@@ -645,7 +658,7 @@ public class testVideoActivity extends FragmentActivity {
 
             @Override
             public void callback(boolean start, boolean end) {
-                // 右滑效果
+                // 右滑事件
                 Log.d(TAG, String.format("SwipeRight %b %b", start, end));
                 if (fastForwardPos == 0) {
                     fastForwardPos = videoView.getCurrentPosition();
@@ -740,7 +753,7 @@ public class testVideoActivity extends FragmentActivity {
         ZiguiCourseActivity.time = videoView.getCurrentPosition();
         ZiguiCourseActivity.endDate = new Date();
         ZiguiCourseActivity.learningTime = videoView.getWatchTimeDuration();
-        List<ZiGuiVideo> list = ziGuiVideoDao.queryBuilder().where(ZiGuiVideoDao.Properties.Vid.eq(vid)).list();
+        List<ZiGuiVideo> list = getZiGuiVideoManager().getBdDaoSession(CCApplication.applicationContext).getZiGuiVideoDao().queryBuilder().where(ZiGuiVideoDao.Properties.Vid.eq(vid)).list();
         if (list.size() == 0) {
             ZiGuiVideo ziGuiVideo = new ZiGuiVideo();
             ziGuiVideo.setVid(vid);
@@ -749,7 +762,7 @@ public class testVideoActivity extends FragmentActivity {
             ZiGuiVideo ziGuiVideo = list.get(0);
             ziGuiVideo.setVid(vid);
             ziGuiVideo.setTime(ZiguiCourseActivity.time);
-            ziGuiVideoDao.update(ziGuiVideo);
+            getZiGuiVideoManager().getBdDaoSession(CCApplication.applicationContext).getZiGuiVideoDao().update(ziGuiVideo);
         }
         progressView.hide();
         volumeView.hide();
@@ -773,7 +786,8 @@ public class testVideoActivity extends FragmentActivity {
         auxiliaryView.hide();
         firstStartView.hide();
         mediaController.disable();
-
+        ziGuiVideoManager.closeDataBase();
+        ziGuiVideoManager=null;
 
     }
 

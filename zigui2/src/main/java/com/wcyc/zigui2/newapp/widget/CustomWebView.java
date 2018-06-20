@@ -57,17 +57,9 @@ public class CustomWebView {
 //        webSettings.setDefaultFixedFontSize(16);
 //        webSettings.setDefaultFontSize(16);
         webSettings.setJavaScriptEnabled(true);
-
-
-        webView.removeJavascriptInterface("searchBoxJavaBridge_");
-        webView.removeJavascriptInterface("accessibility");
-        webView.removeJavascriptInterface("accessibilityTraversal");
-
-
 //        webSettings.setSupportZoom(true);
         webSettings.setBuiltInZoomControls(true);
         webSettings.setLoadWithOverviewMode(true);
-        webSettings.setSavePassword(false);
         //html页面大小自适应
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             webSettings.setDisplayZoomControls(true);
@@ -168,9 +160,7 @@ public class CustomWebView {
         public void onPageFinished(WebView view, String url) {
 
             view.getSettings().setJavaScriptEnabled(true);
-            view.removeJavascriptInterface("searchBoxJavaBridge_");
-            view.removeJavascriptInterface("accessibility");
-            view.removeJavascriptInterface("accessibilityTraversal");
+
             super.onPageFinished(view, url);
             // html加载完成之后，添加监听图片的点击js函数
             addImageClickListner(view);

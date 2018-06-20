@@ -52,6 +52,7 @@ public class CustomDialog extends Dialog implements
 	public static final int RADIOBUTTON_NO_CHECKED = 4;
 	private Message msg;
 	private String para = null;
+	private int functionNumber=0;
 	
 
 	public CustomDialog(Context context) {
@@ -85,12 +86,13 @@ public class CustomDialog extends Dialog implements
 		this.handler = handler;
 	}
 
-	public CustomDialog(Context context, int theme, int resLayout,Handler handler,String para) {
+	public CustomDialog(Context context, int theme, int resLayout,Handler handler,String para,int number) {
 		super(context, theme);
 		this.context = context;
 		this.layoutRes = resLayout;
 		this.handler = handler;
 		this.para = para;
+		this.functionNumber=number;
 	}
 
 	public void setTitle(String title){
@@ -131,7 +133,7 @@ public class CustomDialog extends Dialog implements
 //		confirmBtn.setTextColor();
 //		cancelBtn.setTextColor(0xff1E90FF);
 
-		// 为按钮绑定点击效果监听器
+		// 为按钮绑定点击事件监听器
 		confirmBtn.setOnClickListener(this);
 		cancelBtn.setOnClickListener(this);
 		myRadioButton.setOnClickListener(this);
@@ -147,6 +149,7 @@ public class CustomDialog extends Dialog implements
 			if(para != null){
 				Bundle data = new Bundle();
 				data.putString("para",para);
+				data.putInt("functionNumber",functionNumber);
 				msg.setData(data);
 				msg.what = DIALOG_SURE;
 				handler.sendMessage(msg);

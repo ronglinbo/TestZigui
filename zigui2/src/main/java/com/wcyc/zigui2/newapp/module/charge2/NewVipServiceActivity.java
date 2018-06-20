@@ -90,7 +90,7 @@ public class NewVipServiceActivity extends BaseActivity implements
         }
     }
 
-    // 设置点击效果监听器
+    // 设置点击事件监听器
     private void initEvents() {
         title_back.setOnClickListener(this);
         recharge_center_bt.setOnClickListener(this);

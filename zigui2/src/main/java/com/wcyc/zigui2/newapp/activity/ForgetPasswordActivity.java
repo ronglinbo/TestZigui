@@ -17,7 +17,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -44,9 +43,7 @@ import com.wcyc.zigui2.utils.TextFilter;
  * @author xiehua
  * @version 1.01
  */
-
 public class ForgetPasswordActivity extends BaseActivity implements OnClickListener{
-
 
 	private EditText fogetpassworld_phoneNumber, fogetpassworld_et_verify;
 	private Button fogetpassworld_btn_send , fogetpassworld_btn_next;
@@ -73,8 +70,7 @@ public class ForgetPasswordActivity extends BaseActivity implements OnClickListe
 	 * 初始化控件
 	 */
 	private void initView() {
-		Log.i("TAG","SHDH");
-		//手机号
+		//手机号码
 
 		fogetpassworld_phoneNumber = (EditText) findViewById(R.id.fogetpassworld_phoneNumber);
 		fogetpassworld_phoneNumber.setText(phone);

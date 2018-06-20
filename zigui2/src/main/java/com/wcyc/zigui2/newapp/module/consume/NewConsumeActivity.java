@@ -101,7 +101,7 @@ public class NewConsumeActivity extends BaseActivity implements OnClickListener 
 
     }
 
-    // 设置点击效果监听器
+    // 设置点击事件监听器
     private void initEvents() {
         title_back.setVisibility(View.VISIBLE);
         title_back.setOnClickListener(this);
@@ -117,7 +117,7 @@ public class NewConsumeActivity extends BaseActivity implements OnClickListener 
                 NewConsumeActivity.this.finish();
                 break;
             case R.id.new_consume_recoad:    //消费记录
-                newActivity(NewConsumeRecoadActivity.class, null);
+                newActivity(NewConsumeRecordActivity.class, null);
                 break;
             case R.id.new_recharge_record:    //充值记录
                 newActivity(NewRechargeRecordActivity1.class, null);

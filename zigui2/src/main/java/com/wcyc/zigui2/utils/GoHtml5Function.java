@@ -13,8 +13,10 @@ import android.os.Bundle;
 import com.wcyc.zigui2.core.BaseWebviewActivity;
 import com.wcyc.zigui2.core.CCApplication;
 import com.wcyc.zigui2.core.WebviewActivity;
+import com.wcyc.zigui2.newapp.activity.ApplyForMaintainActivity;
 import com.wcyc.zigui2.newapp.asynctask.HttpRequestAsyncTask;
 import com.wcyc.zigui2.newapp.bean.MemberDetailBean;
+import com.wcyc.zigui2.newapp.bean.MenuItem;
 import com.wcyc.zigui2.newapp.bean.NewClasses;
 import com.wcyc.zigui2.newapp.module.studyresource.ZiguiCourseActivity;
 import com.wcyc.zigui2.newapp.bean.UserType;
@@ -32,7 +34,7 @@ public class GoHtml5Function {
             {"高中二年级", "高中"},
             {"高中三年级", "高中"}};
 
-    public static void goToHtmlApp(Context context, String function) {
+    public static void goToHtmlApp(Context context, String function,int functionNumber) {
         mContext = context;
         UserType user = CCApplication.getInstance().getPresentUser();
         boolean isParent = Constants.PARENT_STR_TYPE.equals(user.getUserType());
@@ -40,18 +42,18 @@ public class GoHtml5Function {
         HashMap<String, String> para = new HashMap<String, String>();
         para.put("X-School-Id", user.getSchoolId());
         para.put("X-mobile-Type", "android");
-        System.out.println("goToHtmlApp:" + function);
+        System.out.println("goToHtmlApp:" + function+"----functionNumber:"+functionNumber+"----");
 
-        if ("作息时间".equals(function)) {
+        if ("作息时间".equals(function)||functionNumber==MenuItem.TIMETABLE_NUMBER) {
             goTimeTable(para);
-        } else if ("常用网址".equals(function)) {
+        } else if ("常用网址".equals(function)||functionNumber==MenuItem.WEBSITE_NUMBER) {
             goWebSite(para);
-        }else if("兴趣班选课".equals(function)){
+        }else if("兴趣班选课".equals(function)||functionNumber==MenuItem.INTEREST_COURSE_NUMBER){
             para.put("X-User-Id", user.getUserId());
             goInterestCourse(para,studentId);
-        } else if ("校历".equals(function)) {
+        } else if ("校历".equals(function)||functionNumber==MenuItem.CALENDAR_NUMBER) {
             goSchoolCalendar(para);
-        } else if ("作业".equals(function)) {
+        } else if ("作业".equals(function)||functionNumber==MenuItem.HOMEWORK_NUMBER) {
             if (isParent) {
                 goHomeWorkChild(para, studentId);
             } else {
@@ -60,53 +62,53 @@ public class GoHtml5Function {
             }
 
             //人工考勤
-        } else if ("人工考勤".equals(function)) {
+        } else if ("人工考勤".equals(function)||functionNumber==MenuItem.MANUAL_ATTE_NUMBER) {
             if (isParent) {
-                goAttendenceChild(para, studentId, function);
+                goAttendenceChild(para, studentId, function,functionNumber);
             } else {
                 para.put("X-User-Id", user.getUserId());
-                goAttendence(para, function);
+                goAttendence(para, function,functionNumber);
             }
 
-        } else if ("进出校考勤".equals(function)) {
+        } else if ("进出校考勤".equals(function)||functionNumber==MenuItem.OUTINTO_SOL_ATTE_NUMBER) {
             if (isParent) {
-                goAttendenceChild(para, studentId, function);
+                goAttendenceChild(para, studentId, function,functionNumber);
             } else {
                 para.put("X-User-Id", user.getUserId());
-                goAttendence(para, function);
+                goAttendence(para, function,functionNumber);
             }
-        } else if ("宿舍考勤".equals(function)) {
+        } else if ("宿舍考勤".equals(function)||functionNumber==MenuItem.DORMITORY_ATTE_NUMBER) {
             if (isParent) {
-                goAttendenceChild(para, studentId, function);
+                goAttendenceChild(para, studentId, function,functionNumber);
             } else {
                 para.put("X-User-Id", user.getUserId());
-                goAttendence(para, function);
+                goAttendence(para, function,functionNumber);
             }
-        } else if ("校车考勤".equals(function)) {
+        } else if ("校车考勤".equals(function)||functionNumber==MenuItem.SCHOOL_BUS_ATTE_NUMBER) {
             if (isParent) {
-                goAttendenceChild(para, studentId, function);
+                goAttendenceChild(para, studentId, function,functionNumber);
             } else {
                 para.put("X-User-Id", user.getUserId());
-                goAttendence(para, function);
+                goAttendence(para, function,functionNumber);
             }
-        } else if ("点评".equals(function)) {
+        } else if ("点评".equals(function)||functionNumber==MenuItem.COMMENT_NUMBER) {
             if (isParent) {
                 goCommentChild(para, studentId);
             } else {
                 para.put("X-User-Id", user.getUserId());
                 goComment(para);
             }
-        } else if ("考试".equals(function)) {
+        } else if ("考试".equals(function)||functionNumber == MenuItem.EXAM_NUMBER) {
             para.put("X-User-Id", user.getUserId());
             goExam(para);
-        } else if ("成绩".equals(function)) {
+        } else if ("成绩".equals(function)||functionNumber==MenuItem.SCORE_NUMBER) {
             para.put("X-User-Id", user.getUserId());
             if (isParent) {
                 goScoreChild(para, studentId);
             } else {
                 goScore(para);
             }
-        } else if ("课程表".equals(function)) {
+        } else if ("课程表".equals(function)||functionNumber==MenuItem.SCHEDULE_NUMBER) {
             if (isParent) {
                 para.put("X-Class-Id", user.getClassId());
                 para.put("schoolId", user.getSchoolId());
@@ -116,11 +118,13 @@ public class GoHtml5Function {
                 para.put("X-User-Id", user.getUserId());
                 goCourse(para);
             }
-        } else if ("业务办理".equals(function)) {
+        } else if ("业务办理".equals(function)||functionNumber==MenuItem.HANDLE_BUSINESS_NUMBER) {
             para.put("X-User-Id", user.getUserId());
 //			para.put("X-User-Id", "5");
 //			para.put("X-School-Id", "10001");
+
             goBusiness(para);
+
         } else if ("待办事项".equals(function)) {
             para.put("X-User-Id", user.getUserId());
             goSchedule(para);
@@ -154,19 +158,19 @@ public class GoHtml5Function {
         } else if ("专项练习".equals(function)) {
             String url = "http://haojiazhang123.com/share/ziguixiao/zhuanxiangxunlian.html";
             goWeb(url, function);
-        } else if ("家长学校".equals(function)) {
+        } else if ("家长学校".equals(function)||functionNumber==MenuItem.PARENTSCHOOL_NUMBER) {
             String url = "http://haojiazhang123.com/share/ziguixiao/parents.html";
             goWeb(url, function);
         } else if ("在线课程".equals(function)) {
             String url = "http://haojiazhang123.com/share/ziguixiao/onlineCourseHome.html";
             goWeb(url, function);
-        } else if ("在线课堂".equals(function)) {
+        } else if ("子贵课堂".equals(function)||functionNumber==MenuItem.COURSE_NUMBER) {
             goZiguiCourse();
-        } else if ("小学宝".equals(function)) {
+        } else if ("小学宝".equals(function)||functionNumber==MenuItem.PRIMARYSCHOOL_NUMBER) {
             para.put("X-User-Id", user.getUserId());
             para.put("X-School-Id", user.getSchoolId());
             goH5Web(Constants.PRIMARY_SCHOOL_RESOURCE, para);
-        } else if ("微课网".equals(function)) {
+        } else if ("微课网".equals(function)||functionNumber==MenuItem.WEIKE_NUMBER) {
             para.put("X-User-Id", user.getUserId());
             para.put("schoolid", user.getSchoolId());
             goH5Web(Constants.WEIKE, para);
@@ -205,33 +209,33 @@ public class GoHtml5Function {
     }
 
     // 考勤老师端
-    public static void goAttendence(HashMap<String, String> para, String fuction) {
+    public static void goAttendence(HashMap<String, String> para, String fuction,int functionNumber) {
         System.out.println("goAttendence");
 
 
-        if (fuction.equals("人工考勤")) {
+        if (fuction.equals("人工考勤")||functionNumber==MenuItem.MANUAL_ATTE_NUMBER) {
             goHtml5(Constants.ATTENDANCE, para);
-        } else if (fuction.equals("校车考勤")) {
+        } else if (fuction.equals("校车考勤")||functionNumber==MenuItem.SCHOOL_BUS_ATTE_NUMBER) {
             goHtml5(Constants.SCHOOL_BUS_ATTENDANCE, para);
-        } else if (fuction.equals("进出校考勤")) {
+        } else if (fuction.equals("进出校考勤")||functionNumber==MenuItem.OUTINTO_SOL_ATTE_NUMBER) {
             goHtml5(Constants.OUTINTO_SCHOOL_ATTENDANCE, para);
-        } else if (fuction.equals("宿舍考勤")) {
+        } else if (fuction.equals("宿舍考勤")||functionNumber==MenuItem.DORMITORY_ATTE_NUMBER) {
             goHtml5(Constants.DORMITORY_ATTENDANCE, para);
         }
     }
 
     // 考勤家长端
     public static void goAttendenceChild(HashMap<String, String> para,
-                                         String studentId, String fuction) {
+                                         String studentId, String fuction,int functionNumber) {
         System.out.println("goAttendenceChild");
 
-        if (fuction.equals("人工考勤")) {
+        if (fuction.equals("人工考勤")||functionNumber==MenuItem.MANUAL_ATTE_NUMBER) {
             goHtml5(Constants.ATTENDANCE_CHILD, studentId, para);
-        } else if (fuction.equals("校车考勤")) {
+        } else if (fuction.equals("校车考勤")||functionNumber==MenuItem.SCHOOL_BUS_ATTE_NUMBER) {
             goHtml5(Constants.SCHOOL_BUS_ATTENDANCE_CHILD, studentId, para);
-        } else if (fuction.equals("进出校考勤")) {
+        } else if (fuction.equals("进出校考勤")||functionNumber==MenuItem.OUTINTO_SOL_ATTE_NUMBER) {
             goHtml5(Constants.OUT_INTO_SCHOOL_ATTENDANCE_CHILD, studentId, para);
-        } else if (fuction.equals("宿舍考勤")) {
+        } else if (fuction.equals("宿舍考勤")||functionNumber==MenuItem.DORMITORY_ATTE_NUMBER) {
             goHtml5(Constants.DORMITORY_ATTENDANCE_CHILD, studentId, para);
         }
 
@@ -347,7 +351,7 @@ public class GoHtml5Function {
         Bundle bundle = new Bundle();
         UserType user = CCApplication.getInstance().getPresentUser();
         boolean isParent = CCApplication.getInstance().isCurUserParent();
-        boolean isCharge = CCApplication.getInstance().isServiceExpired("子贵课堂");
+        boolean isCharge = CCApplication.getInstance().isServiceExpired(MenuItem.COURSE_NUMBER,"子贵课堂");
         if (user != null) {
             String gradeName = null, gradeId = null;
             StringBuilder para = new StringBuilder();
@@ -426,6 +430,7 @@ public class GoHtml5Function {
         String url = new StringBuilder(Constants.WEBVIEW_URL).append(appUrl)
                 .toString();
         bundle.putString("url", url);
+        System.out.println("url2:" + url);
         bundle.putSerializable("para", para);
         newActivity(BaseWebviewActivity.class, bundle);
     }

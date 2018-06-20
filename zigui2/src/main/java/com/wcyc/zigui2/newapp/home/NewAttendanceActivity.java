@@ -558,7 +558,7 @@ public class NewAttendanceActivity extends BaseActivity implements
                     DataUtil.getToast(ret.getServerResult().getResultMessage());
                 } else {//成功
                     DataUtil.getToast("发布考勤成功");
-//				 GoHtml5Function.goToHtmlApp(this, "考勤");//这句不要了  BaseWebView重写了 重新获得焦点效果  onResume
+//				 GoHtml5Function.goToHtmlApp(this, "考勤");//这句不要了  BaseWebView重写了 重新获得焦点事件  onResume
                     // 通知BaseWebView  activity刷新数据
                     Intent broadcast = new Intent(
                             BaseWebviewActivity.INTENT_REFESH_DATA);
@@ -723,7 +723,7 @@ public class NewAttendanceActivity extends BaseActivity implements
     private void exitOrNot() {
         dialog = new CustomDialog(this, R.style.mystyle,
                 R.layout.customdialog, handler);
-        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
         dialog.setTitle("退出此次编辑?");
         dialog.setContent("");
@@ -742,7 +742,7 @@ public class NewAttendanceActivity extends BaseActivity implements
     }
 
     /**
-     * 控制CustomDialog按钮效果.
+     * 控制CustomDialog按钮事件.
      */
     Handler handler = new Handler() {
         public void dispatchMessage(android.os.Message msg) {

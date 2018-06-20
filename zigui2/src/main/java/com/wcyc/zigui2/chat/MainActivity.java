@@ -139,7 +139,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 	}
 
 	/**
-	 * button点击效果
+	 * button点击事件
 	 * 
 	 * @param view
 	 */

@@ -8,6 +8,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.alipay.sdk.app.PayTask;
+import com.allinpay.appayassistex.APPayAssistEx;
 import com.google.gson.Gson;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -404,12 +405,14 @@ public class PayUtil implements HttpRequestAsyncTaskListener {
      * @param para 参数
      */
     private void goTlApp(final String para){
+        APPayAssistEx.startPay(myorderactivity, para.toString(), serverMode);
     }
     /**
      * 跳转到通联信用卡支付
      * @param para 参数
      */
     private void goTlXYApp(final String para){
+        APPayAssistEx.startPay(myorderactivity, para.toString(), serverMode);
     }
 
 

@@ -190,7 +190,7 @@ public class NewMyLeaveDetailsActivity extends BaseActivity implements
 		}
 	}
 
-	// 设置点击效果监听器
+	// 设置点击事件监听器
 	private void initEvents() {
 		title_back.setVisibility(View.VISIBLE);
 		title_back.setOnClickListener(this);
@@ -216,7 +216,7 @@ public class NewMyLeaveDetailsActivity extends BaseActivity implements
 	private void exitOrNot(){
 		dialog = new CustomDialog(this, R.style.mystyle,
 				R.layout.customdialog, handler);
-		dialog.setCanceledOnTouchOutside(true);
+		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
 		dialog.setTitle("您的假条正在审批中，确定删除吗？");
 		dialog.setContent("");
@@ -224,7 +224,7 @@ public class NewMyLeaveDetailsActivity extends BaseActivity implements
 	
 	
 	/**
-	 * 控制CustomDialog按钮效果.
+	 * 控制CustomDialog按钮事件.
 	 */
 	Handler handler = new Handler() {
 		public void dispatchMessage(android.os.Message msg) {

@@ -333,7 +333,7 @@ public class ContactlistActivity extends BaseActivity {
 	}
 
 	/**
-	 * Spinner的点击效果
+	 * Spinner的点击事件
 	 * 
 	 * @param text
 	 *            void

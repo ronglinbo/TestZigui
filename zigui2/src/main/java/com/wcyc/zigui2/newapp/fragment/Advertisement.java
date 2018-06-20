@@ -218,7 +218,7 @@ public class Advertisement {
             ImageView iv = imageViews.get(position);
             container.addView(iv);
             final AdDomain adDomain = adList.get(position);
-            // 在这个方法里面设置图片的点击效果
+            // 在这个方法里面设置图片的点击事件
             iv.setOnClickListener(new View.OnClickListener() {
 
                 @Override

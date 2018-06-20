@@ -45,6 +45,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +64,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MenuAdapter extends BaseAdapter implements HttpRequestAsyncTaskListener{
+
+	String TAG="MenuAdapterTAG";
 
 	ArrayList<HashMap<String,Object>> list;
 	List<MenuItem> items;
@@ -86,6 +89,13 @@ public class MenuAdapter extends BaseAdapter implements HttpRequestAsyncTaskList
 	//快捷发布菜单对应模块
 	String [][]quick_publish = {{MenuItem.QUICK_SCHOOLMAIL,MenuItem.SCHOOLMAIL},
 								{MenuItem.QUICK_LEAVE,MenuItem.LEAVE}};
+
+
+	//快捷发布菜单对应模块的Number
+	int [][] quick_Publish_number={{MenuItem.SCHOOLMASTERPARENT_NUMBER,MenuItem.SCHOOLMAIL_NUMBER},
+			{MenuItem.LEAVEPARENT_NUMBER,MenuItem.LEAVE_NUMBER}};
+
+
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
@@ -139,8 +149,8 @@ public class MenuAdapter extends BaseAdapter implements HttpRequestAsyncTaskList
 		if(!quickPulish){
 			int unreadNum = item.getUnreadNum();
 			if(unreadNum > 0){
-				if("班级动态".equals(item.getItemName())
-						||"校园新闻".equals(item.getItemName())) {
+				if(MenuItem.DYNAMICS_NUMBER==item.getItemNumber()
+						||MenuItem.SCHOOLNEWS_NUMBER==item.getItemNumber()) {
 					if(holder.unRead != null){
 						holder.unRead.setVisibility(View.VISIBLE);
 					}
@@ -174,12 +184,27 @@ public class MenuAdapter extends BaseAdapter implements HttpRequestAsyncTaskList
 	//快捷发布菜单对应模块
 	private String convertFunctionName(String name){
 		for(String [] item:quick_publish){
+			Log.i(TAG,"item[0]:"+item[0]+"-----name:"+name);
 			if(item[0].equals(name)){
 				return item[1];
 			}
 		}
 		return name;
 	}
+
+
+	//快捷发布菜单对应模块number
+	private int convertFunctionNumber(int number ){
+		for (int[] item:quick_Publish_number){
+           if(item[0]==number){
+			   return item[1];
+		   }
+		}
+		return number;
+	}
+
+
+
     private  MenuItem menuItem=null;//记录当前点击的item
 	private  int posintion=-1;//记录当前点击的item 的位置
 	public static  int b=-1;
@@ -189,11 +214,15 @@ public class MenuAdapter extends BaseAdapter implements HttpRequestAsyncTaskList
 		final Intent intent = new Intent();
 		Class<?> cls = item.getClassName();
 		String functionName = item.getItemName();
-		functionName = convertFunctionName(functionName);
+        int functionNumber=item.getItemNumber();
 
-		if(!DataUtil.isNullorEmpty(functionName)){
+//		functionName = convertFunctionName(functionName);
+		functionNumber=convertFunctionNumber(functionNumber);
 
-			boolean ret = CCApplication.app.CouldFunctionBeUseFromConfig(functionName,b);
+//		if(!DataUtil.isNullorEmpty(functionName)){
+
+		if(functionNumber!=0){
+			boolean ret = CCApplication.app.CouldFunctionBeUseFromConfig(functionName,functionNumber,b);
 
 			if(ret == true){
 				type = item.getItemType();
@@ -201,7 +230,7 @@ public class MenuAdapter extends BaseAdapter implements HttpRequestAsyncTaskList
 				if(!quickPulish){
 					int unreadNum = item.getUnreadNum();
 					String function = item.getItemName();
-					if(unreadNum > 0&&CCApplication.app.couldClearRemind(function)){
+					if(unreadNum > 0&&CCApplication.app.couldClearRemind(item.getItemNumber())){
 						pos = arg0;
 						clearRemind(type);
 					}
@@ -214,11 +243,12 @@ public class MenuAdapter extends BaseAdapter implements HttpRequestAsyncTaskList
 					mContext.startActivity(intent);
 				}else{
 					String function = item.getItemName();
-					GoHtml5Function.goToHtmlApp(mContext,function);
+					int functionNumber2=item.getItemNumber();
+					GoHtml5Function.goToHtmlApp(mContext,function,functionNumber2);
 				}
 			}else{
 
-					chargePop(functionName);//已过期
+					chargePop(functionName,functionNumber);//已过期
 
 //				if(b==2){
 //					//从未购买过
@@ -230,10 +260,10 @@ public class MenuAdapter extends BaseAdapter implements HttpRequestAsyncTaskList
 		}
 	}
 	//弹出充值提示框
-	public void chargePop(String name){
+	public void chargePop(String name,int functionNumber){
 		dialog = new CustomDialog(mContext, R.style.mystyle,
-				R.layout.customdialog, handler,name);
-		dialog.setCanceledOnTouchOutside(true);
+				R.layout.customdialog, handler,name,functionNumber);
+		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
 		if(isExist(name,res)){
 			dialog.setTitle("暂未开通此套餐");
@@ -244,10 +274,10 @@ public class MenuAdapter extends BaseAdapter implements HttpRequestAsyncTaskList
 		}
 	}
 	//弹出激活试用
-	public void popShiYong(String name){
+	public void popShiYong(String name,int functionNumber){
 		dialog = new CustomDialog(mContext, R.style.mystyle,
-				R.layout.customdialog, handler1,name);
-		dialog.setCanceledOnTouchOutside(true);
+				R.layout.customdialog, handler1,name,functionNumber);
+		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
 
 			dialog.setTitle("你有15天产品试用期");
@@ -312,7 +342,7 @@ public class MenuAdapter extends BaseAdapter implements HttpRequestAsyncTaskList
 		if(!quickPulish){
 			int unreadNum = menuItem.getUnreadNum();
 			String function = menuItem.getItemName();
-			if(unreadNum > 0&&CCApplication.app.couldClearRemind(function)){
+			if(unreadNum > 0&&CCApplication.app.couldClearRemind(menuItem.getItemNumber())){
 				pos = posintion;
 				clearRemind(type);
 			}
@@ -325,7 +355,7 @@ public class MenuAdapter extends BaseAdapter implements HttpRequestAsyncTaskList
 			mContext.startActivity(intent);
 		}else{
 			String function = menuItem.getItemName();
-			GoHtml5Function.goToHtmlApp(mContext,function);
+			GoHtml5Function.goToHtmlApp(mContext,function,menuItem.getItemNumber());
 		}
 	}
 
@@ -340,8 +370,10 @@ public class MenuAdapter extends BaseAdapter implements HttpRequestAsyncTaskList
 				//充值
 				Bundle data = msg.getData();
 				String name = data.getString("para");
+				int functionNumber=data.getInt("functionNumber");
 				Intent intent = new Intent(mContext,NewRechargeProductActivity.class);
 				intent.putExtra("module",name);
+				intent.putExtra("moduleNumber", functionNumber);
 				mContext.startActivity(intent);
 				dialog.dismiss();
 				break;

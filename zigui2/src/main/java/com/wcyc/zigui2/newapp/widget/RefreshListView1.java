@@ -231,7 +231,7 @@ public class RefreshListView1 extends ListView implements OnScrollListener {
     }
 
     /**
-     * 设置刷新监听效果
+     * 设置刷新监听事件
      *
      * @param listener
      */

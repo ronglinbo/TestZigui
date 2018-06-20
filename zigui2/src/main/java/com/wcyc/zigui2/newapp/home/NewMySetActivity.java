@@ -34,6 +34,8 @@ import com.wcyc.zigui2.core.BaseActivity;
 import com.wcyc.zigui2.core.BaseWebviewActivity;
 import com.wcyc.zigui2.core.CCApplication;
 
+import com.wcyc.zigui2.greendao.db.ChildMessageManager;
+import com.wcyc.zigui2.greendao.db.LeaveMessageManager;
 import com.wcyc.zigui2.newapp.activity.VersionShuomingActivity;
 import com.wcyc.zigui2.newapp.bean.NewBaseBean;
 import com.wcyc.zigui2.newapp.bean.NewUpdateSystemBean;
@@ -70,6 +72,10 @@ public class NewMySetActivity extends BaseActivity implements OnClickListener {
     private ImageView myset_red_iv;
     private NewVersionCheckModel newVersionCheckModel;
 
+    ChildMessageManager childMessageManager;
+    LeaveMessageManager leaveMessageManager;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +84,35 @@ public class NewMySetActivity extends BaseActivity implements OnClickListener {
         initView();
         initData();
         initEvents();
+
+        childMessageManager=new ChildMessageManager(this);
+        leaveMessageManager=new LeaveMessageManager(this);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        childMessageManager.closeDataBase();
+        childMessageManager=null;
+        leaveMessageManager.closeDataBase();
+        leaveMessageManager=null;
+    }
+
+    private ChildMessageManager getChildMessageManager(){
+        if(null==childMessageManager){
+            childMessageManager=new ChildMessageManager(this);
+        }
+        return childMessageManager;
+    }
+
+    private LeaveMessageManager getLeaveMessageManager(){
+        if(null==leaveMessageManager){
+            leaveMessageManager=new LeaveMessageManager(this);
+        }
+        return leaveMessageManager;
+    }
+
+
 
     /**
      * 实例化控件
@@ -122,7 +156,7 @@ public class NewMySetActivity extends BaseActivity implements OnClickListener {
     }
 
     /**
-     * 效果控制
+     * 事件控制
      */
 
     private void initEvents() {
@@ -327,8 +361,8 @@ public class NewMySetActivity extends BaseActivity implements OnClickListener {
                 runOnUiThread(new Runnable() {
                     public void run() {
                         try {
-                            CCApplication.getDaoinstant().getChildMessageDao().deleteAll();
-                            CCApplication.getDaoinstant().getLeaveMessageDao().deleteAll();
+                            getChildMessageManager().getBdDaoSession(CCApplication.applicationContext).getChildMessageDao().deleteAll();
+                            getLeaveMessageManager().getBdDaoSession(CCApplication.applicationContext).getLeaveMessageDao().deleteAll();
                         } catch (Exception e) {
 
                         }
@@ -460,7 +494,6 @@ public class NewMySetActivity extends BaseActivity implements OnClickListener {
             json.put("deviceId", deviceId);
             json.put("versionType", mobileType);
             json.put("versionNumber", version);
-            json.put("productName",3); // 0 子贵校园 1 子贵学苑 2 子贵课堂  3全课通
         } catch (Exception e) {
             e.printStackTrace();
         }

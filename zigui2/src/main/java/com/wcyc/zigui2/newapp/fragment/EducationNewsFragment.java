@@ -1,7 +1,10 @@
 package com.wcyc.zigui2.newapp.fragment;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +18,7 @@ import android.widget.ImageView;
 
 import com.wcyc.zigui2.R;
 import com.wcyc.zigui2.core.CCApplication;
+import com.wcyc.zigui2.newapp.adapter.EducationRecommendAdapter;
 import com.wcyc.zigui2.newapp.asynctask.HttpRequestAsyncTaskListener;
 import com.wcyc.zigui2.newapp.adapter.EducationNewsAdapter;
 import com.wcyc.zigui2.newapp.asynctask.HttpRequestAsyncTask;
@@ -73,6 +77,45 @@ public class EducationNewsFragment extends Fragment implements HttpRequestAsyncT
     }
 
 
+    private BroadcastReceiver refreshDataReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            boolean refreshData = intent.getBooleanExtra("RefreshData", false);
+            System.out.println(refreshData);
+
+            if (refreshData) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(1500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                k = 2;
+                                position = 0;
+                                initDatas();
+                            }
+                        });
+                    }
+                }).start();
+            }
+        }
+    };
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+
+        IntentFilter mRefreshDataFilter = new IntentFilter(EducationRecommendAdapter.REFRESH_DATA);
+        getActivity().registerReceiver(refreshDataReceiver, mRefreshDataFilter);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -130,7 +173,7 @@ public class EducationNewsFragment extends Fragment implements HttpRequestAsyncT
     }
 
 
-    // 设置点击效果监听器
+    // 设置点击事件监听器
     private void initEvents() {
 
         lv_news.setOnTouchListener(new View.OnTouchListener() {

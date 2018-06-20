@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="我是标题 哈很久很久军军军军军军军军军解决解决军 "
+                android:text=""
                 android:textColor="#333333"
                 android:textSize="15sp" />
 

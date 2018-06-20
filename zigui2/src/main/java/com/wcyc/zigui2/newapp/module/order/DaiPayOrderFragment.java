@@ -71,7 +71,7 @@ public class DaiPayOrderFragment extends Fragment implements
     }
 
     /**
-     * 效果控制.
+     * 事件控制.
      */
     private void initEvents() {
 
@@ -91,7 +91,7 @@ public class DaiPayOrderFragment extends Fragment implements
     }
 
     /**
-     * Resume效果.
+     * Resume事件.
      */
     @Override
     public void onResume() {

@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -213,12 +214,6 @@ public class EducationRecommendFragment extends Fragment implements HttpRequestA
             ad.getSettings().setAppCacheEnabled(false);    //取消缓存
             ad.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
             ad.getSettings().setJavaScriptEnabled(true);    //设置WebView属性，能够执行JavaScript脚本
-
-            ad.removeJavascriptInterface("searchBoxJavaBridge_");
-            ad.removeJavascriptInterface("accessibility");
-            ad.removeJavascriptInterface("accessibilityTraversal");
-
-            ad.getSettings().setSavePassword(false);
             jsInterface = new JsInterface();
             ad.addJavascriptInterface(jsInterface, "android");
             ad.setWebViewClient(new WebViewClient() {        //web 视图
@@ -396,7 +391,7 @@ public class EducationRecommendFragment extends Fragment implements HttpRequestA
     }
 
     /**
-     * WebView的点击效果
+     * WebView的点击事件
      */
     public class JsInterface {
         //学校简介
@@ -472,6 +467,7 @@ public class EducationRecommendFragment extends Fragment implements HttpRequestA
 
         //教育资讯轮播图
         String url = Constants.URL + "/app_slideshow/eduSlideshow.do";
+        Log.i("临时TAG","推荐url:"+url);
         ad.loadUrl(url, para);
     }
 

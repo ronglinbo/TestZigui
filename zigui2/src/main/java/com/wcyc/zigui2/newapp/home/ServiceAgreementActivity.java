@@ -24,9 +24,7 @@ public class ServiceAgreementActivity extends BaseActivity implements View.OnCli
     private LinearLayout title_back;
     private TextView new_content;
     private WebView service_agreement_webview;
-//    public static final String AGREEMENT_ADDRESS = "http://school.ziguiw.com/zgwt/source/serviceAgreement.do";
-    public static final String AGREEMENT_ADDRESS = "https://school.ziguiw.com/zgwt/source/serviceQktAgreement.do";
-
+    public static final String AGREEMENT_ADDRESS = "https://school.ziguiw.com/zgwt/source/serviceAgreement.do";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +36,7 @@ public class ServiceAgreementActivity extends BaseActivity implements View.OnCli
     }
 
     /**
-     * 设置点击效果监听器
+     * 设置点击事件监听器
      */
     private void initEvents() {
         title_back.setVisibility(View.VISIBLE);
@@ -46,14 +44,8 @@ public class ServiceAgreementActivity extends BaseActivity implements View.OnCli
         new_content.setText("用户服务协议");
         service_agreement_webview.getSettings().setAppCacheEnabled(true);	//设置启动缓存
         service_agreement_webview.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);	//设置缓存模式
-        service_agreement_webview.getSettings().setSavePassword(false);
         service_agreement_webview.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
         service_agreement_webview.getSettings().setJavaScriptEnabled(true);	//设置WebView属性，能够执行JavaScript脚本
-
-        service_agreement_webview.removeJavascriptInterface("searchBoxJavaBridge_");
-        service_agreement_webview.removeJavascriptInterface("accessibility");
-        service_agreement_webview.removeJavascriptInterface("accessibilityTraversal");
-
         service_agreement_webview.setWebViewClient(new WebViewClient(){		//web 视图
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {

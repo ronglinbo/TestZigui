@@ -116,14 +116,14 @@ public class NewOtherNumberAdapter extends BaseAdapter {
 		String phone=newOtherNumberList.get(position_i).getMobile();
 		dialog = new CustomDialog(myContext, R.style.mystyle,
 				R.layout.customdialogzgd, handler);
-		dialog.setCanceledOnTouchOutside(true);
+		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
 //		dialog.setTitle("删除副号");
 		dialog.setContent("您确定要删除副号"+phone+"？");
 	}
 
 	/**
-	 * 控制CustomDialog按钮效果.
+	 * 控制CustomDialog按钮事件.
 	 */
 	Handler handler = new Handler() {
 		public void dispatchMessage(android.os.Message msg) {

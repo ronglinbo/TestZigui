@@ -52,7 +52,7 @@ public class FallListView extends ListView implements OnScrollListener {
 	private RotateAnimation animation;
 	private RotateAnimation reverseAnimation;
 
-	// 用于保证startY的值在一个完整的touch效果中只被记录一次
+	// 用于保证startY的值在一个完整的touch事件中只被记录一次
 	private boolean isRecored;
 
 	private int headContentWidth;
@@ -413,7 +413,7 @@ public class FallListView extends ListView implements OnScrollListener {
 	     },300);  
 		  
 	}
-	//出现错误重新效果的监听
+	//出现错误重新事件的监听
 	private OnEmptyViewClickListener listener;
 	public void setEmptyViewReLoading(OnEmptyViewClickListener listener){
 		this.listener=listener;

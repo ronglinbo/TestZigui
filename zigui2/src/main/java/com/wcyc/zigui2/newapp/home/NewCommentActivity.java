@@ -463,7 +463,7 @@ public class NewCommentActivity extends BaseActivity implements
 		} else {// 成功
 			DataUtil.getToast("发布点评成功");
 //			BaseWebviewActivity.this.finish();	
-//			GoHtml5Function.goToHtmlApp(this, "点评");//这句不要了  BaseWebView重写了 重新获得焦点效果  onResume
+//			GoHtml5Function.goToHtmlApp(this, "点评");//这句不要了  BaseWebView重写了 重新获得焦点事件  onResume
 			// 通知BaseWebView  activity刷新数据
 			Intent broadcast = new Intent(
 					BaseWebviewActivity.INTENT_REFESH_DATA);

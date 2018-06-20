@@ -43,7 +43,6 @@ public class ImagePagerActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.image_detail_pager);
 
-
 		new_content = (TextView) findViewById(R.id.new_content);
 		new_content.setVisibility(View.INVISIBLE);
 		title_back = (LinearLayout) findViewById(R.id.title_back);

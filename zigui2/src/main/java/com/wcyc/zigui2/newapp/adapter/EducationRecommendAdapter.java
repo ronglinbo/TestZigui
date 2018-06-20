@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.wcyc.zigui2.R;
 import com.wcyc.zigui2.core.BaseActivity;
+import com.wcyc.zigui2.newapp.activity.HomeActivity;
 import com.wcyc.zigui2.newapp.bean.Category;
 import com.wcyc.zigui2.newapp.bean.RecommendNewsBean;
 import com.wcyc.zigui2.newapp.module.educationinfor.EducationDetailsActivity;
@@ -32,6 +33,7 @@ public class EducationRecommendAdapter extends BaseAdapter {
 
     private static final int TYPE_CATEGORY_ITEM = 0;
     private static final int TYPE_ITEM = 1;
+    public static final String REFRESH_DATA = "EDUCATION_RECOMMEND_ADAPTER_REFRESH_DATA";
 
     private ArrayList<Category> mListData;
     private LayoutInflater mInflater;
@@ -161,17 +163,17 @@ public class EducationRecommendAdapter extends BaseAdapter {
 
 
                 //如果是热门和最新  就不显示阅读数
-                if(item.isHideBrowserNO()){
+                if (item.isHideBrowserNO()) {
                     viewHolder.iv_eye.setVisibility(View.VISIBLE);
                     viewHolder.tv_watch_times.setVisibility(View.VISIBLE);
 
-                    if(item.getBrowseNo()<100000){
+                    if (item.getBrowseNo() < 100000) {
                         viewHolder.tv_watch_times.setText(String.valueOf(item.getBrowseNo()));
-                    }else{
+                    } else {
                         viewHolder.tv_watch_times.setText("99999+");
                     }
 
-                }else{
+                } else {
                     viewHolder.iv_eye.setVisibility(View.INVISIBLE);
                     viewHolder.tv_watch_times.setVisibility(View.INVISIBLE);
                 }
@@ -211,6 +213,10 @@ public class EducationRecommendAdapter extends BaseAdapter {
                         item.setIsRead("1");
                         fragment.startActivityForResult(intent, Activity.RESULT_FIRST_USER);
                         notifyDataSetChanged();
+
+                        Intent intent1 = new Intent(EducationRecommendAdapter.REFRESH_DATA);
+                        intent1.putExtra("RefreshData",true);
+                        fragment.getActivity().sendBroadcast(intent1);
                     }
                 });
 

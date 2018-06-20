@@ -121,7 +121,7 @@ public class NewRechargeRecordActivity extends BaseActivity implements View.OnCl
         }
     }
 
-    //设置点击效果的监听
+    //设置点击事件的监听
     private void initEvents() {
         title_back.setVisibility(View.VISIBLE);
         title_back.setOnClickListener(this);

@@ -125,7 +125,7 @@ public class PublishLeaveMessageActivity extends BaseActivity implements View.On
 
     @Override
     protected void getMessage(String data) {
-        CCApplication.getDaoinstant().getLeaveMessageDao();
+       //CCApplication.getDaoinstant().getLeaveMessageDao();
         System.out.println("发布家长留言：" + data);
         try {
             JSONObject jsonObject = new JSONObject(data);

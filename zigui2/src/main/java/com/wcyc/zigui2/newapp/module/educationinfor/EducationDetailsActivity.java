@@ -55,6 +55,7 @@ import com.wcyc.zigui2.utils.Constants;
 import com.wcyc.zigui2.utils.DataUtil;
 import com.wcyc.zigui2.utils.HttpHelper;
 import com.wcyc.zigui2.utils.JsonUtils;
+import com.wcyc.zigui2.utils.PhotoBitmapUtils;
 import com.wcyc.zigui2.widget.MyListView;
 
 import org.json.JSONArray;
@@ -328,12 +329,6 @@ public class EducationDetailsActivity extends BaseActivity implements
                 content = head + content;
                 webView.getSettings().setDefaultTextEncodingName("UTF -8");// 设置默认为utf-8
                 webView.getSettings().setJavaScriptEnabled(true);
-
-                webView.removeJavascriptInterface("searchBoxJavaBridge_");
-                webView.removeJavascriptInterface("accessibility");
-                webView.removeJavascriptInterface("accessibilityTraversal");
-
-                webView.getSettings().setSavePassword(false);
                 webView.loadData(content, "text/html; charset=UTF-8", null);//
                 webView.addJavascriptInterface(new JavascriptInterface(this),
                         "imagelistner");
@@ -345,7 +340,6 @@ public class EducationDetailsActivity extends BaseActivity implements
                     double times = ((double) dpi) / 240;
                     webView.setInitialScale((int) (scale * times * 100));
                 }
-
             } else {
                 webView.setVisibility(View.GONE);
             }
@@ -384,7 +378,7 @@ public class EducationDetailsActivity extends BaseActivity implements
         }
     }
 
-    // 设置点击效果监听器
+    // 设置点击事件监听器
     private void initEvents() {
         title_back.setVisibility(View.VISIBLE);
         title_back.setOnClickListener(this);
@@ -454,7 +448,9 @@ public class EducationDetailsActivity extends BaseActivity implements
 
             @Override
             public void onLoadingComplete(String url, View view, Bitmap bitmap) {
-                String folder = Environment.getExternalStorageDirectory() + "/ZIGUI_Photos/";
+//                String folder = Environment.getExternalStorageDirectory() + "/ZIGUI_Photos/";
+
+                String folder = PhotoBitmapUtils.ZIGUI_Photos;
                 DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
                 String time = formatter.format(new Date());
                 String fileName = folder + time + ".jpeg";
@@ -503,7 +499,7 @@ public class EducationDetailsActivity extends BaseActivity implements
             model.setText(educationInforBean.getContent());
         }
 
-        model.setTitle("【云智全课通】" + educationInforBean.getTitle());
+        model.setTitle("【子贵校园】" + educationInforBean.getTitle());
         String url = new StringBuilder(Constants.URL)
                 .append("/eduInformation/eduInformationDetails.do?ecirclesId=")
                 .append(campuNewsId).toString();
@@ -824,11 +820,6 @@ public class EducationDetailsActivity extends BaseActivity implements
         @Override
         public void onPageFinished(WebView view, String url) {
             view.getSettings().setJavaScriptEnabled(true);
-
-            view.removeJavascriptInterface("searchBoxJavaBridge_");
-            view.removeJavascriptInterface("accessibility");
-            view.removeJavascriptInterface("accessibilityTraversal");
-
             super.onPageFinished(view, url);
             // html加载完成之后，添加监听图片的点击js函数
             addImageClickListner();
@@ -837,10 +828,6 @@ public class EducationDetailsActivity extends BaseActivity implements
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             view.getSettings().setJavaScriptEnabled(true);
-
-            view.removeJavascriptInterface("searchBoxJavaBridge_");
-            view.removeJavascriptInterface("accessibility");
-            view.removeJavascriptInterface("accessibilityTraversal");
             super.onPageStarted(view, url, favicon);
 //			aa();
         }

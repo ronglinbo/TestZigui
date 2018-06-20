@@ -117,7 +117,7 @@ public class NewMyLeaveAskActivity extends BaseActivity implements
 
 	}
 
-	// 设置点击效果监听器
+	// 设置点击事件监听器
 	private void initEvents() {
 		title2_off.setOnClickListener(this);
 		title2_ok.setOnClickListener(this);
@@ -292,7 +292,7 @@ public class NewMyLeaveAskActivity extends BaseActivity implements
 	private void exitOrNot(){
 		dialog = new CustomDialog(this, R.style.mystyle,
 				R.layout.customdialog, handler);
-		dialog.setCanceledOnTouchOutside(true);
+		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
 		dialog.setTitle("退出此次编辑?");
 		dialog.setContent("");
@@ -310,7 +310,7 @@ public class NewMyLeaveAskActivity extends BaseActivity implements
 	}
 	
 	/**
-	 * 控制CustomDialog按钮效果.
+	 * 控制CustomDialog按钮事件.
 	 */
 	Handler handler = new Handler() {
 		public void dispatchMessage(android.os.Message msg) {

@@ -78,7 +78,7 @@ public class ForwardDialog extends Dialog implements android.view.View.OnClickLi
 		super(context, theme);
 		this.context = context;
 		this.layoutRes = resLayout;
-		this.setCanceledOnTouchOutside(true);
+		this.setCanceledOnTouchOutside(false);
 		this.name = name;
 		this.confirmListener = confirmListener;
 	}
@@ -97,7 +97,7 @@ public class ForwardDialog extends Dialog implements android.view.View.OnClickLi
 		// 设置按钮的文本颜色
 //		confirmBtn.setTextColor();
 //		cancelBtn.setTextColor(0xff1E90FF);
-		// 为按钮绑定点击效果监听器
+		// 为按钮绑定点击事件监听器
 		confirmBtn.setOnClickListener(confirmListener);
 		cancelBtn.setOnClickListener(this);
 		title_tv.setText(R.string.forward_title_text);

@@ -92,7 +92,7 @@ public class NewServiceFragment extends Fragment implements
     Context mContext;
     List<MenuItem> item, item1, freeItem, parentSchool;
     List<MenuItem> resource, other;
-    Map<String, MenuItem> map = new HashMap<String, MenuItem>();
+    Map<Integer, MenuItem> map = new HashMap<Integer, MenuItem>();
     private Button[] mTabs;
     // 未读消息textview
     private TextView unreadLabel;
@@ -127,34 +127,34 @@ public class NewServiceFragment extends Fragment implements
     }
 
     private void initMenuItem() {
-        map.put(MenuItem.LEAVE_MESSAGE, MenuItem.leavemessage);
-        map.put(MenuItem.NOTICE, MenuItem.notice);
-        map.put(MenuItem.SCHOOLNEWS, MenuItem.schoolNews);
-        map.put(MenuItem.SCHEDULE, MenuItem.schedule);
-        map.put(MenuItem.LEAVE, MenuItem.leave);
-        map.put(MenuItem.SCHOOLMAIL, MenuItem.schoolMail);
-        map.put(MenuItem.CALENDAR, MenuItem.calendar);
-        map.put(MenuItem.TIMETABLE, MenuItem.timeTable);
-        map.put(MenuItem.WEBSITE, MenuItem.website);//网址导航
+        map.put(MenuItem.LEAVE_MESSAGE_NUMBER, MenuItem.leavemessage);   //班牌留言
+        map.put(MenuItem.NOTICE_NUMBER, MenuItem.notice);   //通知
+        map.put(MenuItem.SCHOOLNEWS_NUMBER, MenuItem.schoolNews);   //校园新闻
+        map.put(MenuItem.SCHEDULE_NUMBER, MenuItem.schedule);   //课程表
+        map.put(MenuItem.LEAVE_NUMBER, MenuItem.leave);    //请假条
+        map.put(MenuItem.SCHOOLMAIL_NUMBER, MenuItem.schoolMail);   // 校长信箱
+        map.put(MenuItem.CALENDAR_NUMBER, MenuItem.calendar);    //校历
+        map.put(MenuItem.TIMETABLE_NUMBER, MenuItem.timeTable);   //作息时间
+        map.put(MenuItem.WEBSITE_NUMBER, MenuItem.website);//网址导航   //常用网址
         //	map.put(MenuItem.PARENTSCHOOL,MenuItem.parentSchool);
-        map.put(MenuItem.DYNAMICS, MenuItem.dynamics);
-        map.put(MenuItem.HOMEWORK, MenuItem.homework);
-        map.put(MenuItem.SCORE, MenuItem.score);
-        map.put(MenuItem.ATTENDANCE, MenuItem.attendance);//考勤
-        map.put(MenuItem.COMMENT, MenuItem.comment);
-        map.put(MenuItem.CONSUME, MenuItem.consume);
-        map.put(MenuItem.MONITER1, MenuItem.moniter1);//子贵探视
+        map.put(MenuItem.DYNAMICS_NUMBER, MenuItem.dynamics);   //班级动态
+        map.put(MenuItem.HOMEWORK_NUMBER, MenuItem.homework);   //作业
+        map.put(MenuItem.SCORE_NUMBER, MenuItem.score);      //成绩
+        map.put(MenuItem.ATTENDANCE_NUMBER, MenuItem.attendance);//考勤
+        map.put(MenuItem.COMMENT_NUMBER, MenuItem.comment);   //点评
+        map.put(MenuItem.CONSUME_NUMBER, MenuItem.consume);   //卡消防充值
+        map.put(MenuItem.MONITER_NUMBER, MenuItem.moniter1);//子贵探视
 
 
-        map.put(MenuItem.SCHOOL_BUS_ATTENDANCE, MenuItem.SchoolBusAttendance);//校车考勤
-        map.put(MenuItem.DORMITORY_ATTENDANCE, MenuItem.DormitoryAttendance);//宿舍考勤
-        map.put(MenuItem.OUTINTO_SCHOOL_ATTENDANCE, MenuItem.OutIntoSchoolAttendance);//进出校考勤
-        map.put(MenuItem.MANUAL_ATTENDANCE, MenuItem.ManualAttendance);//手动考勤
+        map.put(MenuItem.SCHOOL_BUS_ATTE_NUMBER, MenuItem.SchoolBusAttendance);//校车考勤
+        map.put(MenuItem.DORMITORY_ATTE_NUMBER, MenuItem.DormitoryAttendance);//宿舍考勤
+        map.put(MenuItem.OUTINTO_SOL_ATTE_NUMBER, MenuItem.OutIntoSchoolAttendance);//进出校考勤
+        map.put(MenuItem.MANUAL_ATTE_NUMBER, MenuItem.ManualAttendance);//手动考勤
 
-        map.put(MenuItem.INTEREST_COURSE, MenuItem.interestCourse);//兴趣班选课
-        map.put(MenuItem.PAYMENT, MenuItem.payment);//缴费
+        map.put(MenuItem.INTEREST_COURSE_NUMBER, MenuItem.interestCourse);//兴趣班选课
+        map.put(MenuItem.PAYMENT_NUMBER, MenuItem.payment);//缴费
 
-        map.put(MenuItem.ONE_CARD, MenuItem.oneCard);//一卡通充值
+        map.put(MenuItem.ONE_CARD_NUMBER, MenuItem.oneCard);//一卡通充值
     }
 
     private void initParentMenu() {
@@ -266,7 +266,7 @@ public class NewServiceFragment extends Fragment implements
         if (list != null) {
             for (MenuConfigBean.MenuConfig item : list) {
                 if (item != null && item.getStatus() == MenuItem.VALID) {
-                    MenuItem menuItem = map.get(item.getFunctionName());
+                    MenuItem menuItem = map.get(item.getFunctionNumber());
 
 
                     if (menuItem != null) {

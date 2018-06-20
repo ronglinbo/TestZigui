@@ -18,6 +18,7 @@ import com.wcyc.zigui2.chooseContact.ChooseTeacherActivity;
 import com.wcyc.zigui2.core.CCApplication;
 import com.wcyc.zigui2.newapp.activity.HomeActivity;
 import com.wcyc.zigui2.newapp.activity.LoginActivity;
+import com.wcyc.zigui2.newapp.bean.MenuItem;
 import com.wcyc.zigui2.newapp.bean.ModelRemindList;
 import com.wcyc.zigui2.newapp.bean.NewMessageBean;
 import com.wcyc.zigui2.newapp.bean.NewMessageListBean;
@@ -77,47 +78,40 @@ public class UmengPushService extends UmengMessageService {
         String messageType = msg.getMessageType();
         Log.i("TAG", "友盟message messageType:" + messageType);
         if (messageType.equals("0")) {
-//            logout(context);
+            logout(context);
             return;
-        }else{
-            String messageName = getMsgTypeName(messageType);
-            if (!DataUtil.isFunctionEnable(messageName))
-                return;
-            Intent broadcast = new Intent(
-                    HomeActivity.INTENT_NEW_MESSAGE);
-            context.sendBroadcast(broadcast);
+        }
+        String messageName = getMsgTypeName(messageType);
+        if (!DataUtil.isFunctionEnable(MenuItem.nameToNumber(messageName)))
+            return;
+        Intent broadcast = new Intent(
+                HomeActivity.INTENT_NEW_MESSAGE);
+        context.sendBroadcast(broadcast);
 
-            boolean isTop = DataUtil.isTopActivity(context);
-            if (isTop == true) {
-                return;
-            }
-            msg.setMessageTypeName(messageName);
-            //合并消息（22，24，25）为业务办理
-            if (messageType.equals("22")
-                    || messageType.equals("24")
-                    || messageType.equals("25")) {
-                msg.setMessageTypeName("业务办理");
-            } else if (messageType.equals("23")) {
-                msg.setMessageTypeName("请假条");
-            }
-
-            Intent intent = new Intent();
-            intent.setClass(context, HomeActivity.class);
-            //跳到首页
-            intent.putExtra("firstPage", true);
-            notification(context, msg, intent);
-            getModelRemind();
+        boolean isTop = DataUtil.isTopActivity(context);
+        if (isTop == true) {
+            return;
+        }
+        msg.setMessageTypeName(messageName);
+        //合并消息（22，24，25）为业务办理
+        if (messageType.equals("22")
+                || messageType.equals("24")
+                || messageType.equals("25")) {
+            msg.setMessageTypeName("业务办理");
+        } else if (messageType.equals("23")) {
+            msg.setMessageTypeName("请假条");
         }
 
+        Intent intent = new Intent();
+        intent.setClass(context, HomeActivity.class);
+        //跳到首页
+        intent.putExtra("firstPage", true);
+        notification(context, msg, intent);
+        getModelRemind();
 //        showNotification(msg);
     }
 
 
-    /**
-     * 强制退出操作
-     *
-     * @param context
-     */
     private void logout(Context context) {
 
         //避免重复启动 LoginActivity
@@ -151,7 +145,7 @@ public class UmengPushService extends UmengMessageService {
 //        inboxStyle.bigText(content);
 //        builder.setStyle(inboxStyle);
 //		builder.setSmallIcon(setIconByType(msg.getMessageType()));
-        builder.setSmallIcon(R.drawable.ic_quanketong_small);
+        builder.setSmallIcon(R.drawable.app_icon);
         builder.setDefaults(Notification.DEFAULT_ALL);
         builder.setAutoCancel(true);
         builder.setContentTitle(type);

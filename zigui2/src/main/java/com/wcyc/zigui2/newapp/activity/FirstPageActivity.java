@@ -3,29 +3,31 @@ package com.wcyc.zigui2.newapp.activity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.dh.DHMoniterService;
 
 
 import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
 import com.wcyc.zigui2.R;
-import com.wcyc.zigui2.newapp.bean.HeEducationUserBean;
+import com.wcyc.zigui2.chooseContact.ChooseTeacherActivity;
+import com.wcyc.zigui2.newapp.bean.LauncherInfoBean;
 import com.wcyc.zigui2.newapp.bean.LoginBean;
 import com.wcyc.zigui2.newapp.service.ChatLoginService;
 import com.wcyc.zigui2.core.BaseActivity;
@@ -40,11 +42,10 @@ import com.wcyc.zigui2.updatesystem.NewUpdateVer;
 import com.wcyc.zigui2.utils.ApiManager;
 import com.wcyc.zigui2.utils.Constants;
 import com.wcyc.zigui2.utils.DataUtil;
+import com.wcyc.zigui2.utils.DensityUtil;
 import com.wcyc.zigui2.utils.HttpHelper;
 import com.wcyc.zigui2.utils.JsonUtils;
 import com.wcyc.zigui2.utils.RequestHeader;
-import com.wcyc.zigui2.utils.SPUtils;
-import com.wcyc.zigui2.utils.SystemUtils;
 
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -55,271 +56,30 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FirstPageActivity extends BaseActivity implements HttpRequestAsyncTaskListener {
 
-    private static final int GET_LOGIN_INFO = 0x001;
+    private static final int GET_LOGIN_INFO = 0x0001;
+    private RelativeLayout rl_content;
+    private ImageView iv_school_logo;
+    private TextView tv_school_name;
+    private ImageView iv_school_name;
     private ImageView imageView;
-    private String appToken; //和教育传递AppToken
-
-    private HttpRequestAsyncTaskListener httpRequestAsyncTaskListener = new HttpRequestAsyncTaskListener() {
-        @Override
-        public void onRequstComplete(String result) {
-            parseQIDong(result);
-        }
-
-        @Override
-        public void onRequstCancelled() {
-
-        }
-    };
-
-    BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (isFirst()) {
-                goSplashActivity();
-            } else {
-                goLoginActivity();
-            }
-        }
-    };
-    private HeEducationUserBean heEducationUserBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_first_pager);
-
-        IntentFilter filter = new IntentFilter(UPDATE_VERSION_SUCCESS);
-        registerReceiver(receiver, filter);
-
-
-        if (checkSign()) return;
+        setContentView(R.layout.activity_first_page);
+        //  newActivity(PolyvPlayerActivity.class,null);
 
         initView();
 
-        if (checkRootAndSimulator()) {
-            return;
-        }
-
-        getAppToken();
-    }
-
-    /**
-     * 校验签名问题.防止二次打包
-     */
-    private boolean checkSign() {
-        boolean signCheck = CCApplication.getInstance().isSignCheck();
-        if (!signCheck) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("请前往官方渠道下载正版app");
-            builder.setPositiveButton("立即安装", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Uri apkDownUrl = Uri.parse(Constants.MARKET_APK_DOWNLOAD);
-                    FirstPageActivity.this.startActivity(new Intent("android.intent.action.VIEW", apkDownUrl));
-                    finish();
-                }
-            });
-            builder.setNegativeButton("取消", null);
-            AlertDialog dialog = builder.create();
-            dialog.show();
-            return true;
-        }
-        return false;
-    }
-
-
-    private boolean checkRootAndSimulator() {
-        boolean isRoot = SystemUtils.isRoot();
-        boolean isSimulator = SystemUtils.checkSimulator(FirstPageActivity.this);
-        boolean isFirst = (boolean) SPUtils.get(CCApplication.applicationContext, "CHECK_ROOT", "ROOT", false);
-        if (isRoot && !isFirst) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("检测到手机已Root,存在风险隐患，是否继续运行？");
-            builder.setPositiveButton("继续", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    SPUtils.put(CCApplication.applicationContext, "CHECK_ROOT", "ROOT", true);
-                    getAppToken();
-
-                }
-            });
-            builder.setNegativeButton("离开", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    CCApplication.getInstance().finishAllActivity();
-                    finish();
-                }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
-            return true;
-        }
-        return false;
-    }
-
-
-    private void initView() {
-        imageView = (ImageView) findViewById(R.id.imageView);
-    }
-
-    private void getAppToken() {
-
-        CCApplication.getInstance().setHeAutoLogin(false);
-        Intent intent = getIntent();
-        try {
-            if (intent != null) {
-                appToken = intent.getStringExtra("appToken");
-                if (appToken != null) {
-                    CCApplication.getInstance().setAppToken(appToken);
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("没有获取到 appToken");
-        }
-
-        appToken = CCApplication.getInstance().getAppToken();
-        if (!DataUtil.isNullorEmpty(appToken)) {
-            new GetHeInfoAsyncTask().execute();
-        } else {
-            initLoginDetail();
-        }
-    }
-
-
-    private void parseHeUserData(String jsonStr) {
-        System.out.println(jsonStr);
-        heEducationUserBean = JsonUtils.fromJson(jsonStr, HeEducationUserBean.class);
-        //判断缴费状态
-        int queryResult = heEducationUserBean.getFreeQueryResult();
-        if (1 != queryResult) {
-            DataUtil.getToast("尚未开通全课通服务,请联系客服开通");
-            CCApplication.app.clearData();
-            CCApplication.getInstance().stopReceiver();
-            CCApplication.getInstance().clearNotification();
-            CCApplication.app.finishAllActivity();
-
-            //跳转到登录页面
-            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-            startActivity(intent);
-
-//            finish();
-        } else {
-            CCApplication.getInstance().setHeEducationDetail(jsonStr);
-            registerHeUser();
-        }
-    }
-
-    private void registerHeUser() {
-        new RegisterAsyncTask().execute();
-    }
-
-
-    private class GetHeInfoAsyncTask extends AsyncTask<String, String, String> {
-        @Override
-        protected String doInBackground(String... strings) {
-            String result = null;
-            String url = Constants.URL + Constants.GET_HE_EDU_USER_INFO;
-            JSONObject json = new JSONObject();
-            try {
-                json.put("app_token", appToken);
-                result = HttpHelper.httpPostJson(FirstPageActivity.this, url, json);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            if (!DataUtil.isNullorEmpty(result)) {
-                parseHeUserData(result);
-            } else {
-                DataUtil.getToast("获取和教育用户数据失败,请联系客服");
-                CCApplication.app.clearData();
-                CCApplication.getInstance().stopReceiver();
-                CCApplication.getInstance().clearNotification();
-                CCApplication.app.finishAllActivity();
-                FirstPageActivity.this.finish();
-            }
-        }
-    }
-
-
-    /**
-     * 和教育注册用户的Task
-     */
-    private class RegisterAsyncTask extends AsyncTask<String, String, String> {
-        @Override
-        protected String doInBackground(String... params) {
-            String result = null;
-            String url = Constants.URL + Constants.REGIST_QKT_INFO;
-            JSONObject json = new JSONObject();
-            try {
-                json.put("app_token", appToken);
-                result = HttpHelper.httpPostJson(FirstPageActivity.this, url, json);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            if (result != null) {
-                JSONObject jsonRoot = null;
-                try {
-                    jsonRoot = new JSONObject(result);
-                    String hePhone = jsonRoot.getString("phone");
-                    String hePwd = jsonRoot.getString("pwd");
-                    if (!DataUtil.isNullorEmpty(hePhone) && !DataUtil.isNullorEmpty(hePwd)) {
-                        CCApplication.getInstance().savePhoneNum(hePhone);
-                        CCApplication.getInstance().savePhonePwd(hePwd);
-                        CCApplication.getInstance().setHeAutoLogin(true);
-                    }
-
-                    DataUtil.getToast("欢迎回来:" + heEducationUserBean.getResult().getUserInfo().getNickName());
-
-                    initLoginDetail();
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-
-                    DataUtil.getToast("注册用户失败,请联系客服");
-                    CCApplication.app.clearData();
-                    CCApplication.getInstance().stopReceiver();
-                    CCApplication.getInstance().clearNotification();
-                    CCApplication.app.finishAllActivity();
-                    FirstPageActivity.this.finish();
-                }
-            }
-        }
-
-    }
-
-
-    private void initLoginDetail() {
-
-        checkVersionUpdate(getDeviceID(), "android", getCurVersion());
-
+        IntentFilter filter = new IntentFilter(UPDATE_VERSION_SUCCESS);
+        registerReceiver(receiver, filter);
         NewMemberBean member = CCApplication.app.getMemberInfo();
+
+        //有登录信息
         if (member != null) {
-            //启动页面
-            String qidong = CCApplication.dbsp.getString("QidongUrl");
-            if (CCApplication.dbsp.getString("QidongUrl").equals("")) {
-                getLanucherPage();
-            } else {
-                if (CCApplication.dbsp.getString("QidongUrl").equals("zigui")) {
-                    imageView.setImageResource(R.drawable.splash);
-                } else {
-                    try {
-                        Picasso.with(this).load(CCApplication.dbsp.getString("QidongUrl")).into(imageView);
-                    } catch (Exception e) {
 
-                    }
-
-                }
-            }
+            //保证每次都是最新的启动页.
+            getLauncherPage();
 
             String strupdateFlag = member.getUpdateFlag();
             String isNeedModifyPsd = member.getIsNeedModifyPwd();
@@ -334,31 +94,61 @@ public class FirstPageActivity extends BaseActivity implements HttpRequestAsyncT
                 }
             }
         } else {
-
-            //解决和教育 第一次过来实现自动登录功能.
-            String phonePwd = getPhonePwd();
-            String phoneNum = getPhoneNum();
-            boolean autoLogin = CCApplication.getInstance().getHeAutoLogin();
-
-            if (autoLogin && !DataUtil.isNullorEmpty(phonePwd) && !DataUtil.isNullorEmpty(phoneNum)) {
-                Login();
-            }
+            //没有登录信息的情况下
             imageView.setImageResource(R.drawable.splash);
         }
+
+        checkVersionUpdate(getDeviceID(), "android", getCurVersion());
     }
 
-    private void parseQIDong(String data) {
+    /**
+     */
+    private void getLauncherPage() {
+
+        try {
+            UserType userType = CCApplication.app.getPresentUser();
+            String schoolId = userType.getSchoolId();
+
+            JSONObject json = new JSONObject();
+            try {
+                json.put("schoolId", schoolId);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            new HttpRequestAsyncTask(json, httpRequestAsyncTaskListener, this).execute(Constants.GET_SCHOOL_LAUNCHER_INFO);
+
+        } catch (Exception e) {
+
+        }
+
+    }
+
+
+    private HttpRequestAsyncTaskListener httpRequestAsyncTaskListener = new HttpRequestAsyncTaskListener() {
+        @Override
+        public void onRequstComplete(String result) {
+            parseLauncherData(result);
+        }
+
+        @Override
+        public void onRequstCancelled() {
+
+        }
+    };
+
+    private void parseLauncherData(String data) {
         System.out.print(data);
         try {
-
-            JSONObject jsonObject = new JSONObject(data);
-            jsonObject = jsonObject.getJSONObject("imageUrlList");
-            String url = Constants.URL + "/" + jsonObject.get(getDpi());
-            Picasso.with(this).load(url).into(imageView);
-            CCApplication.dbsp.putString("QidongUrl", url);
-        } catch (JSONException e) {
-            //没有的话 默认 子贵校园
-            CCApplication.dbsp.putString("QidongUrl", "zigui");
+            LauncherInfoBean launcherInfoBean = JsonUtils.fromJson(data, LauncherInfoBean.class);
+            if (Constants.SUCCESS_CODE == launcherInfoBean.getServerResult().getResultCode() && launcherInfoBean.getInfoSchoolStart() != null) {
+                showIndividuationPicture(launcherInfoBean);
+            } else {
+                imageView.setImageResource(R.drawable.splash);
+                rl_content.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            imageView.setImageResource(R.drawable.splash);
+            rl_content.setVisibility(View.GONE);
         }
     }
 
@@ -381,6 +171,86 @@ public class FirstPageActivity extends BaseActivity implements HttpRequestAsyncT
         }
         return "xhdpi";
 
+    }
+
+    /**
+     * 显示个性化启动页
+     *
+     * @param launcherInfo
+     */
+    private void showIndividuationPicture(LauncherInfoBean launcherInfo) {
+
+        imageView.setVisibility(View.GONE);
+        rl_content.setVisibility(View.VISIBLE);
+
+        String imageLogoUrl = launcherInfo.getInfoSchoolStart().getImageUrl();
+        int isTextDefault = launcherInfo.getInfoSchoolStart().getIsTextDefault();
+        String textLogoUrl = launcherInfo.getInfoSchoolStart().getTextLogoUrl();
+        String schoolName = launcherInfo.getInfoSchoolStart().getSchoolName();
+
+        String imgAuthId = Constants.AUTHID + "@" + getDeviceID()
+                + "@" + CCApplication.app.getMemberInfo().getAccId();
+
+
+        //校徽
+        if (!DataUtil.isNullorEmpty(imageLogoUrl)) {
+            String logoURL = Constants.URL + "/" + imageLogoUrl + "&" + imgAuthId;
+            getImageLoader().displayImage(logoURL, iv_school_logo, getImageLoaderOptions());
+            System.out.println("Logo地址:" + logoURL);
+        } else {
+            iv_school_logo.setBackgroundResource(R.drawable.app_icon);
+        }
+
+        //校名
+        if (0 == isTextDefault && !DataUtil.isNullorEmpty(textLogoUrl)) {
+            iv_school_name.setVisibility(View.VISIBLE);
+            tv_school_name.setVisibility(View.INVISIBLE);
+            String logoURL = Constants.URL + "/" + textLogoUrl + "&" + imgAuthId;
+            getImageLoader().displayImage(logoURL, iv_school_name, getImageLoaderOptions());
+            System.out.println("textLogoUrl地址:" + logoURL);
+        } else {
+            tv_school_name.setVisibility(View.VISIBLE);
+            iv_school_name.setVisibility(View.INVISIBLE);
+            if (!DataUtil.isNullorEmpty(schoolName)) {
+                tv_school_name.setText(schoolName);
+            } else {
+                tv_school_name.setText("子贵校园");
+            }
+        }
+    }
+
+    private void initView() {
+        imageView = (ImageView) findViewById(R.id.imageView);
+        imageView.setVisibility(View.VISIBLE);
+
+        rl_content = (RelativeLayout) findViewById(R.id.rl_content);
+        rl_content.setVisibility(View.GONE);
+
+        iv_school_logo = (ImageView) findViewById(R.id.iv_school_logo);
+        tv_school_name = (TextView) findViewById(R.id.tv_school_name);
+        iv_school_name = (ImageView) findViewById(R.id.iv_school_name);
+        iv_school_name.setAdjustViewBounds(true);
+
+        //获取屏幕宽度
+        WindowManager m = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        m.getDefaultDisplay().getMetrics(outMetrics);
+
+        //计算宽高，后台默认图片宽高比 1080:238
+        int width = outMetrics.widthPixels - DensityUtil.dp2px(this, 10f) * 2; //乘以2是因为左右两侧的宽度
+        int height = (int) (width / 1080f * 238); //280*136
+
+        //设置图片参数
+        ViewGroup.LayoutParams layoutParams = iv_school_name.getLayoutParams();
+        layoutParams.width = width;
+        layoutParams.height = height;
+        iv_school_name.setLayoutParams(layoutParams);
+    }
+
+
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
     }
 
     @Override
@@ -410,34 +280,17 @@ public class FirstPageActivity extends BaseActivity implements HttpRequestAsyncT
         }).start();
     }
 
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(receiver);
-    }
 
-
-    /**
-     * 启动页 获取
-     */
-    private void getLanucherPage() {
-        try {
-            UserType userType = CCApplication.app.getPresentUser();
-            String schoolId = userType.getSchoolId();
-
-            JSONObject json = new JSONObject();
-            try {
-                json.put("schoolId", schoolId);
-            } catch (JSONException e) {
-                e.printStackTrace();
+    BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (isFirst()) {
+                goSplashActivity();
+            } else {
+                goLoginActivity();
             }
-
-            new HttpRequestAsyncTask(json, httpRequestAsyncTaskListener, this).execute(Constants.GET_IMAGE_URL);
-
-        } catch (Exception e) {
-
         }
-
-    }
+    };
 
     /**
      * 更新版本.
@@ -452,7 +305,7 @@ public class FirstPageActivity extends BaseActivity implements HttpRequestAsyncT
             json.put("deviceId", deviceID);
             json.put("versionType", mobileType);
             json.put("versionNumber", version);
-            json.put("productName", 3); // 0 子贵校园 1 子贵学苑 2 子贵课堂  3全课通
+            //  json.put("productName",0); // 0 子贵校园 1 子贵学苑 2 子贵课堂
             System.out.println("FirstPageActivity获取版本更新json:" + json);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -479,7 +332,7 @@ public class FirstPageActivity extends BaseActivity implements HttpRequestAsyncT
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                handler.sendEmptyMessage(1);
+                handler.sendEmptyMessage(2);
             }
         }, 1000);
 
@@ -519,7 +372,10 @@ public class FirstPageActivity extends BaseActivity implements HttpRequestAsyncT
      * 登陆自己服务器，刷新用户数据
      */
     public void Login() {
+
+        System.out.println("Login登陆自己服务器");
         new LoginAsyncTask().execute(getPhoneNum(), getPhonePwd(), "");
+//		getLogin(getPhoneNum(),getPhonePwd());
     }
 
     /**
@@ -616,8 +472,7 @@ public class FirstPageActivity extends BaseActivity implements HttpRequestAsyncT
             try {
                 json.put("userName", params[0]);
                 json.put("password", /*pwdMd5*/params[1]);
-                //去掉换机验证
-                json.put("isNeedVerify", "0");
+
                 String url = new StringBuilder(Constants.SERVER_URL).append(Constants.LOGIN_URL)
                         .toString();
                 RequestHeader header = new RequestHeader(FirstPageActivity.this);
@@ -702,12 +557,10 @@ public class FirstPageActivity extends BaseActivity implements HttpRequestAsyncT
         new Thread(new Runnable() {
             @Override
             public void run() {
-
-                CCApplication.app.clearData();
+                CCApplication.app.logout();
                 CCApplication.app.finishAllActivity();
-
-//                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
             }
         }).start();
     }
@@ -717,21 +570,19 @@ public class FirstPageActivity extends BaseActivity implements HttpRequestAsyncT
         CCApplication.getInstance().setPresentUser(null);
 
         //校验是否需要换机验证
-        //全课通 去掉换机验证
-//        if ("1".equals(member.getIsVerification())) {
-//            CCApplication.app.singleLogout();
-//            ChooseTeacherActivity.teacherSelectInfo = null;// 初始化部门信息
-//            CCApplication.app.finishAllActivity();
-//            Intent intent = new Intent(FirstPageActivity.this, LoginActivity.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            intent.putExtra("conflict", true);
-//            startActivity(intent);
-//            finish();
-//        } else {
-//            getLoginInfo();
-//        }
-
-        getLoginInfo();
+        if ("1".equals(member.getIsVerification())) {
+            CCApplication.app.singleLogout();
+            ChooseTeacherActivity.teacherSelectInfo = null;// 初始化部门信息
+            CCApplication.app.finishAllActivity();
+            Intent intent = new Intent(FirstPageActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("conflict", true);
+            startActivity(intent);
+            finish();
+        } else {
+            //获取到个人信息之后  再去做其他操作
+            getLoginInfo();
+        }
     }
 
     private void getLogin(final String userName, String psw) {

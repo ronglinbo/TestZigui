@@ -69,9 +69,24 @@ public class NewClassDynamicsBean1 {
 	 * 发布人名字
 	 */
 	private String publisherName;
+
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
+
 	/**
 	 * 发布人id
 	 */
+
+	/**
+	 * 发布班级
+	 */
+	private String className;
+
 	private int publishUserId;
 	private String subjectView;//发布人在这个班级所教科目
 	private String publishChildId;//小孩id 如果是家长

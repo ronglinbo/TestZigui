@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
+import com.allinpay.appayassistex.APPayAssistEx;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tencent.mm.sdk.modelpay.PayReq;
@@ -180,7 +181,7 @@ public class NewRechargePriceActivity extends BaseActivity implements
 
     private int orderModel = -1;
 
-    // 设置点击效果监听器
+    // 设置点击事件监听器
     private void initEvents() {
         title_back.setOnClickListener(this);
         title_right_tv.setOnClickListener(this);
@@ -641,6 +642,7 @@ public class NewRechargePriceActivity extends BaseActivity implements
      * @param para 参数
      */
     private void goTlApp(final String para) {
+        APPayAssistEx.startPay(this, para.toString(), serverMode);
     }
 
     /**
@@ -649,6 +651,7 @@ public class NewRechargePriceActivity extends BaseActivity implements
      * @param para 参数
      */
     private void goTlXYApp(final String para) {
+        APPayAssistEx.startPay(this, para.toString(), serverMode);
     }
 
     /**
@@ -656,7 +659,56 @@ public class NewRechargePriceActivity extends BaseActivity implements
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (APPayAssistEx.REQUESTCODE == requestCode) {
+            if (null != data) {
+                String payRes = null;
+                String payAmount = null;
+                String payTime = null;
+                try {
+                    JSONObject resultJson = new JSONObject(data.getExtras().getString("result"));
+                    payRes = resultJson.getString(APPayAssistEx.KEY_PAY_RES);
+                    payAmount = resultJson.getString("payAmount");
+                    payTime = resultJson.getString("payTime");
+                    System.out.println("payTime:" + payTime);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (null != payRes && payRes.equals(APPayAssistEx.RES_SUCCESS)) {
+                    DataUtil.getToast("支付成功");
+                    setResult(RESULT_OK);
+                    String call = getIntent().getStringExtra("call");
 
+                    if (call != null) {
+                        finish();
+                        Iterator<Activity> activityIterator = CCApplication.activityList.iterator();
+                        while (activityIterator.hasNext()) {
+                            Activity activity = activityIterator.next();
+                            if (activity instanceof NewRechargeProductActivity) {
+                                activity.setResult(RESULT_OK);
+                                activity.finish();
+                            }
+                        }
+
+                    } else {
+                        //原来逻辑
+                        Intent intent = new Intent(this, MyOrderActivity.class);
+                        intent.putExtra("status", 1);
+                        startActivity(intent);
+                        finish();
+                    }
+
+//					CCApplication.app.finishAllActivity();
+//					newActivity(MyInformationActivity.class, null);
+                    new PayResultAsyncTask(MOBILCXETLPAYSECURE, "1", req).execute();//写死的
+                } else {
+                    DataUtil.getToast("支付失败");
+                    newActivity(PayFailActivity.class, null);
+                    setResult(RESULT_CANCELED);
+
+                    finish();
+                }
+            }
+        }
         //	super.onActivityResult(requestCode, resultCode, data);
     }
 

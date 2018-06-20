@@ -33,7 +33,7 @@ public class ClassStudent extends NewBaseBean{
 	}
 
 
-	public class Student implements Serializable{
+	public static class Student implements Serializable{
 
 		/**
 		 * 
@@ -42,6 +42,7 @@ public class ClassStudent extends NewBaseBean{
 		private int id;
 		private String name;
 		private String imgUrl;
+		private String gradeClass;
 		
 		private String header;//
 		private String sortLetter;//
@@ -74,7 +75,13 @@ public class ClassStudent extends NewBaseBean{
 		}
 
 
+		public String getGradeClass() {
+			return gradeClass;
+		}
 
+		public void setGradeClass(String gradeClass) {
+			this.gradeClass = gradeClass;
+		}
 
 		public String getSortLetter() {
 			return sortLetter;

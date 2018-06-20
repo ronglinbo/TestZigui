@@ -95,7 +95,7 @@ public class CameraHelper {
 		Camera.Size aa=parameters.getPreviewSize();
 		int bb=aa.width;
 		int cc=aa.height;
-		System.out.println(bb+"=Camera.Size.bb===1===Camera.Size.cc="+cc);
+		System.out.println(bb+"=CAMERA.Size.bb===1===CAMERA.Size.cc="+cc);
 
 //		if(parameters.isSmoothZoomSupported()){//是否支持对焦
 //			System.out.println("===是支持对焦==");

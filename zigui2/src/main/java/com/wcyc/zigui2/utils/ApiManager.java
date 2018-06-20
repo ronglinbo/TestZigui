@@ -1,5 +1,6 @@
 package com.wcyc.zigui2.utils;
 
+import com.wcyc.zigui2.newapp.bean.ClassAndStudentInfo;
 import com.wcyc.zigui2.newapp.bean.NewMemberBean;
 
 import com.wcyc.zigui2.newapp.bean.UserServiceInfo;
@@ -38,4 +39,8 @@ public interface ApiManager {
 //激活试用接口
     @POST("activeProductService/")
     Call<UserServiceInfo> activeProductService(@Body RequestBody json);
+
+    ////获取用户有权限的班级学生列表
+    @POST("getSchStudentList/")
+    Call<ClassAndStudentInfo> getSchStudentList(@Body RequestBody json);
 }

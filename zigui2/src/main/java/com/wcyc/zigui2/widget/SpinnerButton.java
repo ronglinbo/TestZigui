@@ -64,7 +64,7 @@ public class SpinnerButton extends Button {
 
 	private void initButton(Context context) {
 		this.mContext = context;
-		// UMSpinnerButton监听效果
+		// UMSpinnerButton监听事件
 		setOnClickListener(new UMSpinnerButtonOnClickListener());
 	}
 
@@ -103,7 +103,7 @@ public class SpinnerButton extends Button {
 	}
 
 	/**
-	 * UMSpinnerButton的点击效果
+	 * UMSpinnerButton的点击事件
 	 */
 	class UMSpinnerButtonOnClickListener implements View.OnClickListener {
 

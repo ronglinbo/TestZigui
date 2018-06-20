@@ -70,48 +70,53 @@ public class AllMessageAdapter extends ArrayAdapter<NewMessageBean> {
          */
         private static final long serialVersionUID = 4003115249358179081L;
 
+        //服务编号:
+        // 01系统消息；02通知；03资源状态改变消息；04版本更新；05续费提醒；06成绩；07点评；08作业；09校园风采；10班级动态；
+        // 11考勤；12回复意见；13消费信息；14邮件；15待办事项；16工资条；17值班查询；18校长信箱；19日志；20总结；
+        // 21考试 ；22请假审批结果；23学生请假单（家长端）；24维修处理结果；25文印审批结果 ；26 一卡通考勤；27 校园新闻 ;
+        // 28 教育资讯 ; 29 留言板 ；30 进出校考勤 ；31 宿舍考勤 ； 32 校车考勤  33订单催缴 34缴费
         {
-            put("成绩", R.drawable.home_icon_chengji);
-            put("待办事项", R.drawable.home_icon_daibanshixiang);
-            put("点评", R.drawable.home_icon_dianping);
+            put("06"/*"成绩"*/, R.drawable.home_icon_chengji);
+            put("15"/*"待办事项"*/, R.drawable.home_icon_daibanshixiang);
+            put("07"/*"点评"*/, R.drawable.home_icon_dianping);
             put("短信", R.drawable.home_icon_duanxin);
-            put("工资条", R.drawable.home_icon_gongzitiao);
-            put("人工考勤", R.drawable.home_icon_rengong);
-            put("考试", R.drawable.home_icon_kaoshi);
+            put("16"/*"工资条"*/, R.drawable.home_icon_gongzitiao);
+            put("11"/*"人工考勤"*/, R.drawable.home_icon_rengong);
+            put("21"/*"考试"*/, R.drawable.home_icon_kaoshi);
             put("成绩表", R.drawable.home_icon_kechengbiao);
-            put("系统消息", R.drawable.icon_xitongxiaoxi);
-            put("日志", R.drawable.home_icon_rizhi);
+            put("01"/*"系统消息"*/, R.drawable.icon_xitongxiaoxi);
+            put("19"/*"日志"*/, R.drawable.home_icon_rizhi);
             put("统计", R.drawable.home_icon_tongji);
-            put("通知", R.drawable.home_icon_tongzhi);
-            put(MenuItem.CONSUME, R.drawable.home_icon_xiaofei);
+            put("02"/*"通知"*/, R.drawable.home_icon_tongzhi);
+            put("13"/*MenuItem.CONSUME*/, R.drawable.home_icon_xiaofei);
             put("校历", R.drawable.home_icon_xiaoli);
             put("校园监控", R.drawable.home_icon_xiaoyuanjiank);
-            put("校长信箱", R.drawable.home_icon_xiaozhangxinxiang);
+            put("18"/*"校长信箱"*/, R.drawable.home_icon_xiaozhangxinxiang);
             put("业务办理", R.drawable.home_icon_yewubanli);
-            put("邮件", R.drawable.home_icon_youjian);
-            put("值班查询", R.drawable.home_icon_zhibanchaxun);
-            put("总结", R.drawable.home_icon_zongjie);
+            put("14"/*"邮件"*/, R.drawable.home_icon_youjian);
+            put("17"/*"值班查询"*/, R.drawable.home_icon_zhibanchaxun);
+            put("20"/*"总结"*/, R.drawable.home_icon_zongjie);
             put("作息时间", R.drawable.home_icon_zuoxishijian);
-            put("作业", R.drawable.home_icon_zuoye);
-            put("请假条", R.drawable.home_icon_qingjiatiao);
-            put("班级动态", R.drawable.home_icon_banjidongtai);
-            put("校园新闻", R.drawable.home_icon_xiaoyuanxinwen);
-            put("教育资讯", R.drawable.home_icon_jiaoyuzixun);
+            put("08"/*"作业"*/, R.drawable.home_icon_zuoye);
+            put("23"/*"请假条"*/, R.drawable.home_icon_qingjiatiao);
+            put("10"/*"班级动态"*/, R.drawable.home_icon_banjidongtai);
+            put("27"/*"校园新闻"*/, R.drawable.home_icon_xiaoyuanxinwen);
+            put("28"/*"教育资讯"*/, R.drawable.home_icon_jiaoyuzixun);
             //新增留言板
-            put("班牌留言", R.drawable.home_icon_liuyanban);
+            put("29"/*"班牌留言"*/, R.drawable.home_icon_liuyanban);
             //新增进出校考勤
-            put("进出校考勤", R.drawable.home_icon_jinchuxiao);
+            put("30"/*"进出校考勤"*/, R.drawable.home_icon_jinchuxiao);
             //新增宿舍考勤
-            put("宿舍考勤", R.drawable.home_icon_sushe);
+            put("31"/*"宿舍考勤"*/, R.drawable.home_icon_sushe);
             //新增校车考勤
-            put("校车考勤", R.drawable.home_icon_xiaoche);
+            put("32"/*"校车考勤"*/, R.drawable.home_icon_xiaoche);
 
             //订单催缴
-            put("订单催缴", R.drawable.home_icon_paynotice);
+            put("33"/*"订单催缴"*/, R.drawable.home_icon_paynotice);
             //百川消息
             put("会话列表", R.drawable.home_icon_baichuan);
             //缴费
-            put("缴费", R.drawable.home_icon_jiaofei);
+            put("34"/*"缴费"*/, R.drawable.home_icon_jiaofei);
         }
     };
 
@@ -362,13 +367,20 @@ public class AllMessageAdapter extends ArrayAdapter<NewMessageBean> {
     }
 
     private void setAvatar(NewMessageBean message, ViewHolder holder) {
-        String type = message.getMessageTypeName();
+//        String type = message.getMessageTypeName();
+        String type = message.getMessageType();
         if (DataUtil.isNullorEmpty(type)) {
             type = DataUtil.convertTypeToName(message.getMessageType());
         }
         if (res != null && type != null) {
             try {
-                int resId = (Integer) res.get(type);
+                int resId = 0;
+                if(!res.containsKey(type)){
+                    resId=(Integer) res.get(message.getMessageTypeName());
+                }else{
+                    resId=(Integer) res.get(type);
+                }
+
                 if (resId != 0)
                     holder.avatar.setImageResource(resId);
             } catch (Exception e) {

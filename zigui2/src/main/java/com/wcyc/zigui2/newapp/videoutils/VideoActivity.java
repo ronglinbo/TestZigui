@@ -196,7 +196,7 @@ public class VideoActivity extends BaseActivity implements OnClickListener {
      */
     private void startRecord() {
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            Toast.makeText(VideoActivity.this, "SD卡不存在，请插入SD卡！", Toast.LENGTH_SHORT).show();
+            Toast.makeText(VideoActivity.this, "请检查sd卡或者是否开启存储权限", Toast.LENGTH_SHORT).show();
             return;
         }
 

@@ -40,6 +40,7 @@ import com.wcyc.zigui2.R;
 
 
 import com.wcyc.zigui2.chooseContact.ChooseTeacherActivity;
+import com.wcyc.zigui2.newapp.bean.LauncherInfoBean;
 import com.wcyc.zigui2.newapp.home.NewTeacherAccountActivity;
 import com.wcyc.zigui2.newapp.service.ChatLoginService;
 import com.wcyc.zigui2.core.CCApplication;
@@ -329,19 +330,20 @@ public class HomeFragment extends Fragment
 
 
     private void parseQIDong(String data) {
-        System.out.print(data);
+        System.out.println("HomeFragment 启动页数据" + data);
         try {
-
-            JSONObject jsonObject = new JSONObject(data);
-            jsonObject = jsonObject.getJSONObject("imageUrlList");
-            String url = Constants.URL + "/" + jsonObject.get(getDpi());
-            Picasso.with(getActivity()).load(url);
-            CCApplication.dbsp.putString("QidongUrl", url);
-        } catch (JSONException e) {
-            //没有的话 默认 子贵校园
-            CCApplication.dbsp.putString("QidongUrl", "zigui");
+            LauncherInfoBean launcherInfoBean = JsonUtils.fromJson(data, LauncherInfoBean.class);
+            if (Constants.SUCCESS_CODE == launcherInfoBean.getServerResult().getResultCode()
+                    && launcherInfoBean.getInfoSchoolStart() != null) {
+                CCApplication.getInstance().setLauncherInfo(launcherInfoBean);
+            } else {
+                CCApplication.getInstance().setDefaultLauncherInfo();
+            }
+        } catch (Exception e) {
+            CCApplication.getInstance().setDefaultLauncherInfo();
         }
     }
+
 
     private void switchUser() {
         new Thread(new Runnable() {
@@ -583,7 +585,7 @@ public class HomeFragment extends Fragment
         Intent broadcast = new Intent(HomeFragment.INTENT_SWITCH_USER);
         getActivity().sendBroadcast(broadcast);
         //切换轮播图
-        getLanucherPage();
+//        getLanucherPage();
         // getAllContact();
         CCApplication.getInstance().setAllContactList(null);
         checkServiceExpired();
@@ -637,7 +639,7 @@ public class HomeFragment extends Fragment
                 e.printStackTrace();
             }
             action = ACTION_GET_QIDONG_PAGE;
-            new HttpRequestAsyncTask(json, this, getActivity()).execute(Constants.GET_IMAGE_URL);
+            new HttpRequestAsyncTask(json, this, getActivity()).execute(Constants.GET_SCHOOL_LAUNCHER_INFO);
 
         } catch (Exception e) {
 
