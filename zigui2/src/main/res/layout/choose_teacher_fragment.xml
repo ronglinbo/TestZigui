@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/backgroud_white"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/searchbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:paddingLeft="@dimen/content_to_bord"
+        android:paddingRight="@dimen/content_to_bord"
+        >
+
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_search_btn"
+
+            android:drawableLeft="@drawable/ellipse"
+            android:hint="姓名/姓名首字母/手机号/部门名称"
+            android:paddingLeft="@dimen/nomar_margin"
+            android:textSize="@dimen/field_textsize" />
+    </LinearLayout>
+    <!--<View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/line_darkyellow" />-->
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@+id/contact_list_view"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:listSelector="@drawable/item_selector"
+                android:scrollbars="none" />
+
+            <TextView
+                android:id="@+id/dialog"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+
+                android:gravity="center"
+                android:text="A"
+                android:textColor="@color/font_black"
+                android:textSize="36sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <com.wcyc.zigui2.newapp.widget.SideBar
+                android:id="@+id/sidrbar"
+                android:layout_width="24dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="right|center"
+                />
+
+            <!--com.wcyc.zigui2.contactselect.LetterListView
+                android:id="@+id/letter_list_view"
+                android:layout_width="30dip"
+                android:layout_height="fill_parent"
+                android:layout_alignParentRight="true" /-->
+        </FrameLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line_darkyellow" />
+
+</LinearLayout>

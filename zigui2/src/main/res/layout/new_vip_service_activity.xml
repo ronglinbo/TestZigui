@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    android:orientation="vertical">
+
+    <include layout="@layout/new_title"
+        android:id="@+id/title"/>
+    <TextView
+        android:visibility="invisible"
+        android:layout_gravity="center"
+        android:id="@+id/tv_no_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:drawableTop="@drawable/shuju_no"
+        android:layout_centerInParent="true"
+        android:drawablePadding="10dip"
+        android:textColor="@color/font_darkgray"
+        android:textSize="@dimen/three_text_type"
+        />
+
+
+    <LinearLayout
+        android:layout_below="@+id/title"
+        android:id="@+id/vip_services_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:background="@color/backgroud_white">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_hight"
+            android:background="@color/line_darkyellow" />
+
+        <com.wcyc.zigui2.widget.MyListView
+            android:id="@+id/vip_services_mlv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:scrollbars="none" >
+        </com.wcyc.zigui2.widget.MyListView>
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_hight"
+            android:background="@color/line_darkyellow" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <Button
+            android:id="@+id/recharge_center_bt"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/SlipButton_height"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/fogetpassworld_btn_send_selector"
+            android:text="去充值"
+            android:textColor="@color/font_white"
+            android:textSize="@dimen/recepient_text_size" />
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

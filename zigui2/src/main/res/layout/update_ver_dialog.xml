@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="320dp"
+    android:layout_height="234dp"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_title_custom_dialog">
+
+            <TextView
+                android:id="@+id/title_tv"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:textColor="@color/font_color"
+                android:textSize="17sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="123dp"
+            android:layout_marginBottom="@dimen/nomar_margin"
+            android:orientation="horizontal"
+            android:layout_marginStart="@dimen/content_to_bord"
+            android:layout_marginEnd="@dimen/content_to_bord"
+            android:background="@drawable/bg_middle_custom_dialog">
+
+            <TextView
+                android:id="@+id/content_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="test"
+                android:lineSpacingMultiplier="1.8"
+                android:textColor="@color/font_color"
+                android:textSize="14sp" />
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <RadioButton
+                android:id="@+id/my_rbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="35sp"
+                android:layout_marginLeft="10dp"
+                android:button="@drawable/radiobutton"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="#e5e5e5" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/bg_bottom_custom_dialog">
+
+            <Button
+                android:id="@+id/cancel_btn"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@drawable/cancel_btn_select"
+                android:text="@string/cancel"
+                android:textSize="17sp"
+                android:textColor="@color/font_darkblue" />
+
+            <LinearLayout
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:background="#e5e5e5" />
+
+            <Button
+                android:id="@+id/confirm_btn"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@drawable/confirm_btn_select"
+                android:text="立即更新"
+                android:textStyle="bold"
+                android:textSize="17sp"
+                android:textColor="@color/font_darkblue" />
+        </LinearLayout>
+
+
+</LinearLayout>

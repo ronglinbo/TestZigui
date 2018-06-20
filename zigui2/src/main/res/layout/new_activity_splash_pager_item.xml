@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/iv_splash"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:scaleType="fitXY"
+        android:src="@drawable/guide1" />
+
+   <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="0"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/bt_splash_next"
+            android:layout_width="wrap_content"
+            android:layout_height="30dip"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:paddingTop="1dip"
+            android:paddingBottom="1dip"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="10dip"
+            android:background="@drawable/btn_tiaoguo"
+            android:text="@string/splash_next"
+            android:textColor="@color/font_white"
+            android:textSize="@dimen/three_text_type"/>
+    </LinearLayout>
+
+</LinearLayout>

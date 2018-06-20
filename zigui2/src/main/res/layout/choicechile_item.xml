@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:weichuyoucai="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:background="#FFFFFF"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:minHeight="100dp"
+    android:orientation="horizontal" >
+    <!--选择小孩  -->
+
+    <com.wcyc.zigui2.widget.RoundImageView
+        android:id="@+id/choicechile_item_icon"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="center"
+        android:layout_weight="0"
+        weichuyoucai:src="@drawable/defaulticon"
+        weichuyoucai:type="circle" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/nomar_margin"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+         >
+
+        <TextView
+            android:id="@+id/choicechile_item_tv_class"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/three_text_type"
+            android:textColor="@color/font_darkgray"
+             />
+
+        <TextView
+            android:id="@+id/choicechile_item_tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/choicechile_item_tv_class"
+            android:textSize="@dimen/three_text_type"
+            android:textColor="@color/font_darkgray"/>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/choicechile_item_flag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:layout_marginRight="@dimen/nomar_margin"
+        android:src="@drawable/choicechile_selector" />
+
+</LinearLayout>

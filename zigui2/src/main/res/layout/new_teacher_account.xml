@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:weichuyoucai="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    android:orientation="vertical" >
+
+    <include layout="@layout/new_title" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_hight"
+        android:layout_marginTop="20dp"
+        android:background="@color/line_darkyellow" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/backgroud_white"
+                android:layout_weight="0"
+                android:orientation="vertical" >
+
+                <!-- 头像 -->
+
+                <RelativeLayout
+                    android:id="@+id/teacher_mydeetail_item_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/item_selector"
+                    android:gravity="center"
+                    android:padding="@dimen/mydetail_content_padding">
+
+                    <com.wcyc.zigui2.utils.CircleImageView
+                        android:id="@+id/mydetail_item_icon_iv"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="@dimen/mydetail_line_magrin"
+                        android:layout_toLeftOf="@+id/mydetail_item_arrow"
+                        android:src="@drawable/pho_touxiang"
+                        weichuyoucai:border_color="#ffffff"
+                        weichuyoucai:border_width="1dp"
+                        weichuyoucai:src="@drawable/pho_touxiang"
+                        weichuyoucai:type="circle" />
+
+                    <ImageView
+                        android:id="@+id/mydetail_item_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/zgd_margin_right_min"
+                        android:src="@drawable/list_xiayiji_icon" />
+
+                    <TextView
+                        android:id="@+id/mydetail_item_touxiang"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/mydetail_item_touxiang"
+                        android:textColor="@color/font_black"
+                        android:textSize="@dimen/three_text_type" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_hight"
+                    android:layout_marginLeft="@dimen/content_to_bord"
+                    android:background="@color/line_darkyellow" />
+
+                <RelativeLayout
+                    android:id="@+id/teac_mydeetail_item_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/my_item_hight_z"
+                    android:background="@drawable/item_selector"
+                    android:gravity="center"
+                    android:padding="@dimen/mydetail_content_padding" >
+
+                    <TextView
+                        android:id="@+id/teac_mydeetail_item_phone_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/mydetail_item_phone"
+                        android:textColor="@color/font_black"
+                        android:textSize="@dimen/three_text_type" />
+
+                    <TextView
+                        android:id="@+id/teac_mydeetail_item_phone_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/teac_mydeetail_item_phone_text"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/mydetail_line_magrin"
+                        android:layout_toLeftOf="@+id/teac_mydetail_item_phone_arrow"
+                        android:textColor="@color/font_darkgray"
+                        android:textSize="@dimen/three_text_type" />
+
+                    <ImageView
+                        android:id="@+id/teac_mydetail_item_phone_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/zgd_margin_right_min"
+                        android:src="@drawable/list_xiayiji_icon"
+                        android:visibility="invisible" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_hight"
+                    android:layout_marginLeft="@dimen/content_to_bord"
+                    android:background="@color/line_darkyellow" />
+
+                <RelativeLayout
+                    android:id="@+id/teacher_mydeetail_item_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/my_item_hight_z"
+                    android:background="@drawable/item_selector"
+                    android:gravity="center"
+                    android:padding="@dimen/mydetail_content_padding" >
+
+                    <TextView
+                        android:id="@+id/mydeetail_item_email_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/mydetail_item_email"
+                        android:textColor="@color/font_black"
+                        android:textSize="@dimen/three_text_type" />
+
+                    <TextView
+                        android:id="@+id/mydeetail_item_email_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/mydeetail_item_email_text"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/mydetail_line_magrin"
+                        android:layout_toLeftOf="@+id/mydetail_item_email_arrow"
+                        android:textColor="@color/font_darkgray"
+                        android:textSize="@dimen/three_text_type" />
+
+                    <ImageView
+                        android:id="@+id/mydetail_item_email_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/zgd_margin_right_min"
+                        android:src="@drawable/list_xiayiji_icon" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_hight"
+                    android:layout_marginLeft="@dimen/content_to_bord"
+                    android:background="@color/line_darkyellow" />
+                <!-- 手机 -->
+
+                <RelativeLayout
+                    android:id="@+id/teacher_mydeetail_item_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/my_item_hight_z"
+                    android:background="@drawable/item_selector"
+                    android:gravity="center"
+                    android:padding="@dimen/mydetail_content_padding" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/mydetail_item_passworld"
+                        android:textColor="@color/font_black"
+                        android:textSize="@dimen/three_text_type" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/zgd_margin_right_min"
+                        android:src="@drawable/list_xiayiji_icon" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_hight"
+                    android:background="@color/line_darkyellow"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/qiehuan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="5dp"
+                android:text="切换身份"
+                android:textColor="#cccccc"
+                android:visibility="visible" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_hight"
+                android:background="@color/line_darkyellow" />
+
+            <LinearLayout
+                android:id="@+id/qiehuan_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/backgroud_white">
+
+                <com.wcyc.zigui2.widget.MyListView
+                    android:id="@+id/mlv_children"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+      				android:background="@color/backgroud_white"
+                    android:choiceMode="singleChoice" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_hight"
+                android:background="@color/line_darkyellow" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_hight"
+                android:layout_marginTop="30dp"
+                android:background="@color/line_darkyellow" />
+
+            <Button
+                android:id="@+id/my_information_exit_btn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/big_button_height"
+                android:visibility="visible"
+                android:layout_gravity="bottom"
+                android:background="@drawable/my_exit_btn_selector_zgd"
+                android:padding="5dp"
+                android:text="@string/exit_group"
+                android:textColor="@color/light_red"
+                android:textSize="@dimen/mycollect_text_type" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_hight"
+                android:visibility="gone"
+                android:background="@color/line_darkyellow" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

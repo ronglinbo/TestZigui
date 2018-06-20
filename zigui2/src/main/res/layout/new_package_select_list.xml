@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:weichuyoucai="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroud_white"
+    android:orientation="vertical" >
+
+    <!-- 选择套餐 -->
+
+    <include layout="@layout/new_title"
+		android:id="@+id/title"/>
+  	<ScrollView 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/title"
+	    android:layout_above="@+id/gocharge">
+		<RelativeLayout
+			android:id="@+id/rl_package"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:visibility="gone">
+
+			<TextView
+				android:id="@+id/package_tip"
+				android:background="@color/background_color"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="    请选择套餐"
+				android:textColor="@color/light_gray"
+				android:textSize="@dimen/three_text_type" />
+
+			<com.wcyc.zigui2.widget.MyListView
+				android:id="@+id/package_list"
+				android:layout_below="@id/package_tip"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+
+			<TextView
+				android:id="@+id/time_tip"
+				android:background="@color/background_color"
+				android:layout_below="@id/package_list"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="    请选择充值时长"
+				android:textColor="@color/light_gray"
+				android:textSize="@dimen/three_text_type" />
+
+			<com.wcyc.zigui2.widget.MyListView
+				android:id="@+id/due_list"
+				android:layout_below="@id/time_tip"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		</RelativeLayout>
+	</ScrollView>
+	
+  	<RelativeLayout 
+  	    android:id="@+id/gocharge"
+  	    android:layout_width="match_parent"
+  	    android:layout_height="wrap_content"
+  	    android:layout_alignParentBottom="true"
+		android:paddingBottom="10dp">
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="@dimen/line_hight"
+			android:background="@color/line_darkyellow" />
+		
+		<TextView
+			android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"/>
+		
+		<Button
+		   	android:id="@+id/bt_select_package"
+		   	android:layout_width="match_parent"
+		   	android:layout_height="@dimen/SlipButton_height"
+		   	android:layout_marginLeft="10dp"
+		   	android:layout_marginRight="10dp"
+		   	android:layout_marginTop="30dp"
+		   	android:background="@drawable/only_login_selector"
+		   	android:text="去支付"
+		   	android:textColor="@color/font_white"
+		   	android:textSize="@dimen/recepient_text_size" />
+	</RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginRight="@dimen/nomar_margin"
+    android:layout_marginTop="8dp"
+    android:fadingEdge="none" >
+
+    <!-- 家长端通知页面item -->
+    <!-- 家长端我的模块 消息页面 item -->
+
+    <LinearLayout
+        android:id="@+id/parent_message_title_item_ll_content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/parent_message_title_item_ll_title"
+        android:background="@color/backgroud_white"
+        android:fadingEdge="none"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/nomar_margin"
+            android:background="@color/backgroud_white"
+            android:fadingEdge="none"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/parent_message_title_item_ll_content_messagetitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/nomar_margin"
+                android:textColor="@color/font_black"
+                android:textSize="@dimen/three_text_type" />
+
+            <TextView
+                android:id="@+id/parent_message_title_item_ll_content_messagecontent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginLeft="@dimen/nomar_margin"
+                android:layout_marginTop="5dp"
+                android:lineSpacingExtra="3dp"
+                android:textColor="@color/font_darkgray"
+                android:textSize="@dimen/three_text_type" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.wcyc.zigui2.widget.ExpandGridView
+        android:id="@+id/parent_message_title_item_image_gridview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/parent_message_title_item_ll_content"
+        android:layout_marginBottom="@dimen/nomar_margin"
+        android:layout_marginTop="@dimen/nomar_margin"
+        android:background="@color/font_white"
+        android:cacheColorHint="#00000000"
+        android:fadingEdge="none"
+        android:horizontalSpacing="2dip"
+        android:numColumns="3"
+        android:scrollbars="none"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="2dp"
+        android:visibility="gone" />
+    <LinearLayout
+        android:id="@+id/parent_message_title_item_ll_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/message_title_item_hight"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/parent_message_title_item_ll_titlebg"
+        android:fadingEdge="none"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:id="@+id/parent_message_title_item_ll_title_messagetype"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/nomar_margin"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:textColor="@color/font_black"
+            android:textSize="@dimen/three_text_type" />
+
+        <TextView
+            android:id="@+id/parent_message_title_item_ll_title_messagetime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/content_to_bord"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:textColor="@color/font_black"
+            android:textSize="@dimen/three_text_type" />
+
+        <TextView
+            android:id="@+id/parent_message_title_item_ll_title_childname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/nomar_margin"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:textColor="@color/font_black"
+            android:textSize="@dimen/three_text_type" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/parent_message_payment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/parent_message_title_item_ll_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginLeft="@dimen/content_to_bord"
+        android:layout_marginTop="@dimen/font_space_between"
+        android:text="@string/parent_message_payment"
+        android:textColor="@color/font_blue"
+        android:textSize="@dimen/three_text_type"
+        android:visibility="gone" />
+
+</RelativeLayout>

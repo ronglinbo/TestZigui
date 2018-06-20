@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:weichuyoucai="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f9"
+    android:orientation="vertical" >
+
+    <include layout="@layout/new_title" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_hight"
+        android:layout_marginTop="20dp"
+        android:background="@color/line_darkyellow" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/backgroud_white">
+
+        <RelativeLayout
+            android:id="@+id/rl_find"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/item_selector"
+            android:visibility="gone"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" >
+
+            <ImageView
+                android:id="@+id/iv_right_find"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/zgd_margin_right_min"
+                android:src="@drawable/list_xiayiji_icon" />
+
+            <!--
+                 <com.wcyc.zigui2.widget.RoundImageView
+                android:id="@+id/riv_find"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/teacher_margin"
+                android:layout_marginRight="@dimen/mydetail_line_magrin"
+                android:layout_toLeftOf="@id/iv_right_find"
+                weichuyoucai:src="@drawable/defaulticon"
+                weichuyoucai:type="circle" />
+            -->
+
+            <com.wcyc.zigui2.widget.RoundImageView
+                android:id="@+id/riv_find"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/teacher_margin"
+                android:layout_marginRight="@dimen/mydetail_line_magrin"
+                android:layout_toLeftOf="@id/iv_right_find"
+                weichuyoucai:src="@drawable/pho_touxiang"
+                android:src="@drawable/head_class" />
+            
+            <ImageView
+	        	android:id="@+id/unread_msg_number"
+	        	android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:layout_marginLeft="-20dip"
+	        	android:layout_toRightOf="@id/riv_find"
+	        	android:background="@drawable/msg"
+	        	android:gravity="center"
+	        	android:visibility="invisible"/>
+
+            <ImageView
+                android:id="@+id/bjdt_find"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="@dimen/zgd_margin_right_min"
+                android:layout_centerVertical="true"
+                android:src="@drawable/new_bjdt" />
+
+            <TextView
+                android:id="@+id/mydetail_item_touxiang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@id/bjdt_find"
+                android:text="班级动态"
+                android:textColor="#212121"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_hight"
+            android:layout_below="@id/rl_find"
+            android:visibility="gone"
+            android:layout_marginLeft="60dp"
+            android:background="@color/line_darkyellow" />
+
+        <RelativeLayout
+            android:id="@+id/rl_find2"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/rl_find"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/item_selector"
+            android:visibility="gone"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"  >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/zgd_margin_right_min"
+                android:src="@drawable/list_xiayiji_icon" />
+
+            <ImageView
+                android:id="@+id/bjdt_find2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="@dimen/zgd_margin_right_min"
+                android:layout_centerVertical="true"
+                android:src="@drawable/new_xyxw" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@id/bjdt_find2"
+                android:text="校园新闻"
+                android:textColor="#212121"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_hight"
+            android:layout_below="@id/rl_find2"
+            android:visibility="gone"
+            android:layout_marginLeft="60dp"
+            android:background="@color/line_darkyellow" />
+
+        <RelativeLayout
+            android:id="@+id/education_rl"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/rl_find2"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/item_selector"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"  >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/zgd_margin_right_min"
+                android:src="@drawable/list_xiayiji_icon" />
+
+            <ImageView
+                android:id="@+id/education_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="@dimen/zgd_margin_right_min"
+                android:layout_centerVertical="true"
+                android:src="@drawable/new_jyq" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@id/education_iv"
+                android:text="教育资讯"
+                android:textColor="#212121"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/ed_unread_msg_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/msg"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="30dp"
+                android:visibility="invisible"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_hight"
+            android:layout_below="@id/education_rl"
+            android:background="@color/line_darkyellow" />
+
+    </RelativeLayout>
+
+</LinearLayout>

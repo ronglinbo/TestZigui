@@ -1,0 +1,49 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/common_bg">
+
+	<include
+        android:id="@+id/my_title"
+        layout="@layout/new_title2"/>
+    
+	
+	<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingLeft="80dp"
+        android:paddingRight="80dp"
+        android:paddingTop="10dp" 
+        android:paddingBottom="10dp">
+
+        <Button
+            android:id="@+id/choose_class"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_left_tab_selector"
+            android:text="选择班级" 
+            android:textSize="@dimen/field_textsize"/>
+
+        <Button
+            android:id="@+id/choose_student"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:background="@drawable/btn_right_tab_selector"
+            android:layout_weight="1"
+			android:textSize="@dimen/field_textsize"
+            android:text="选择学生" />
+    </LinearLayout>
+    
+	<FrameLayout
+	    android:id="@+id/maincontent"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="1">
+
+	</FrameLayout>
+
+</LinearLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+	<include 
+	    android:id="@+id/nav"
+	    layout="@layout/title"
+	    android:visibility="gone"/>
+	<FrameLayout
+		android:id="@+id/video_view"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:visibility="gone">
+	</FrameLayout>
+    <com.wcyc.zigui2.widget.ProgressWebView
+        android:id="@+id/webview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="none"
+        android:layerType="none" />
+</LinearLayout>

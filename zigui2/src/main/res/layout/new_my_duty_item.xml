@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <!-- android:layout_marginTop="5dp" -->
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_hight"
+        android:layout_marginTop="2dp"
+        android:background="@color/line_darkyellow" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/backgroud_white"
+        android:gravity="center" >
+
+        <TextView
+            android:id="@+id/new_duty_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+        	android:paddingTop="15dp"
+        	android:paddingBottom="15dp"
+            android:layout_centerVertical="true"
+            android:paddingLeft="15dp"
+            android:text="1" />
+
+        <TextView
+            android:id="@+id/new_duty_diary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/zgd_margin_right"
+            android:background="@drawable/btn_zhibandengji_n"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="@color/blue" />
+        
+        <ImageView
+            android:id="@+id/new_duty_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/sign_jintian" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_hight"
+        android:layout_marginBottom="2dp"
+        android:background="@color/line_darkyellow" />
+
+</LinearLayout>

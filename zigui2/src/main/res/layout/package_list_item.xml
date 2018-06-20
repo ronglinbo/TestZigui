@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+
+    android:layout_height="wrap_content" >
+	
+    <RelativeLayout
+        android:id="@+id/first" 
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+	    <TextView
+	        android:id="@+id/name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:layout_marginLeft="@dimen/nomar_margin"
+	        android:textColor="@color/font_black"
+	        android:textSize="@dimen/three_text_type" 
+	        android:text="内容" />
+		<TextView
+	        android:id="@+id/price"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginRight="50dp"
+	        
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+	        android:textColor="@color/btn_red_normal"
+	        android:textSize="@dimen/three_text_type"
+	        android:text="价格" />
+	</RelativeLayout>
+	<RelativeLayout
+	    android:id="@+id/second"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/first" >
+		<TextView
+	        android:id="@+id/date"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:layout_marginLeft="@dimen/nomar_margin"
+	        android:textColor="@color/TextColorGray"
+	        android:textSize="@dimen/three_text_type" 
+	        android:text="日期" />
+		<TextView
+	        android:id="@+id/origin_price"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:layout_marginRight="50dp"
+	        android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+	        android:textColor="@color/TextColorGray"
+	        android:textSize="@dimen/three_text_type" 
+	        android:text="原价格" />
+	    <CheckBox
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentEnd="true"
+	        android:layout_alignParentRight="true"
+	        android:layout_centerVertical="true"
+	        android:layout_marginRight="20dp"
+	        android:button="@drawable/choicechile_selector"
+	        android:checked="true"
+	        android:clickable="false"
+	        android:visibility="gone" />
+    </RelativeLayout>
+	<View android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:background="@color/line_darkyellow"/>
+</RelativeLayout>

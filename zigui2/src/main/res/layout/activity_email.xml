@@ -1,0 +1,82 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
+
+    <include layout="@layout/title"/>
+
+	<FrameLayout
+	    android:id="@+id/maincontent"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="1">
+
+		<TabHost
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:id="@+id/tabHost"
+			android:layout_gravity="left|center_vertical">
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:orientation="vertical">
+
+				<TabWidget
+					android:id="@android:id/tabs"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content">
+
+				</TabWidget>
+
+				<FrameLayout
+					android:id="@android:id/tabcontent"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent">
+
+					<LinearLayout
+						android:id="@+id/inbox"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:orientation="vertical">
+
+					</LinearLayout>
+
+					<LinearLayout
+						android:id="@+id/outbox"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:orientation="vertical">
+						<TextView
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:text="发件箱"/>
+					</LinearLayout>
+
+					<LinearLayout
+						android:id="@+id/draft"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:orientation="vertical">
+						<TextView
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:text="草稿箱"/>
+					</LinearLayout>
+
+					<LinearLayout
+						android:id="@+id/recycle"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:orientation="vertical">
+						<TextView
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:text="回收站"/>
+					</LinearLayout>
+				</FrameLayout>
+			</LinearLayout>
+		</TabHost>
+	</FrameLayout>
+
+</LinearLayout>

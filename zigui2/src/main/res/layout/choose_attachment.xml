@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/backgroud_white"
+    android:paddingLeft="@dimen/content_to_bord"
+	android:paddingRight="@dimen/content_to_bord"
+	android:paddingTop="@dimen/nomar_margin"
+	android:paddingBottom="@dimen/nomar_margin"
+	android:gravity="center_vertical">
+    <TextView
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:text="最大可以发送20M附件"
+		android:layout_centerVertical="true"
+    	android:textSize="@dimen/hint_text_size"
+    	android:textColor="@color/gray_font_color"/>
+    <Button
+        android:id="@+id/add_attach"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="添加附件"
+        android:textSize="@dimen/item_desc_size"
+        android:textColor="@color/font_darkblue"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/btn_tianjiafujian" />
+</RelativeLayout>
+
+

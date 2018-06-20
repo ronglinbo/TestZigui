@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<RelativeLayout  
+    xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:layout_width="match_parent"  
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/new_title2_include"
+        layout="@layout/new_title2" />
+
+    <com.wcyc.zigui2.newapp.videoutils.CameraPreviewView
+        android:id="@+id/sView"
+        android:layout_below="@id/new_title2_include"
+        android:layout_width="match_parent"  
+        android:layout_height="match_parent" />  
+        
+    <!-- 左边 -->
+    <LinearLayout  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"  
+        android:layout_alignParentLeft="true"
+        android:gravity="center_vertical"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:visibility="gone"
+        android:orientation="vertical">
+        
+        <!-- 开始录像  icon_camera_on -->
+        <ImageButton  
+            android:id="@+id/live_ib_record_start"  
+            android:layout_width="45dp"  
+            android:layout_height="45dp"  
+            android:scaleType="fitCenter"  
+            android:src="@drawable/icon_camera_on" />  
+            
+        <!-- 停止录像 -->
+        <ImageButton  
+            android:id="@+id/live_ib_record_stop"        
+            android:layout_width="45dp"  
+            android:layout_height="45dp"  
+            android:scaleType="fitCenter"  
+            android:src="@drawable/icon_camera_off" />  
+    </LinearLayout>  
+    
+    <!-- 右边 -->
+    <LinearLayout  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"  
+        android:layout_alignParentRight="true"
+        android:gravity="center_vertical"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:visibility="gone"
+        android:orientation="vertical">
+        
+        <!-- 影片管理android:src="@drawable/icon_folder_movies" -->
+        <ImageButton  
+            android:id="@+id/live_ib_video_manage"        
+            android:layout_width="45dp"  
+            android:layout_height="45dp"
+            android:scaleType="fitCenter" />
+    </LinearLayout>
+    
+    <TextView
+        android:id="@+id/video_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/new_title2_include"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:visibility="gone"
+        android:text="10"
+        android:textColor="#ff0000"/>
+
+    <TextView
+        android:id="@+id/video_btn_tv"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/btn_luxiang_normal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:text="按住录"
+        android:textColor="@color/font_darkblue"/>
+</RelativeLayout>

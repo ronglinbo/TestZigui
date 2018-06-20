@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"    
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_margin="5dp"
+	android:orientation="vertical" >
+	
+	<RelativeLayout
+		android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	 	android:layout_alignParentBottom="true"
+	    android:background="@color/common_bg">
+	    
+	 	<TextView 
+	 	    android:id="@+id/other_app"
+	 	    android:layout_width="fill_parent"
+	 	    android:layout_height="30dp"
+	 	    android:text="其它应用打开"
+	 	    android:textSize="18sp"
+	 	    android:gravity="center"/>
+	 	<TextView 
+	 	    android:id="@+id/save_file"
+	 	    android:layout_width="fill_parent"
+	 	    android:layout_height="30dp"
+	 	    android:layout_below="@id/other_app"
+	 	    android:text="保存文件"
+	 	    android:textSize="18sp"
+	 	    android:gravity="center"/>
+	 	<RelativeLayout
+	 	    android:id="@+id/blank"
+	 	    android:layout_width="fill_parent"
+	 	    android:layout_height="20dp"
+	 	    android:layout_below="@id/save_file"/>
+	 	<TextView 
+	 	    android:id="@+id/cancel"
+	 	    android:layout_width="fill_parent"
+	 	    android:layout_height="30dp"
+	 	    android:layout_below="@id/blank"
+	 	    android:text="取消"
+	 	    android:textSize="18sp"
+	 	    android:gravity="center"/>
+	</RelativeLayout>
+
+</RelativeLayout>
+

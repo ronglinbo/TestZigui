@@ -1,0 +1,38 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color">
+
+    <include android:id="@+id/notify_title"
+        layout="@layout/title"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/notify_title"
+        android:layout_centerInParent="true">
+        
+        <com.wcyc.zigui2.newapp.widget.RefreshListView
+            android:id="@+id/summary_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/font_white"
+            android:listSelector="@drawable/item_selector"
+            android:cacheColorHint="#00000000"
+            android:divider="@color/background_color"
+            android:dividerHeight="@dimen/item_margin"/>
+        
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/tv_no_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:drawableTop="@drawable/shuju_no"
+        android:layout_centerInParent="true"
+        android:drawablePadding="10dip"
+        android:textColor="@color/font_darkgray"
+        android:textSize="@dimen/three_text_type"
+        />
+</RelativeLayout>

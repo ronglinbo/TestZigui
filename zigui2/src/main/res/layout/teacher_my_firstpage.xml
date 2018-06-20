@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:weichuyoucai="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroud_lightyellow"
+    android:orientation="vertical" >
+
+    <!-- 老师端我的主页 -->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <include layout="@layout/title" />
+
+        <LinearLayout
+            android:id="@+id/teacher_firstpager_my_information"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@drawable/item_selector"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/bord_space_between" >
+
+            <com.wcyc.zigui2.widget.RoundImageView
+                android:id="@+id/teacher_my_information_icon"
+                android:layout_width="62dp"
+                android:layout_height="62dp"
+                android:scaleType="centerInside"
+                weichuyoucai:src="@drawable/defaulticon"
+                weichuyoucai:type="circle" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/nomar_margin"
+                    android:gravity="center"
+                    android:orientation="horizontal" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/teacher_my_information_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:textColor="@color/font_black"
+                            android:textSize="@dimen/three_text_type" />
+
+                        <TextView
+                            android:id="@+id/teacher_my_information_phone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:textColor="@color/font_darkgray"
+                            android:textSize="@dimen/three_text_type" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/nomar_margin"
+                        android:src="@drawable/my_corner" />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_hight"
+            android:background="@color/line_darkyellow" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_hight"
+            android:layout_marginTop="20dp"
+            android:background="@color/line_darkyellow" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <!-- 我的账户 -->
+
+            <RelativeLayout
+                android:id="@+id/teacher_firstpager_my_account_ll"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/teacher_firstpager_ll_height"
+                android:background="@drawable/item_selector"
+                android:gravity="center_vertical" >
+
+                <ImageView
+                    android:id="@+id/teacher_firstpager_my_iv"
+                    android:layout_width="@dimen/teacher_my_icon_hight"
+                    android:layout_height="@dimen/teacher_my_icon_hight"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/nomar_margin"
+                    android:src="@drawable/my_count" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/nomar_margin"
+                    android:layout_toRightOf="@+id/teacher_firstpager_my_iv"
+                    android:text="@string/teacher_firstpager_my_tv"
+                    android:textColor="@color/font_black"
+                    android:textSize="@dimen/three_text_type" 
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/nomar_margin"
+                    android:layout_toLeftOf="@+id/my_information_item_arrow_iv"
+                    android:text="@string/teacher_firstpager_tv"
+                    android:textColor="@color/font_lightgray"
+                    android:textSize="@dimen/four_text_type" />
+
+                <ImageView
+                    android:id="@+id/my_information_item_arrow_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/my_corner" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_hight"
+                android:background="@color/line_darkyellow" />
+            <!-- 我的消息 -->
+
+            <RelativeLayout
+                android:id="@+id/teacher_firstpager_my_ll"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/teacher_firstpager_ll_height"
+                android:background="@drawable/item_selector"
+                android:gravity="center_vertical" >
+
+                <ImageView
+                    android:id="@+id/teacher_firstpager_set_iv"
+                    android:layout_width="@dimen/teacher_my_icon_hight"
+                    android:layout_height="@dimen/teacher_my_icon_hight"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/nomar_margin"
+                    android:src="@drawable/my_lv_icon_2" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/my_information_item_iv"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/bord_space_between"
+                    android:layout_toRightOf="@+id/teacher_firstpager_set_iv"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/teacher_firstpager_set_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/teacher_firstpager_message_tv"
+                        android:textColor="@color/font_black"
+                        android:textSize="@dimen/three_text_type" />
+
+                    <ImageView
+                        android:id="@+id/my_information_item_newmessage_red"
+                        android:layout_width="@dimen/newmessage_red"
+                        android:layout_height="@dimen/newmessage_red"
+                        android:layout_toRightOf="@+id/teacher_firstpager_set_tv"
+                        android:src="@drawable/my_information_item_newmessage_red"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/teacher_firstpager_message_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/nomar_margin"
+                    android:layout_toLeftOf="@+id/arra"
+                    android:textColor="@color/font_darkgray"
+                    android:textSize="@dimen/three_text_type" />
+
+                <ImageView
+                    android:id="@+id/arra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/my_corner" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_hight"
+                android:background="@color/line_darkyellow" />
+            <!-- 设置 -->
+
+            <RelativeLayout
+                android:id="@+id/teacher_firstpager_my_set_ll"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/teacher_firstpager_ll_height"
+                android:background="@drawable/item_selector"
+                android:gravity="center_vertical" >
+
+                <ImageView
+                    android:id="@+id/teacher_firstpager_message_iv"
+                    android:layout_width="@dimen/teacher_my_icon_hight"
+                    android:layout_height="@dimen/teacher_my_icon_hight"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/nomar_margin"
+                    android:src="@drawable/my_lv_icon_6" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/nomar_margin"
+                    android:layout_toRightOf="@+id/teacher_firstpager_message_iv"
+                    android:text="@string/my_lv_6"
+                    android:textColor="@color/font_black"
+                    android:textSize="@dimen/three_text_type" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/nomar_margin"
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/my_corner" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_hight"
+            android:background="@color/line_darkyellow" />
+
+        <Button
+            android:id="@+id/teacher_my_information_exit_btn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/big_button_height"
+            android:layout_margin="@dimen/nomar_margin"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/my_exit_btn_selector"
+            android:text="@string/exit_group"
+            android:textColor="@color/font_white"
+            android:textSize="@dimen/first_text_type" />
+    </LinearLayout>
+
+    <!--include
+        android:layout_width="match_parent"
+  	    android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:visibility="gone"
+        layout="@layout/bottom" /-->
+    
+    <include
+        android:layout_width="match_parent"
+  	    android:layout_height="wrap_content"
+        android:layout_weight="0"
+        layout="@layout/new_bottom" />
+
+</LinearLayout>

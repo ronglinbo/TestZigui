@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/common_bg">
+    
+    <CheckBox
+        android:id="@+id/allChoose"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="15dp"
+        style="@style/CustomCheckboxTheme"
+        android:text="  全选"/>
+	
+    <ExpandableListView
+        android:id="@+id/group_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawSelectorOnTop="false"
+        android:layout_below="@id/allChoose"/>
+    <View
+        android:id="@+id/blank1" 
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="@color/backgroud_lightyellow"
+        android:layout_below="@id/group_listview"/>
+        
+    <ExpandableListView
+        android:id="@id/android:list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawSelectorOnTop="false"
+        android:layout_below="@id/blank1"/>
+
+    <TextView
+        android:id="@+id/tv_no_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/shuju_no"
+        android:drawablePadding="10dip"
+        android:textColor="@color/font_darkgray"
+        android:textSize="@dimen/three_text_type"
+        android:visibility="gone"
+        android:layout_centerInParent="true"/>
+</RelativeLayout>    

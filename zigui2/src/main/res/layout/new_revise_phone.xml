@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:weichuyoucai="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f3f3f3"
+    android:orientation="vertical" >
+
+    <include
+        android:layout_height="0dip"
+        android:layout_weight="0"
+        layout="@layout/new_title" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:background="@color/line_darkyellow" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/revise_new_phone"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:inputType="phone"
+            android:paddingLeft="10dp"
+            android:digits="@string/rule_password"
+            android:background="#FFFFFF"
+            android:hint="新手机号码" />
+
+        <ImageView
+            android:id="@+id/revise_new_phone_delete_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0"
+            android:src="@drawable/close"
+            android:visibility="gone" />
+    </LinearLayout>
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:background="@color/line_darkyellow" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:background="#FFFFFF"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/revise_phone_verify"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="3"
+            android:digits="@string/rule_password"
+            android:background="#FFFFFF"
+            android:paddingLeft="10dp"
+            android:hint="验证码" />
+
+        <ImageView
+            android:id="@+id/revise_phone_verify_delete_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0"
+            android:src="@drawable/close"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/resive_phone_btn_sendverify"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:background="@drawable/login_selector"
+            android:text="获取验证码"
+            android:textSize="14sp" />
+    </LinearLayout>
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:background="@color/line_darkyellow" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/revise_phone_needpassword"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:digits="@string/rule_password"
+            android:background="#FFFFFF"
+            android:paddingLeft="10dp"
+            android:hint="请输入密码"
+            android:inputType="textWebPassword" />
+
+        <ImageView
+            android:id="@+id/revise_phone_needpassword_delete_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0"
+            android:src="@drawable/close"
+            android:visibility="gone" />
+    </LinearLayout>
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:background="@color/line_darkyellow" />
+
+    <Button
+        android:id="@+id/update_phone_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/big_button_height"
+        android:layout_margin="@dimen/nomar_margin"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/login_selector"
+        android:text="@string/loginactivity_btn_login"
+        android:textColor="@color/font_white"
+        android:textSize="@dimen/second_text_type" />
+    <!-- android:background="@drawable/login_selector" -->
+
+</LinearLayout>

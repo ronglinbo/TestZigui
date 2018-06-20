@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f5"
+    android:orientation="vertical">
+
+    <!-- 老师端  班级动态的发布界面 -->
+
+    <include layout="@layout/new_title2" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroud_darktyellow">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/backgroud_white">
+
+                <com.wcyc.zigui2.widget.SpinnerButton
+                    android:id="@+id/sb_pd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@color/backgroud_white"
+                    android:text="选择发送到的班级" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/sb_pd"
+                    android:src="@drawable/new_down1" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_hight"
+                android:background="@color/line_darkyellow" />
+
+            <!-- 基本信息 -->
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_hight"
+                android:layout_marginTop="@dimen/nomar_margin"
+                android:background="@color/line_darkyellow" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/publish_dynamic_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/backgroud_white"
+                    android:gravity="start"
+                    android:hint="@string/notification_content"
+                    android:inputType="textMultiLine"
+                    android:maxLength="2000"
+                    android:minHeight="100dp"
+                    android:padding="10dp"
+                    android:singleLine="false"
+                    android:textColorHint="#cccccc"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/publish_dynamic_content_delete_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="0"
+                    android:src="@drawable/close"
+                    android:visibility="gone"></ImageView>
+            </LinearLayout>
+
+            <!-- 图片选取 -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/backgroud_white"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"><!-- android:layout_marginTop="@dimen/nomar_margin" -->
+
+                <RelativeLayout
+                    android:id="@+id/class_vedio_ll"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="12dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/class_vedio_iv"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:background="@color/blue"
+                        android:layout_centerInParent="true" />
+
+                    <ImageView
+                        android:id="@+id/class_vedio_tag_iv"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/btn_bofang3" />
+
+                    <ImageView
+                        android:id="@+id/video_del_iv"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/delete_image"/>
+                </RelativeLayout>
+
+                <com.wcyc.zigui2.widget.ExpandGridView
+                    android:id="@+id/publish_dynamic_addiv_gv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/nomar_margin"
+                    android:layout_marginRight="@dimen/nomar_margin"
+                    android:background="@color/font_white"
+                    android:drawSelectorOnTop="false"
+                    android:fadeScrollbars="false"
+                    android:fadingEdge="none"
+                    android:gravity="center_vertical"
+                    android:listSelector="@color/font_white"
+                    android:numColumns="4"
+                    android:scrollbars="none"
+                    android:verticalSpacing="@dimen/nomar_margin" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_hight"
+                android:background="@color/line_darkyellow" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

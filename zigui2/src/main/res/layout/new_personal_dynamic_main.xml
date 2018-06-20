@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f1f1f1"
+    android:orientation="vertical" >
+
+    <include
+        android:layout_height="0dip"
+        android:layout_weight="0"
+        layout="@layout/new_title" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/bg_banjidongtai" >
+
+           <com.wcyc.zigui2.widget.RoundImageView
+            android:id="@+id/personal_circleImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/pho_touxiang"
+            android:layout_marginTop="10dp"
+
+            android:layout_centerHorizontal="true"
+           />
+           <LinearLayout 
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:layout_below="@id/personal_circleImageView"
+               >
+               
+               <TextView 
+                   android:id="@+id/danamics_name"
+                   android:layout_weight="1"
+                   android:layout_width="fill_parent"
+                   android:layout_height="wrap_content"
+                   android:text=""
+                   android:textColor="#ffffff"
+                   android:gravity="right"
+                   android:layout_marginRight="5dp"
+
+                   />
+               <TextView 
+                   android:id="@+id/danamics_class"
+                   android:layout_weight="1"
+                   android:layout_width="fill_parent"
+                   android:layout_height="wrap_content"
+                   android:text=""
+                   android:textColor="#ffffff"
+ 				   android:layout_marginLeft="5dp"
+                   />
+           </LinearLayout>
+    </RelativeLayout>
+
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:visibility="gone"
+        android:background="@color/line_darkyellow" />
+
+    <!--
+         RelativeLayout
+        android:id="@+id/contact_choice_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+    -->
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <!--
+            com.wcyc.zigui2.utils.RefreshableView
+            android:id="@+id/refreshable_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+        -->
+
+        <com.wcyc.zigui2.newapp.widget.RefreshListView1
+            android:id="@+id/personal_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:descendantFocusability="afterDescendants"
+            android:listSelector="#00000000"
+            android:scrollbarSize="10dip"
+            android:divider="#ffffff" />
+
+        <ImageView
+            android:id="@+id/iv_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="150dp"
+            android:contentDescription="无动态列表"
+            android:src="@drawable/dongtai_no"
+            android:visibility="gone" 
+             />
+        
+        <!--
+             ProgressBar           
+             android:layout_marginTop="150dp"
+	            android:id="@+id/big_loading"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            
+	            android:layout_centerHorizontal="true"
+	            android:layout_centerVertical="true"
+	            android:layout_gravity="center"
+	            android:layout_centerInParent="true"
+	            android:scaleType="center" /
+        -->
+        <!-- /com.wcyc.zigui2.utils.RefreshableView -->
+    </LinearLayout>
+    <!-- /RelativeLayout -->
+
+</LinearLayout>

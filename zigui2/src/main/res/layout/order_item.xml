@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/background_color"></View>
+
+    <RelativeLayout
+
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        >
+
+        <TextView
+            android:layout_centerVertical="true"
+            android:id="@+id/taocan_name"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="2017年上学期套餐2017年上学期套餐2017年套餐2017年"
+            android:textColor="@color/color_shengse"
+            android:textSize="14sp" />
+
+        <RelativeLayout
+
+            android:id="@+id/rl"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/pay_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="待付款"
+                android:textColor="@color/color_dai_pay"
+                android:textSize="13sp" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+    <View
+
+        android:background="@color/color_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@color/color_backround"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:id="@+id/service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:text="个性服务+子贵课堂"
+            android:textColor="@color/color_shengse"
+            android:textSize="13sp" />
+
+        <TextView
+
+            android:id="@+id/service_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/service"
+            android:layout_marginTop="5dp"
+            android:text="服务期限:"
+            android:textColor="@color/font_gray"
+            android:textSize="13sp" />
+
+        <TextView
+
+            android:id="@+id/service_date_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/service_date"
+            android:layout_alignBottom="@+id/service_date"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/service_date"
+            android:text="2017-02-01~2017-07-31"
+            android:textColor="@color/font_gray"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/sNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/service_date"
+            android:layout_marginTop="5dp"
+            android:text="    订单号:"
+            android:textColor="@color/font_gray"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/sNo_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/service_date"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/service_date"
+            android:text="2015345345345241"
+            android:textColor="@color/font_gray"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/createtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sNo"
+            android:layout_marginTop="5dp"
+            android:text="创建时间:"
+            android:textColor="@color/font_gray"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/createtime_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sNo"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/createtime"
+            android:text="2017-02-01 00:00:00"
+            android:textColor="@color/font_gray"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/paydate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/createtime"
+            android:layout_marginTop="5dp"
+            android:text="支付时间:"
+            android:textColor="@color/font_gray"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/paydate_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/createtime"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/paydate"
+            android:text="2017-02-01 00:00:00"
+            android:textColor="@color/font_gray"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/cancel_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/paydate"
+            android:layout_marginTop="5dp"
+            android:text="取消时间:"
+            android:textColor="@color/font_gray"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/cancel_date_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/paydate"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/paydate"
+            android:text="2017-02-01 00:00:00"
+            android:textColor="@color/font_gray"
+            android:textSize="13sp" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+
+        android:background="@color/backgroud_white"
+        android:id="@+id/yingfu_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingRight="15dp"
+        android:paddingTop="5dp">
+
+        <RelativeLayout
+            android:layout_marginRight="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/bt_gopay"
+            android:layout_alignBottom="@+id/bt_gopay"
+            android:layout_toLeftOf="@+id/bt_gopay">
+
+            <TextView
+
+                android:id="@+id/yingfu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="应付:"
+                android:textColor="@color/color_shengse"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/yingfu"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/yingfu"
+                android:text="￥180"
+                android:textColor="@color/color_shengse"
+                android:textSize="17sp" />
+
+            <TextView
+
+                android:id="@+id/heh1e"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/money"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/money"
+                android:text=".00"
+                android:textColor="@color/black_txt"
+                android:textSize="17sp" />
+
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/bt_gopay"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/bt_gopay"
+            android:text="去支付"
+            android:textColor="@color/color_gopay"
+            android:textSize="13sp" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+
+        android:id="@+id/shifu_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/backgroud_white"
+        android:paddingBottom="5dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="5dp">
+
+        <TextView
+
+            android:id="@+id/online_pay"
+            android:layout_width="60dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@color/color_pay_way"
+            android:gravity="center"
+            android:text="线上支付"
+            android:textColor="@color/color_pay_way_font"
+            android:textSize="13sp" />
+
+        <RelativeLayout
+
+            android:id="@+id/shifu_rll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true">
+
+            <TextView
+
+                android:id="@+id/shifu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="实付:"
+                android:textColor="@color/black_txt"
+                android:textSize="13sp" />
+
+
+            <TextView
+
+                android:id="@+id/shifu1_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/shifu"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/shifu"
+                android:text="￥180"
+                android:textColor="@color/color_shengse"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/hehe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/shifu1_money"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/shifu1_money"
+                android:text=".00"
+                android:textColor="@color/black_txt"
+                android:textSize="17sp" />
+
+            <TextView
+
+                android:id="@+id/shifu_yinfu_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/shifu"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/hehe"
+                android:paddingRight="15dp"
+                android:text="(应付:￥180.00)"
+                android:textColor="@color/color_cancel_yingfu"
+                android:textSize="13sp" />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <View
+
+        android:background="@color/color_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+</LinearLayout>

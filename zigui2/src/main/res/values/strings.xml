@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">云智全课通</string>
+    <string name="text_ack_msg">已读</string>
+    <string name="text_delivered_msg">送达</string>
+    <string name="button_pushtotalk">按住说话</string>
+    <string name="button_send">发送</string>
+    <string name="move_up_to_cancel">手指上滑，取消发送</string>
+    <string name="release_to_cancel">松开手指，取消发送</string>
+    <string name="send_fail">发送消息失败,</string>
+    <string name="delete_message">删除消息</string>
+    <string name="copy_message">复制消息</string>
+    <string name="flistview_tv_no_message">暂时没有新的消息</string>
+    <string name="teacher_firstpager_my_tv">我的账户</string>
+    <string name="teacher_firstpager_message_tv">我的消息</string>
+    <string name="teacher_firstpager_tv">暂未开启，敬请期待</string>
+    <string name="delete_voice">删除语音</string>
+    <string name="delete">删除</string>
+    <string name="teacher_comment_choice">选择点评班级</string>
+    <string name="resend">重发</string>
+    <string name="confirm_resend">确认重发该信息？</string>
+    <string name="connect_failuer_toast">请检查网络或稍候重试</string>
+    <string name="forward">转发</string>
+    <string name="button_logout">退出登录</string>
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="prompt">提示</string>
+    <string name="voice">[语音]</string>
+    <string name="location">[位置]</string>
+    <string name="picture">[图片]</string>
+    <string name="system_message">[系统消息]</string>
+    <string name="new_news">[新消息]</string>
+    <string name="video">[视频]</string>
+    <string name="file">[文件]</string>
+    <string name="recoding_fail">录音失败，请重试！</string>
+    <string name="logout">退出登录</string>
+    <string name="exit_group">退出登录</string>
+    <string name="connect_conflict">您的账号已在别处登录，本地已下线。如非本人操作，可能密码已经泄露，建议尽快修改密码。</string>
+    <string name="login_button">登        录</string>
+    <string name="login_password">忘记密码?</string>
+    <string name="login_inputpasword">密码</string>
+    <string name="fogetpassworld_tv">6到20位数字、字母、符号，不能包含空格。</string>
+    <string name="teacher_comment_history">历史点评</string>
+    <string name="fogetpassworld_btn_send">获取验证码</string>
+    <string name="fogetpassworld_phoneNumber">手机号码</string>
+    <string name="fogetpassworld_et_verify">验证码</string>
+    <string name="fogetpassworld_newpaswworld">新密码</string>
+    <string name="fogetpassworld_renewpaswworld">重复新密码</string>
+    <string name="loginactivity_btn_login">确     定</string>
+    <string name="commit_zgd">提     交</string>
+    <string name="choice_chile">请选择账号</string>
+    <string name="title_imgbtn_accomplish">完成</string>
+    <string name="title_text_2">相机胶卷</string>
+    <string name="parent_message_payment">点击去付款>></string>
+    <string name="action_settings">Settings</string>
+    <string name="my_title">我的</string>
+    <string name="my_lv_1">我的报名</string>
+    <string name="my_lv_2">我的消息</string>
+    <string name="my_lv_3">设置</string>
+    <string name="my_lv_6">设置</string>
+    <string name="my_lv_7">我的收藏</string>
+    <string name="myenroll_class">预订课程</string>
+    <string name="mydetail_icon_text">我的小孩</string>
+    <string name="mydetail_item_touxiang">头像</string>
+    <string name="mydetail_item_phone">手机号码</string>
+    <string name="mydetail_item_email">邮箱</string>
+    <string name="teac_mydeetail_item_phone_card">银行卡</string>
+    <string name="invite_relationship_spinner_text">请选择被邀请人与小孩的关系</string>
+    <string name="consume_record">消费记录</string>
+    <string name="recharge_record">充值记录</string>
+
+    <string-array name="invite_relationship_spinner">
+        <item>爸爸</item>
+        <item>妈妈</item>
+        <item>爷爷</item>
+        <item>奶奶</item>
+        <item>外公</item>
+        <item>外婆</item>
+        <item>其他</item>
+    </string-array>
+
+    <string name="teac_mydeetail_bankname_tv">银行名称</string>
+    <string name="teac_mydeetail_bankname">请选择银行</string>
+    <string name="teac_mydeetail_item_phone_text">手机</string>
+    <string name="teac_mydeetail_item_name_text">姓名</string>
+    <string name="teac_bankcardnumber_tv">银行卡号</string>
+    <string name="teac_bank_item_cardname_text">银行卡户名</string>
+    <string name="teac_openforbank_tv">开户行</string>
+    <string name="teac_mydeetail_item_name_et">请输入银行卡号</string>
+    <string name="teac_openforbank_et">请输入开户行名称</string>
+    <string name="teac_bank_consult">可拨打银行客服电话咨询</string>
+    <string name="teac_mydeetail_item_job_text">岗位</string>
+    <string name="mydetail_item_passworld">密码</string>
+    <string name="mydetail_title_text">我的账户</string>
+    <string name="my_meaasge_title">我的消息</string>
+    <string name="teacher_homework_title">作业</string>
+    <string name="MyEnrollActivityTitle">我的报名</string>
+    <string name="myset_delete_text">清除缓存</string>
+    <string name="myset_message_text">接收推送消息</string>
+    <string name="myset_message_voice_text">新消息声音提示</string>
+    <string name="myset_message_shake_text">新消息震动提示</string>
+    <string name="myset_use_help_text">使用帮助</string>
+    <string name="myset_opinion_text">意见反馈</string>
+    <string name="myset_update">软件更新</string>
+    <string name="myset_about">关于</string>
+    <string name="myset_shuoming">版本更新说明</string>
+    <string name="teacher_bank_commit_btn">提      交</string>
+    <string name="advicefeedback_commit_btn">发送</string>
+    <string name="myset">设置</string>
+    <string name="enrolldetail">报名详情</string>
+    <string name="update_old_password">旧密码</string>
+    <string name="update_new_password">新密码</string>
+    <string name="update_renew_password">重复密码</string>
+    <string name="update_old_password_hin">请输入旧密码</string>
+    <string name="update_new_password_hin">请重新设置密码</string>
+    <string name="update_renew_password_hin">请再次输入密码</string>
+    <string name="revise_password">修改密码</string>
+    <string name="updatepassword_tips">限6-20位数字、字母、特殊符号，区分大小写，不能包含空格</string>
+    <string name="update_email">请输入邮箱</string>
+    <string name="exit_app">您确定退出云智全课通?</string>
+    <string name="eixt_text">不提示好友离线消息</string>
+    <string name="about_text">扫描二维码，您的朋友也可以安装云智全课通</string>
+    <string name="advicefeedback_advice_content">有任何不爽的地方欢迎吐槽，感谢您给我们提出建议</string>
+    <string name="img_selector_all">所有图片</string>
+    <string name="selector_img_title">图片</string>
+    <string name="contact_choice_all_text">选择学生</string>
+    <string name="contact_choice_text">全选</string>
+    <string name="choice_stu">选择学生</string>
+    <string name="can_not_find_version_name">无法获取有用版本号</string>
+    <!-- 密码输入框限制中文输入 -->
+    <string name="rule_password">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`¬!"£$%^*()~=#{}[];':,./?/*-_+&#060;&#062;&#064;&#038;</string>
+    <string name="fogerpasswordtext">忘记密码</string>
+    <string name="reset_passsword">重置密码</string>
+    <string name="teacher_notification_btn_send">发布通知</string>
+    <string name="teachernotification_tv_no_message">暂时没有内容</string>
+    <string name="viewpager_indicator">%1$d/%2$d</string>
+    <string name="notification_type_tv">通知类型:</string>
+    <string name="rb_school_notification">学校通知</string>
+    <string name="rb_grade_notification">年级通知</string>
+    <string name="rb_class_notification">班级通知</string>
+    <string name="choice_class">班级</string>
+    <string name="accept_choice">接收状态</string>
+    <string name="accept_choice_text">开启统计家长阅读人数</string>
+    <string name="notification_title">标题</string>
+    <string name="advicefeedback_advice_contact_way">请留下您的手机号、QQ或者邮箱(选填)</string>
+    <string name="notification_content">请输入内容</string>
+    <string name="teacher_homework_course_content">请输入作业内容</string>
+    <string name="notification_commit_btn">发          布</string>
+
+    <!-- splash的字符串 -->
+    <string name="splash_next">跳过</string>
+    <string name="splash_finish">立即体验</string>
+    <string name="notice_opened_package">家庭套餐到期后将自动关闭，如果您想继续使用可以在下次续费时选中家庭套餐</string>
+    <string name="notice_closed_package">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;开启家庭套餐后，您可以邀请您的亲友来关注您小孩动态近况，数量不限。比如，小孩的父母、爷爷奶奶、外婆外公6位家长一起来关注小孩仅需5元/月。方便家中的多位家长获取小孩的最新信息。</string>
+    <string name="open_invite_title">您尚未开通家庭套餐，不能邀请亲友关注小孩</string>
+    <string name="open_invite_content">开启家庭套餐后，您可以邀请您的亲友来关注您小孩动态近况，数量不限。比如，小孩的父母、爷爷奶奶、外婆外公6位家长一起来关注小孩仅需5元/月。方便家中的多位家长获取小孩的最新信息。</string>
+    <string name="invite_hint_tel">请输入被邀请人的手机号码</string>
+    <string name="renew_duration_content">续费时长为%1$s至%2$s其中扣除寒暑假时间%3$s个月</string>
+    <string name="child_name_member_center">会员中心</string>
+    <string name="member_center">会员中心</string>
+    <string name="payment_record">续费记录</string>
+    <string name="payment_success">交易成功</string>
+    <string name="payment_continue">继续支付</string>
+    <string name="mycollects">我的收藏</string>
+    <string name="title_member_center">会员中心</string>
+    <string name="title_invite_attention">邀请关注</string>
+    <string name="title_invite_people">邀请</string>
+    <string name="title_package_select">选择套餐</string>
+    <string name="title_renew_confirm">续费</string>
+    <string name="title_order_confirm">订单确认</string>
+    <string name="title_package_manage">套餐管理</string>
+    <string name="title_pay_fail">待支付</string>
+    <string name="join_bt_attention2">已加入人员</string>
+    <string name="title_btn_invite">邀 请</string>
+    <string name="publish_dynamic">发布</string>
+    <string name="forward_title_text">确定转发给:</string>
+    <string name="contacts_detail_text">点击拨打电话将进入本机电话功能，不消耗网络流量</string>
+    <string name="upschooltime">修改放学时间</string>
+    <string name="original_picture">原图</string>
+    <string name="pull_to_refresh">下拉可以刷新</string>
+    <string name="release_to_refresh">释放立即刷新</string>
+    <string name="refreshing">正在刷新…</string>
+    <string name="not_updated_yet">暂未更新过</string>
+    <string name="updated_at">上次更新于%1$s前</string>
+    <string name="updated_just_now">刚刚更新</string>
+    <string name="time_error">时间有问题</string>
+    <string name="service">应用</string>
+    <string name="next_step">下一步</string>
+    <string name="commit">提交</string>
+    <string name="forgetpasswd">找回密码</string>
+    <string name="notify">通知</string>
+    <string name="title_activity_email">邮件</string>
+    <string name="title_activity_mail">校长信箱</string>
+    <string name="no_network">当前网络不可用，请检查您的网络设置</string>
+    <string name="dailyrecord">日志</string>
+    <string name="summary">总结</string>
+
+    <string name="login_activity_user">用户:</string>
+    <string name="login_activity_port">端口:</string>
+    <string name="login_activity_ip">IP:</string>
+    <string name="login_activity_password">密码:</string>
+    <string name="login_activity_login">登录</string>
+    <string name="login_activity_logout">登出</string>
+
+    <!-- Functions activity -->
+    <string name="fun_activity_title">Functions</string>
+    <string name="RealPlay">Real play</string>
+    <string name="Talk">Talk</string>
+    <string name="FilePlayBack">Play back by record</string>
+    <string name="TimePlayBack">Play back by time</string>
+    <string name="Comm">COM Setting</string>
+    <string name="CANBus">CAN Setting</string>
+    <string name="DevKeepLive">Keep alive setting</string>
+    <string name="Alarm">Alarm</string>
+    <string name="TestInterface">Interface testing</string>
+    <string name="title_item_list">Items</string>
+    <string name="title_item_detail">Item Detail</string>
+
+    <!-- add -->
+    <string name="login">正在登录</string>
+    <string name="progress_content">正在登录</string>
+    <string name="seen_more">更多</string>
+    <string name="refresh_bar_last_update">上次更新</string>
+    <string name="drop_dowm">下拉可以刷新</string>
+    <string name="release_update">松开可以刷新</string>
+    <string name="loading">载入中...</string>
+    <string name="header_last_time">最近更新：</string>
+    <string name="common_connect">正在连接</string>
+    <string name="tab_group_tv">组织</string>
+    <string name="grouplist_getgroup_fail">获取组织列表失败，异常代码：</string>
+    <string name="select_channel_limit_tv">打开通道上限为32路</string>
+    <string name="select_channel_tv">请先选择预览通道</string>
+    <string name="select_channel_already_open">通道已打开</string>
+    <string name="common_msg_title">提示</string>
+    <string name="common_confirm">确定</string>
+    <string name="tongdao_mc">通道名称:</string>
+
+    <!-- popwindow -->
+    <string name="play_real">实时</string>
+    <string name="play_back">回放</string>
+    <string name="pop_content">点击跳转到实时或者回放？</string>
+    <string name="file_play_back">按文件回放</string>
+    <string name="choose_start_time">选择开始时间</string>
+    <string name="choose_end_time">选择关闭时间</string>
+    <string name="time_play_back">按时间回放</string>
+    <string name="close_play_back">关闭回放</string>
+
+    <string name="bukong">布控:</string>
+    <string name="sakong">撒控:</string>
+    <string name="bumeng_code">部门code:</string>
+    <string name="according_department_bukong">根据部门布控:</string>
+    <string name="edit_department_code">001</string>
+    <string name="event_type_cs">产生</string>
+    <string name="event_type_xs">消失</string>
+
+    <string name="str_capture_bitmap">抓图</string>
+    <string name="capture_success">保存成功</string>
+    <string name="capture_fail">保存失败</string>
+
+    <string name="bufang">布防</string>
+    <string name="cefang">撤防</string>
+    <string name="cancel_alarm">清除报警</string>
+
+    <string name="logout_dh">退出</string>
+    <string name="logout_fail">退出失败</string>
+    <string name="play_moveset">播放定位</string>
+    <string name="playback_query_success_no_record">没有录像文件</string>
+    <string name="playback_seek_success">回放录像成功</string>
+    <string name="playback_seek_fail">没有录像文件</string>
+
+    <!-- VTtalk -->
+    <string name="visabletalk_allcalls">所有通话</string>
+    <string name="visabletalk_missedcalls">未接来电</string>
+    <string name="visabletalk_center_title">来电留言</string>
+    <string name="visabletalk_right_edite">编辑</string>
+    <string name="visabletalk_right_complete">完成</string>
+    <string name="visabletalk_leave_messages">所有通话</string>
+    <string name="visabletalk_edit">未接来电</string>
+    <string name="visabletalk_pickcall">接听</string>
+    <string name="visabletalk_refusecall">拒绝</string>
+    <string name="visabletalk_offcall">挂断</string>
+    <string name="visabletalk_opendoorl">开门</string>
+    <string name="visabletalk_error">返回参数null</string>
+    <string name="visabletalk_calling_txt">正在呼叫...</string>
+    <string name="call_offline">通话结束</string>
+
+    <string-array name="alarm_type">
+        <item>视频丢失</item>
+        <item>外部报警</item>
+        <item>移动侦测</item>
+        <item>视频遮挡</item>
+        <item>硬盘满</item>
+        <item>硬盘故障</item>
+    </string-array>
+
+    <string-array name="alarm_type_num">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+
+    <string-array name="title_listview">
+        <item>设备名：</item>
+        <item>通道名：</item>
+        <item>效果：</item>
+        <item>类型：</item>
+        <item>时间：</item>
+    </string-array>
+
+    <string name="device_name">设备名：</string>
+    <string name="channel_name">通道名：</string>
+    <string name="event">效果：</string>
+    <string name="type">类型：</string>
+    <string name="date">时间：</string>
+
+    <string-array name="tag_layout">
+        <item>通用</item>
+        <item>实时</item>
+        <item>回放</item>
+    </string-array>
+
+    <string-array name="video_source">
+        <item>2 设备录像</item>
+        <item>3 平台录像</item>
+    </string-array>
+
+    <string-array name="grouplist_spinner">
+        <item>1 实时</item>
+        <item>2 回放</item>
+    </string-array>
+
+    <string-array name="video_type">
+        <item>0 全部录像</item>
+        <item>1 手动录像</item>
+        <item>2 报警录像</item>
+        <item>3 移动侦测</item>
+        <item>4 视频丢失</item>
+        <item>5 视频遮挡</item>
+        <item>6 定时录像</item>
+        <item>7 全天录像</item>
+        <item>25 卡号录像</item>
+    </string-array>
+    <string-array name="video_size">
+        <item>1 1/8倍</item>
+        <item>2 1/4倍</item>
+        <item>4 1/2倍</item>
+        <item>8 1倍</item>
+        <item>16 2倍</item>
+        <item>32 4倍</item>
+        <item>48 6倍</item>
+        <item>64 8倍</item>
+    </string-array>
+    <string name="sound">sound</string>
+    <string name="talk">talk</string>
+    <string name="live_sound_warning">打开声音将导致对讲关闭，是否继续？</string>
+    <string name="common_cancel">取消</string>
+    <string name="live_talk_warning">打开对讲将导致声音关闭，是否继续？</string>
+    <string name="common_wait">请稍等</string>
+    <string name="live_talk_fail">关闭对讲失败</string>
+    <string name="live_talk_open_fail">打开对讲失败</string>
+    <string name="operate_talk_open">打开对讲</string>
+    <string name="operate_sound_on">打开声音</string>
+    <string name="operate_talk_close">关闭对讲</string>
+    <string name="operate_sound_down">关闭声音</string>
+    <string name="operate_sound_success">打开对讲成功</string>
+    <string name="operate_sound_stop_success">关闭对讲成功</string>
+    <string name="school_moniter">校园监控</string>
+    <string name="parent_moniter">子贵探视</string>
+    <string name="no_moniter_func">没有监控接入，详情请联系管理员！</string>
+    <string name="no_moniter">您没有可查看的监控，如需查看，请联系管理员！</string>
+    <string name="error_moniter">该摄像头故障，请联系管理员！</string>
+    <string name="no_moniter_service">贵学校未对接监控！</string>
+
+    <string name="no_login_right">您没有登录云智全课通的权限！</string>
+    <string name="verify">您的账号正在更换设备登录，请先验证您的身份</string>
+    <string name="vip">此功能为VIP服务</string>
+    <string name="vip_tip">立即开通VIP使用?</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="string_no_more_data">没有更多数据了</string>
+    <string name="online_pay">在线充值</string>
+    <string name="online_recharge_record">在线充值记录</string>
+    <string name="offline_recharge_record">线下充值记录</string>
+</resources>

@@ -1,0 +1,52 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/backgroud_white"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+	<!-- 续费记录 -->
+    <include
+        layout="@layout/new_title" />
+	<LinearLayout 
+        android:id="@+id/payment_record_ll_null"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        >
+        <!--<ImageView -->
+            <!--android:layout_width="wrap_content"-->
+        	<!--android:layout_height="wrap_content"-->
+        	<!--android:background="@drawable/payment_record_null_bg"-->
+            <!--/>-->
+        <!--<TextView -->
+            <!--android:layout_width="wrap_content"-->
+        	<!--android:layout_height="wrap_content"-->
+        	<!--android:text="暂无续费记录"-->
+        	<!--android:textColor="@color/font_darkgray"-->
+            <!--android:textSize="@dimen/three_text_type"-->
+            <!--/>-->
+		<TextView
+			android:id="@+id/tv_no_message"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:gravity="center"
+			android:drawableTop="@drawable/shuju_no"
+			android:layout_centerInParent="true"
+			android:drawablePadding="10dip"
+			android:textColor="@color/font_darkgray"
+			android:textSize="@dimen/three_text_type"
+			/>
+    </LinearLayout>
+    <ListView
+        android:id="@+id/lv_payment_records"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:listSelector="@drawable/falling_list_selector"
+        android:divider="@color/font_lightgray"
+        android:dividerHeight="0.5dp" 
+        android:scrollbars="none"
+        />
+
+</LinearLayout>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <include layout="@layout/new_title" />
+
+ 
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/logo_01" />
+
+    <!--
+    @dimen/two_dimension_code_hight
+    @dimen/two_dimension_code_hight
+         <TextView
+        android:id="@+id/about_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/nomar_margin"
+        android:gravity="center"
+        android:text="@string/about_text"
+        android:textColor="@color/font_darkgray"
+        android:textSize="@dimen/three_text_type" />
+    -->
+
+    <TextView
+        android:id="@+id/app_version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/teacher_margin"
+        android:gravity="center"
+        android:textColor="#999999"
+        android:textSize="@dimen/mycollect_text_type"
+        android:text="版本号" /><!--  -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginTop="80dp"
+        android:layout_marginLeft="-11dp"
+        android:orientation="horizontal" >
+        
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="客服电话：" />
+        
+        <TextView
+        android:id="@+id/dianhua"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#0099FF"
+        android:text="400-990-2312" />
+        
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" >
+        
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="公司官网：" />
+        
+        <TextView
+        android:id="@+id/guanwang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#0099FF"
+        android:text="www.cceduy.com" />
+        
+    </LinearLayout>
+
+    
+
+    
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:id="@+id/tv_about_jurisdiction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:text="Copyright © Hunan Wei Chu You Cai Education Technology Co.,Ltd."
+            android:textColor="#AAAAAA"
+            android:textSize="10dp" />
+
+        <TextView
+            android:id="@+id/weichu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tv_about_jurisdiction"
+            android:layout_centerHorizontal="true"
+            android:text="湖南惟楚有才教育科技有限公司 版权所有"
+            android:textColor="#AAAAAA"
+            android:textSize="10dp" />
+
+        <TextView
+            android:id="@+id/service_agreement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="查看用户服务协议"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@id/weichu"
+            android:textColor="@color/text_color"
+            />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

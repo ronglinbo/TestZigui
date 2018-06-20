@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+	android:background="@color/background_color">
+
+    <include android:id="@+id/title"
+        layout="@layout/new_title"/>"
+	<TextView
+	    android:id="@+id/detail"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="群成员"
+		android:textColor="@color/light_gray"
+		android:textSize="@dimen/item_text_size"
+	    android:layout_below="@id/title"
+	    android:paddingLeft="@dimen/content_to_bord"
+		android:paddingTop="@dimen/content_to_bord"/>
+	<TextView
+		android:id="@+id/num"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textColor="@color/line"
+		android:layout_below="@id/title"
+		android:textSize="@dimen/hint_text_size"
+		android:layout_toRightOf="@id/detail"
+		android:paddingTop="@dimen/content_to_bord"/>
+	<GridView
+	    android:id="@+id/member"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:numColumns="4"
+	    android:layout_below="@id/detail"
+		android:layout_marginTop="@dimen/nomar_margin"
+		android:background="@color/backgroud_white"/>
+	<View
+	    android:id="@+id/blank"
+	    android:layout_width="match_parent"
+	    android:layout_height="5dp"
+	    android:layout_below="@id/member"/>
+	<RelativeLayout
+		android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:visibility="gone"/>
+	<Button
+		android:layout_width="match_parent"
+        android:layout_height="@dimen/big_button_height"
+        android:layout_below="@id/blank"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/only_login_selector"
+        android:text="退出该群"
+        android:textColor="@color/font_white"
+        android:textSize="@dimen/second_text_type"
+        android:visibility="gone" />
+</RelativeLayout>

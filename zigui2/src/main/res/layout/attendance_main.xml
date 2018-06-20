@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f1f1f1"
+    android:orientation="vertical"
+     >
+    
+    <include
+        layout="@layout/title" />
+
+    <!-- android:background="@color/backgroud_white" -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp" 
+        android:layout_marginTop="5dp"
+       >
+         <TextView
+            android:id="@+id/class_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="20dp"
+            android:text="(4)班"
+            android:textSize="@dimen/three_text_type" 
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/time_week"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2015年8月22 星期六"
+            android:textSize="@dimen/three_text_type" 
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            />
+        
+    </RelativeLayout>
+
+   <!-- 
+   <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/line_darkyellow" />
+    --> 
+     <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="40dp" 
+        android:orientation="horizontal"
+        android:background="#ffffff">
+         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="20dp"
+            android:text="考勤信息相同"
+            android:textSize="15sp" 
+            android:layout_centerVertical="true"/>
+
+       <com.wcyc.zigui2.utils.SlipButton
+           android:id="@+id/checkBox"
+           android:layout_width="@dimen/SlipButton_width"
+           android:layout_height="@dimen/SlipButton_height"
+           android:layout_alignParentRight="true"
+           android:layout_centerVertical="true"
+           android:layout_marginRight="-37dp"
+           android:layout_marginTop="10dp" 
+           />
+
+    </RelativeLayout>
+    
+  
+   
+     <RelativeLayout
+        android:id="@+id/three_level1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:id="@+id/first1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#01aef0" 
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:layout_marginLeft="10dp"
+            android:textSize="16sp"
+            />
+        <TextView
+            android:id="@+id/second1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#01aef0"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/first1"
+            android:layout_marginLeft="10dp"
+            android:visibility="gone"
+            android:textSize="16sp"
+             />
+        <TextView
+            android:id="@+id/three1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#01aef0" 
+            android:layout_centerVertical="true"
+             android:layout_toRightOf="@id/second1"
+             android:layout_marginLeft="10dp"
+             android:visibility="gone"
+             android:textSize="16sp"
+            />
+          <TextView 
+            android:id="@+id/tx_atten"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="此处选择考勤信息 "
+			android:visibility="gone"
+			android:layout_alignParentRight="true"
+			android:layout_centerVertical="true"
+			android:layout_marginRight="55dp"
+            />
+          <ImageView 
+              android:id="@+id/mian_att_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/att_right"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="34dp"
+            android:visibility="gone"
+              />
+          
+       </RelativeLayout>
+
+   <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line_darkyellow" />
+
+   
+      
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4" >
+
+        <ListView
+            android:id="@+id/student_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:descendantFocusability="afterDescendants"
+            />
+    </RelativeLayout>
+<!-- 
+ -->
+    <Button
+        android:id="@+id/upweb"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_weight="0"
+        android:background="@drawable/contect_btn_selector"
+        android:text="确定"
+        android:textColor="#ffffff" 
+        />
+
+</LinearLayout>

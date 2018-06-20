@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <ImageView
+        android:id="@+id/news_comment_icon"
+        android:layout_width="15dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:paddingTop="2dp"
+        android:src="@drawable/list_icon_pinglun2" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="35dp"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:id="@+id/authorname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1 "
+            android:textSize="@dimen/four_text_type"
+            android:textColor="#01aef0" /><!-- android:textColor="#01aef0"  -->
+
+        <TextView
+            android:id="@+id/authorname_reply_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/authorname"
+            android:visibility="gone"
+            android:text="回复"
+            android:textSize="@dimen/four_text_type" />
+
+        <TextView
+            android:id="@+id/authorname_to_authorname_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/authorname_reply_tv"
+            android:visibility="gone"
+            android:text="3"
+            android:textSize="@dimen/four_text_type"
+            android:textColor="#01aef0" />
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/four_text_type"
+            android:text="1" />
+
+        
+    </RelativeLayout>
+
+</RelativeLayout>

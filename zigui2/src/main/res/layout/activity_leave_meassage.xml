@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.wcyc.zigui2.newapp.module.leavemessage.LeaveMeassageActivity">
+
+    <include
+        android:id="@+id/order_title"
+        layout="@layout/new_title" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <RadioButton
+            android:id="@+id/my_child_message"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/leave_message_line"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:text="孩子的留言"
+            android:textColor="@drawable/order_font_backround"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="0.8dp"
+            android:layout_height="20dp"
+            android:background="@color/line" />
+
+        <RadioButton
+            android:id="@+id/my_message"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/leave_message_line1"
+            android:button="@null"
+            android:gravity="center"
+            android:text="我的留言"
+            android:textColor="@drawable/order_font_backround"
+            android:textSize="18sp" />
+    </RadioGroup>
+
+    <com.wcyc.zigui2.newapp.widget.NoReloadViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_color"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
+
+
+    </com.wcyc.zigui2.newapp.widget.NoReloadViewPager>
+
+
+</LinearLayout>

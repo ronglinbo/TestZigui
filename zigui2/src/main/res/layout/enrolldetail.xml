@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroud_white"
+    android:orientation="vertical" >
+
+    <!-- 我的报名详情页面 -->
+
+    <include layout="@layout/title" />
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal"
+    	android:layout_marginTop="@dimen/nomar_margin"
+    	android:layout_marginLeft="@dimen/enroll_detail_left_margin"
+        >
+        <TextView 
+            android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:text="订单"
+    		android:textColor="@color/font_lightgray"
+    		android:textSize="@dimen/enrolldetail_four_text_type"
+            />
+        <TextView 
+            android:id="@+id/enroll_detail_id"
+            android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:textColor="@color/font_lightgray"
+    		android:textSize="@dimen/enrolldetail_four_text_type"
+    		android:singleLine="true"
+    		android:layout_marginLeft="@dimen/enroll_detail_left_margin_sm"
+            />
+    </LinearLayout>
+    
+    <View
+        android:layout_marginTop="@dimen/nomar_margin"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="-10dp"
+        android:layout_marginRight="-10dp"
+        android:background="@color/line_darkyellow" />
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal"
+    	android:layout_marginTop="@dimen/nomar_margin"
+    	android:layout_marginLeft="@dimen/enroll_detail_left_margin"
+        >
+        <TextView 
+            android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:text="日期"
+    		android:textColor="@color/font_lightgray"
+    		android:textSize="@dimen/enrolldetail_four_text_type"
+            />
+        <TextView 
+            android:id="@+id/enroll_detail_date"
+            android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:textColor="@color/font_lightgray"
+    		android:textSize="@dimen/enrolldetail_four_text_type"
+    		android:singleLine="true"
+    		android:layout_marginLeft="@dimen/enroll_detail_left_margin_sm"
+            />
+    </LinearLayout>
+    
+    <View
+        android:layout_marginTop="@dimen/nomar_margin"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="-10dp"
+        android:layout_marginRight="-10dp"
+        android:background="@color/line_darkyellow" />
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal"
+    	android:layout_marginTop="@dimen/nomar_margin"
+    	android:layout_marginLeft="@dimen/enroll_detail_left_margin"
+        >
+        <TextView 
+            android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:text="预订课程"
+    		android:textColor="@color/font_lightgray"
+    		android:textSize="@dimen/enrolldetail_four_text_type2"
+            />
+        <TextView 
+            android:id="@+id/enrolldetail_name"
+            android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:textColor="@color/font_black"
+    		android:textSize="@dimen/enrolldetail_four_text_type2"
+    		android:singleLine="true"
+    		android:layout_marginLeft="@dimen/enroll_detail_left_margin"
+            />
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal"
+    	android:layout_marginTop="@dimen/nomar_margin"
+    	android:layout_marginLeft="@dimen/enroll_detail_left_margin"
+        >
+        <TextView 
+            android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:text="主        讲"
+    		android:textColor="@color/font_lightgray"
+    		android:textSize="@dimen/enrolldetail_four_text_type2"
+            />
+        <TextView 
+            android:id="@+id/enrolldetail_teacher_name"
+            android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:textColor="@color/font_black"
+    		android:textSize="@dimen/enrolldetail_four_text_type2"
+    		android:singleLine="true"
+    		android:layout_marginLeft="@dimen/enroll_detail_left_margin"
+            />
+    </LinearLayout>
+    
+    <View
+        android:layout_marginTop="@dimen/nomar_margin"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="-10dp"
+        android:layout_marginRight="-10dp"
+        android:background="@color/line_darkyellow" />
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal"
+    	android:layout_marginTop="@dimen/nomar_margin"
+    	android:layout_marginLeft="@dimen/enroll_detail_left_margin"
+        >
+        <TextView 
+            android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:text="开课时间"
+    		android:textColor="@color/font_lightgray"
+    		android:textSize="@dimen/enrolldetail_four_text_type2"
+            />
+        <TextView 
+            android:id="@+id/enrolldetail_time"
+            android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:textColor="@color/font_blue"
+    		android:textSize="@dimen/enrolldetail_four_text_type2"
+    		android:singleLine="true"
+    		android:layout_marginLeft="@dimen/enroll_detail_left_margin"
+            />
+    </LinearLayout>
+    
+    <View
+        android:layout_marginTop="@dimen/nomar_margin"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="-10dp"
+        android:layout_marginRight="-10dp"
+        android:background="@color/line_darkyellow" />
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/enroll_detail_left_margin"
+        android:layout_marginTop="@dimen/nomar_margin"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="开课人数"
+            android:textColor="@color/font_lightgray"
+            android:textSize="@dimen/enrolldetail_four_text_type2" />
+
+        <TextView
+            android:id="@+id/enrolldetail_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="12dp"
+            android:layout_toRightOf="@+id/textView1"
+            android:singleLine="true"
+            android:textColor="@color/font_blue"
+            android:textSize="@dimen/enrolldetail_four_text_type2" />
+
+        <TextView
+            android:id="@+id/enrolldetail_now"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="46dp"
+            android:singleLine="true"
+            android:textColor="@color/font_red"
+            android:textSize="@dimen/enrolldetail_four_text_type2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="22dp"
+            android:layout_toLeftOf="@+id/enrolldetail_now"
+            android:text="当前预定人数"
+            android:textColor="@color/font_lightgray"
+            android:textSize="@dimen/enrolldetail_four_text_type2" />
+
+    </RelativeLayout>
+
+</LinearLayout>

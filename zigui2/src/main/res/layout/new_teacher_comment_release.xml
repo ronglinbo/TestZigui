@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:weichuyoucai="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f9"
+    android:orientation="vertical" >
+
+    <include
+        layout="@layout/new_title2" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="#FFFFFF" >
+
+        <TextView
+            android:id="@+id/select_class_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="选择班级"
+            android:textColor="#212121"
+            android:textSize="15sp" />
+
+        <com.wcyc.zigui2.widget.SpinnerButton
+            android:id="@+id/spinner_butt_class"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/select_class_tv"
+            android:background="#FFFFFF"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="10dp"
+            android:text=""
+            android:textColor="#333333"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/new_down" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/backgroud_white">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_hight"
+            android:layout_marginLeft="15dp"
+            android:background="@color/line_darkyellow" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp" >
+
+        <TextView
+            android:id="@+id/student_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="选择学生"
+            android:textColor="#212121"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/add_student_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/student_tv"
+            android:paddingLeft="10dp"
+            android:paddingRight="30dp"
+            android:singleLine="false"
+            android:text="" />
+
+        <ImageView
+            android:id="@+id/comment_select_student"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/new_ten" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/ed_comment"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/backgroud_white"
+            android:gravity="left"
+            android:maxLength="500"
+            android:hint="请输入点评内容..."
+            android:textColorHint="#cccccc"
+            android:textSize="15sp"
+            android:padding="10dp" />
+
+        <ImageView
+            android:id="@+id/ed_comment_delete_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0"
+            android:src="@drawable/close"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="25dp"
+        android:background="#ffffff"
+        android:orientation="horizontal" >
+		
+        <!-- android:src="@drawable/new_good"
+        android:src="@drawable/new_redflowers"
+         android:src="@drawable/new_criticism"
+         android:src="@drawable/new_comeon"
+         
+         -->
+        <ImageView
+            android:id="@+id/comment_add_xiaohonghua_iv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginBottom="25dp"
+            android:src="@drawable/icon_xiaohonghua_normal" />
+
+        <ImageView
+            android:id="@+id/comment_add_jiayou_iv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginBottom="25dp"
+            android:src="@drawable/icon_jiayou_normal" />
+
+        <ImageView
+            android:id="@+id/comment_add_pipin_iv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginBottom="25dp"
+            android:src="@drawable/icon_pipin_normal" />
+
+       
+    </LinearLayout>
+
+</LinearLayout>

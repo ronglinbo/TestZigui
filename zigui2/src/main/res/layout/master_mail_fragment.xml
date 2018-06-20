@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="@color/background_color"
+    android:descendantFocusability="blocksDescendants">
+
+    <com.wcyc.zigui2.newapp.widget.RefreshListView1
+        android:id="@+id/email_list1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_color"
+        android:listSelector="@drawable/item_selector"
+        android:cacheColorHint="#00000000"
+        android:divider="@color/backgroud_lightyellow"
+        android:scrollbars="none"
+        android:dividerHeight="@dimen/nomar_margin"
+        android:focusable="false"
+		android:focusableInTouchMode="false"
+        android:layout_marginRight="@dimen/content_to_bord"
+        android:layout_marginLeft="@dimen/content_to_bord"/>
+
+    <TextView
+        android:id="@+id/tv_no_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:drawableTop="@drawable/shuju_no"
+        android:drawablePadding="10dip"
+        android:textColor="@color/font_darkgray"
+        android:textSize="@dimen/three_text_type"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+</RelativeLayout>

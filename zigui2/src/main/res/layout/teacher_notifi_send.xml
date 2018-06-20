@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <!-- 老师端  新消息发布界面 -->
+
+    <include layout="@layout/title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroud_darktyellow" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <!-- 基本信息 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/nomar_margin"
+                    android:layout_marginTop="@dimen/nomar_margin"
+                    android:text="@string/notification_type_tv"
+                    android:textColor="@color/font_darkgray"
+                    android:textSize="@dimen/three_text_type" />
+
+                <RadioGroup
+                    android:id="@+id/RadioGroup01"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/nomar_margin"
+                    android:orientation="horizontal" >
+
+                    <RadioButton
+                        android:id="@+id/rb_school_notification"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/item_hight"
+                        android:layout_weight="1"
+                        android:button="@drawable/notifiaction_radiobutton"
+                        android:text="@string/rb_school_notification"
+                        android:textAlignment="viewEnd"
+                        android:textColor="@color/font_black"
+                        android:textSize="@dimen/three_text_type" />
+
+                    <RadioButton
+                        android:id="@+id/rb_grade_notification"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/item_hight"
+                        android:layout_weight="1"
+                        android:button="@drawable/notifiaction_radiobutton"
+                        android:text="@string/rb_grade_notification"
+                        android:textAlignment="viewEnd"
+                        android:textColor="@color/font_black"
+                        android:textSize="@dimen/three_text_type" />
+
+                    <RadioButton
+                        android:id="@+id/rb_class_notification"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/item_hight"
+                        android:layout_weight="1"
+                        android:button="@drawable/notifiaction_radiobutton"
+                        android:text="@string/rb_class_notification"
+                        android:textAlignment="viewEnd"
+                        android:textColor="@color/font_black"
+                        android:textSize="@dimen/three_text_type" />
+                </RadioGroup>
+                <!-- 班级选择条目按钮 -->
+
+                <LinearLayout
+                    android:id="@+id/notification_choice_class"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/item_hight"
+                    android:layout_marginTop="@dimen/nomar_margin"
+                    android:background="@drawable/mysetitemselector"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/nomar_margin" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_weight="0"
+                        android:text="@string/choice_class"
+                        android:textColor="@color/font_black"
+                        android:textSize="@dimen/three_text_type" />
+
+                    <TextView
+                        android:id="@+id/choice_class_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/nomar_margin"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:textColor="@color/font_black"
+                        android:textSize="@dimen/four_text_type" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="@dimen/nomar_margin"
+                        android:layout_weight="0"
+                        android:src="@drawable/my_corner" />
+                </LinearLayout>
+                
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/mysetitemselector"
+                    android:layout_marginTop="1dp"
+                    android:padding="@dimen/nomar_margin" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0"
+                        android:text="@string/accept_choice"
+                        android:textColor="@color/font_black"
+                        android:textSize="@dimen/three_text_type" 
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="@string/accept_choice_text"
+                        android:textColor="@color/font_lightgray"
+                        android:textSize="14sp" 
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
+                        />
+
+                    <com.wcyc.zigui2.utils.SlipButton
+	                    android:id="@+id/accept_choice_spbtn"
+	                   	android:layout_width="@dimen/SlipButton_width"
+	                    android:layout_height="@dimen/SlipButton_height"
+	                    android:layout_marginRight="-37dp"
+	                    android:layout_centerVertical="true"
+	                    android:layout_marginTop="1dp"
+	                    android:layout_alignParentRight="true"
+	                    />
+                </RelativeLayout>
+
+                <EditText
+                    android:id="@+id/notification_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/backgroud_white"
+                    android:hint="@string/notification_title"
+                    android:inputType="textMultiLine"
+                    android:maxLength="50"
+                    android:minHeight="@dimen/editetext_height"
+                    android:padding="10dp"
+                    android:paddingLeft="10dp"
+                    android:singleLine="false" />
+
+                <EditText
+                    android:id="@+id/notification_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/nomar_margin"
+                    android:background="@color/backgroud_white"
+                    android:gravity="start"
+                    android:hint="@string/notification_content"
+                    android:inputType="textMultiLine"
+                    android:maxLength="1000"
+                    android:minHeight="100dp"
+                    android:padding="10dp"
+                    android:singleLine="false" />
+            </LinearLayout>
+
+            <!-- 图片选取 -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/backgroud_white"
+                android:layout_marginTop="@dimen/nomar_margin"
+                android:orientation="horizontal" >
+
+                <com.wcyc.zigui2.widget.ExpandGridView
+                    android:id="@+id/notification_addiv_gv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/nomar_margin"
+                    android:layout_marginRight="@dimen/nomar_margin"
+                    android:background="@color/font_white"
+                    android:drawSelectorOnTop="false"
+                    android:fadeScrollbars="false"
+                    android:fadingEdge="none"
+                    android:gravity="center_vertical"
+                    android:listSelector="@color/font_white"
+                    android:numColumns="4"
+                    android:scrollbars="none"
+                    android:verticalSpacing="@dimen/nomar_margin" />
+            </LinearLayout>
+
+            <!-- 确定按钮 -->
+
+            <Button
+                android:id="@+id/notification_commit_btn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/big_button_height"
+                android:layout_marginBottom="@dimen/nomar_margin"
+                android:layout_marginLeft="@dimen/myset_nomar_padding"
+                android:layout_marginRight="@dimen/myset_nomar_padding"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0"
+                android:background="@drawable/login_selector"
+                android:text="@string/notification_commit_btn"
+                android:textColor="@color/font_white"
+                android:textSize="@dimen/second_text_type" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

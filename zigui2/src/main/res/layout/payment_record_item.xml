@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/item_selector"
+    android:gravity="center_vertical"
+    android:paddingTop="5dip"
+    android:paddingBottom="5dip"
+    >
+    <!-- 续费记录item -->
+    <!-- 第1行 -->
+    <!-- 第2行 -->
+    <TextView
+        android:id="@+id/record_ordernum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/renew_time_lb"
+        android:layout_marginLeft="@dimen/nomar_margin"
+        android:text="订单编号 "
+        android:textColor="@color/font_darkgray"
+        android:textSize="@dimen/four_text_type" />
+
+    <!-- 第3行 -->
+    <TextView
+        android:id="@+id/renew_fee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/record_ordernum"
+        android:layout_below="@+id/record_ordernum"
+        android:textColor="@color/font_black"
+        android:textSize="@dimen/four_text_type"
+        android:text="续费项目" />
+    <TextView
+        android:id="@+id/tv_renew_fee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/nomar_margin"
+        android:layout_toRightOf="@+id/renew_fee"
+        android:layout_alignTop="@+id/renew_fee"
+        android:text="基础费用 家庭套餐"
+        android:singleLine="true"
+        android:textColor="@color/font_black"
+        android:textSize="@dimen/four_text_type" />
+        <!-- 第4行 -->
+    <TextView
+        android:id="@+id/renew_fee_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/record_ordernum"
+        android:layout_below="@+id/renew_fee"
+        android:textColor="@color/font_black"
+        android:textSize="@dimen/four_text_type"
+        android:text="续费时长" />
+    <TextView
+        android:id="@+id/tv_renew_fee_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/nomar_margin"
+        android:layout_toRightOf="@+id/renew_fee_duration"
+        android:layout_alignTop="@+id/renew_fee_duration"
+        android:text="9个月"
+        android:textColor="@color/font_black"
+        android:textSize="@dimen/four_text_type" />
+    <!-- 第5行 -->
+    <TextView
+        android:id="@+id/payment_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/record_ordernum"
+        android:layout_below="@+id/payment_start_stop"
+        android:textColor="@color/font_black"
+        android:textSize="@dimen/four_text_type"
+        android:text="付款金额" />
+    <TextView
+        android:id="@+id/tv_payment_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/nomar_margin"
+        android:layout_toRightOf="@+id/payment_money"
+        android:layout_alignTop="@+id/payment_money"
+        android:text="200元"
+        android:textColor="@color/font_black"
+        android:textSize="@dimen/four_text_type" />
+    <TextView
+        android:id="@+id/payment_start_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/record_ordernum"
+        android:layout_below="@+id/renew_fee_duration"
+        android:textColor="@color/font_black"
+        android:textSize="@dimen/four_text_type"
+        android:text="使用时段" />
+    <TextView
+        android:id="@+id/payment_start_stop_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/nomar_margin"
+        android:layout_toRightOf="@+id/payment_money"
+        android:layout_alignTop="@+id/payment_start_stop"
+        android:text="2014-12-22至2015-08-31"
+        android:textColor="@color/font_black"
+        android:singleLine="true"
+        android:textSize="@dimen/four_text_type" />
+
+    <TextView
+        android:id="@+id/tv_repayment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/payment_money"
+        android:layout_alignRight="@+id/tv_record_orders_status"
+        android:text="@string/payment_continue"
+        android:textColor="@color/font_red"
+        android:textSize="12sp" 
+        android:background="@drawable/bg_white_corn_normal"
+        android:gravity="center"
+		/>
+
+    <TextView
+        android:id="@+id/tv_record_ordertime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/renew_time_lb"
+        android:layout_alignBottom="@+id/renew_time_lb"
+        android:layout_alignLeft="@+id/tv_renew_fee_duration"
+        android:text="2014-09-31"
+        android:textColor="@color/font_black"
+        android:textSize="@dimen/four_text_type" />
+
+    <TextView
+        android:id="@+id/renew_time_lb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/record_ordernum"
+        android:layout_alignParentTop="true"
+        android:text="续费时间"
+        android:textColor="@color/font_black"
+        android:textSize="@dimen/four_text_type" />
+
+    <TextView
+        android:id="@+id/tv_record_orders_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dip"
+        android:text="@string/payment_success"
+        android:textColor="@color/font_blue"
+        android:layout_alignParentRight="true"
+        android:textSize="@dimen/four_text_type" />
+
+    <TextView
+        android:id="@+id/tv_record_ordernum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tv_renew_fee"
+        android:layout_alignLeft="@+id/tv_renew_fee"
+        android:clickable="true"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:singleLine="true"
+        android:text="a123456789a123456789"
+        android:textColor="@color/font_darkgray"
+        android:textSize="@dimen/four_text_type" />
+
+</RelativeLayout>

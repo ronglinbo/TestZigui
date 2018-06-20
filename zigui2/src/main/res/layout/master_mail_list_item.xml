@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="130dp"
+	android:background="@drawable/bg_round_rect"
+    android:paddingLeft="18dp"
+    android:paddingRight="@dimen/content_to_bord"
+    android:paddingTop="14dp"
+	android:descendantFocusability="blocksDescendants">
+   	
+    <Button android:id="@+id/type"
+	    android:layout_width="60dp"
+	    android:layout_height="20dp"
+	    android:textSize="@dimen/hint_text_size"
+	    android:gravity="center"
+	    android:background="@drawable/btn_type_good"
+	    android:text="类型"
+		android:textColor="@color/backgroud_white"/>
+    
+    <TextView android:id="@+id/replyed"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textSize="@dimen/field_textsize"
+	    android:layout_alignParentRight="true"
+	    android:text="已回复"
+		android:textColor="@color/font_gray_color"
+	    android:visibility="gone"/>
+    
+	<TextView android:id="@+id/title"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textSize="@dimen/item_title_size"
+		android:textColor="@color/font_color"
+	    android:layout_below="@id/type"
+		android:layout_marginTop="19dp"
+	    android:text="标题标题"
+		android:lines="2"
+	    android:ellipsize="end"/>
+		
+	<TextView android:id="@+id/publish_detail"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textSize="@dimen/item_desc_size"
+		android:textColor="@color/light_gray"
+	    android:layout_below="@id/title"
+		android:layout_marginEnd="@dimen/content_to_bord"
+		android:layout_marginBottom="@dimen/content_to_bord"
+	    android:layout_alignParentRight="true"
+		android:layout_alignParentBottom="true"
+	    android:text="2016-04-07 15:00"/>
+	
+</RelativeLayout>

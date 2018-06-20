@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    android:orientation="vertical" >
+
+    <include
+        layout="@layout/new_title" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:layout_marginTop="20dp"
+        android:background="@color/line_darkyellow" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/my_leave_rl"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/teacher_firstpager_ll_height"
+                android:background="@drawable/item_selector"
+                android:gravity="center_vertical" >
+
+                <ImageView
+                    android:id="@+id/new_xiaofei_iv"
+                    android:layout_width="@dimen/teacher_my_icon_hight"
+                    android:layout_height="@dimen/teacher_my_icon_hight"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/zgd_margin_right"
+                    android:src="@drawable/list_icon_wodeqingjia" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/nomar_margin"
+                    android:layout_toRightOf="@id/new_xiaofei_iv"
+                    android:text="消费"
+                    android:textColor="@color/font_black"
+                    android:textSize="@dimen/three_text_type" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/nomar_margin"
+                    android:layout_marginRight="@dimen/zgd_margin_right"
+                    android:src="@drawable/list_xiayiji_icon" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:background="@color/line_darkyellow" />
+
+            <RelativeLayout
+                android:id="@+id/my_repair_rl"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/teacher_firstpager_ll_height"
+                android:background="@drawable/item_selector"
+                android:gravity="center_vertical" >
+
+                <ImageView
+                    android:id="@+id/new_gongzhitiao_iv"
+                    android:layout_width="@dimen/teacher_my_icon_hight"
+                    android:layout_height="@dimen/teacher_my_icon_hight"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/zgd_margin_right"
+                    android:src="@drawable/list_icon_wodeweixiu" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/nomar_margin"
+                    android:layout_toRightOf="@id/new_gongzhitiao_iv"
+                    android:text="工资条"
+                    android:textColor="@color/font_black"
+                    android:textSize="@dimen/three_text_type" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/nomar_margin"
+                    android:layout_marginRight="@dimen/zgd_margin_right"
+                    android:src="@drawable/list_xiayiji_icon" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:background="@color/line_darkyellow" />
+
+            <RelativeLayout
+                android:id="@+id/my_document_print_rl"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/teacher_firstpager_ll_height"
+                android:background="@drawable/item_selector"
+                android:gravity="center_vertical" >
+
+                <ImageView
+                    android:id="@+id/new_zhibanchaxun_iv"
+                    android:layout_width="@dimen/teacher_my_icon_hight"
+                    android:layout_height="@dimen/teacher_my_icon_hight"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/zgd_margin_right"
+                    android:src="@drawable/list_icon_wodewenying" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/nomar_margin"
+                    android:layout_toRightOf="@id/new_zhibanchaxun_iv"
+                    android:text="值班查询"
+                    android:textColor="@color/font_black"
+                    android:textSize="@dimen/three_text_type" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/nomar_margin"
+                    android:layout_marginRight="@dimen/zgd_margin_right"
+                    android:src="@drawable/list_xiayiji_icon" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:background="@color/line_darkyellow" />
+
+            <RelativeLayout
+                android:id="@+id/my_school_news_rl"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/teacher_firstpager_ll_height"
+                android:background="@drawable/item_selector"
+                android:gravity="center_vertical" >
+
+                <ImageView
+                    android:id="@+id/new_xiaoyuanxinwen_iv"
+                    android:layout_width="@dimen/teacher_my_icon_hight"
+                    android:layout_height="@dimen/teacher_my_icon_hight"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/zgd_margin_right"
+                    android:src="@drawable/list_icon_wodeqingjia" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/nomar_margin"
+                    android:layout_toRightOf="@id/new_xiaoyuanxinwen_iv"
+                    android:text="校园新闻"
+                    android:textColor="@color/font_black"
+                    android:textSize="@dimen/three_text_type" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/nomar_margin"
+                    android:layout_marginRight="@dimen/zgd_margin_right"
+                    android:src="@drawable/list_xiayiji_icon" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:background="@color/line_darkyellow" />
+            
+            
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:background="@drawable/bg_green_oval"
+                    android:text="校园新闻2" />
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:background="@drawable/bg_red_oval"
+                    android:text="校园新闻3" />
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:background="@drawable/border_corn_clickable"
+                    android:text="校园新闻4" />
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:background="@drawable/border_corn_down_clickable"
+                    android:text="校园新闻5" />
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:background="@drawable/border_corn_up_clickable"
+                    android:text="校园新闻6" />
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:background="@drawable/border_corn"
+                    android:text="校园新闻7" />
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:background="@drawable/border_no_corner_clickable"
+                    android:text="校园新闻8" />
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:background="@drawable/bt_nobgd"
+                    android:text="校园新闻9" />
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:background="@drawable/btn_1_1"
+                    android:text="校园新闻10" />
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:background="@drawable/btn_1_2"
+                    android:text="校园新闻11" />
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:background="@drawable/btn_blue_normal_shape"
+                    android:text="校园新闻12" />
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:background="@drawable/btn_blue_pressed_shape"
+                    android:text="校园新闻13" />
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:background="@drawable/btn_blue_selector"
+                    android:text="校园新闻14" />
+            
+            
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:background="@drawable/btn_cancel_bj"
+                    android:text="校园新闻15" />
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:background="@drawable/btn_cancel_normal_shape"
+                    android:text="校园新闻16" />
+            
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:background="@drawable/btn_cancel_pressed_shape"
+                    android:text="校园新闻17" />
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:background="@drawable/btn_common_disabled"
+                    android:text="校园新闻18" />
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:background="@drawable/btn_delete"
+                    android:text="校园新闻19" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

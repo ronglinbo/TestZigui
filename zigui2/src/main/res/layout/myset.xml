@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroud_white"
+    android:orientation="vertical" >
+
+    <!-- 我的设置页面 -->
+
+    <include layout="@layout/title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/backgroud_darktyellow"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/myset_delete"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/item_hight"
+                android:background="@drawable/mysetitemselector"
+                android:gravity="center_vertical"
+                 >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="@dimen/myset_nomar_padding"
+                    android:text="@string/myset_delete_text"
+                    android:textColor="@color/font_black"
+                    android:textSize="@dimen/three_text_type" />
+
+                <TextView
+                    android:id="@+id/myset_delete_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/nomar_margin"
+                    android:textColor="@color/font_darkgray"
+                    android:textSize="@dimen/three_text_type" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+				android:layout_height="@dimen/line_height"
+                android:background="@color/line_darkyellow" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:layout_marginTop="@dimen/mydetail_content_margin_right"
+                android:background="@color/line_darkyellow" />
+            
+            <!-- 接收消息 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/item_hight"
+                android:background="@color/backgroud_white"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/myset_nomar_padding"
+                    android:text="@string/myset_message_text"
+                    android:textColor="@color/font_black"
+                    android:textSize="@dimen/three_text_type" />
+
+                <com.wcyc.zigui2.utils.SlipButton
+                    android:id="@+id/myset_message_btn"
+                   android:layout_width="@dimen/SlipButton_width"
+                    android:layout_height="@dimen/SlipButton_height"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="-25dp"
+                    android:layout_marginTop="@dimen/SlipButton_margin_top"
+                    android:layout_alignParentRight="true"/>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:background="@color/line_darkyellow" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/item_hight"
+                android:background="@color/backgroud_white"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/myset_nomar_padding"
+                    android:text="@string/myset_message_voice_text"
+                    android:textColor="@color/font_black"
+                    android:textSize="@dimen/three_text_type" />
+
+                <com.wcyc.zigui2.utils.SlipButton
+                    android:id="@+id/myset_message_voice_btn"
+                    android:layout_width="@dimen/SlipButton_width"
+                    android:layout_height="@dimen/SlipButton_height"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="-25dp"
+                    android:layout_alignParentRight="true"
+                     android:layout_marginTop="@dimen/SlipButton_margin_top" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:background="@color/line_darkyellow" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/item_hight"
+                android:background="@color/backgroud_white"
+                android:gravity="center_vertical" >
+
+                <com.wcyc.zigui2.utils.SlipButton
+                    android:id="@+id/myset_message_shake_btn"
+                    android:layout_width="@dimen/SlipButton_width"
+                    android:layout_height="@dimen/SlipButton_height"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="-25dp"
+                     android:layout_marginTop="@dimen/SlipButton_margin_top"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/myset_nomar_padding"
+                    android:text="@string/myset_message_shake_text"
+                    android:textColor="@color/font_black"
+                    android:textSize="@dimen/three_text_type" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:background="@color/line_darkyellow" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:layout_marginTop="@dimen/mydetail_content_margin_right"
+                android:background="@color/line_darkyellow" />
+
+            <RelativeLayout
+                android:id="@+id/myset_use_help"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/item_hight"
+                android:background="@drawable/mysetitemselector"
+                android:gravity="center"
+                 >
+
+                <TextView
+                    android:id="@+id/myset_use_help_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/myset_nomar_padding"
+                    android:text="@string/myset_use_help_text"
+                    android:textColor="@color/font_black"
+                    android:textSize="@dimen/three_text_type" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/myset_use_help_text"
+                    android:layout_marginRight="@dimen/arrow_margin_right"
+                    android:src="@drawable/my_corner" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:background="@color/line_darkyellow" />
+
+            <RelativeLayout
+                android:id="@+id/myset_opinion"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/item_hight"
+                android:background="@drawable/mysetitemselector"
+                android:gravity="center" >
+
+                <TextView
+                    android:id="@+id/myset_opinion_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/myset_nomar_padding"
+                    android:text="@string/myset_opinion_text"
+                    android:textColor="@color/font_black"
+                    android:textSize="@dimen/three_text_type" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/myset_opinion_text"
+                    android:layout_marginRight="@dimen/arrow_margin_right"
+                    android:src="@drawable/my_corner" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:background="@color/line_darkyellow" />
+
+            <RelativeLayout
+                android:id="@+id/myset_update"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/item_hight"
+                android:background="@drawable/mysetitemselector"
+                android:gravity="center" >
+
+                <TextView
+                    android:id="@+id/myset_update_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/myset_nomar_padding"
+                    android:text="@string/myset_update"
+                    android:textColor="@color/font_black"
+                    android:textSize="@dimen/three_text_type" />
+
+                <TextView
+                    android:id="@+id/myset_update_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/nomar_margin"
+                    android:layout_toLeftOf="@+id/myset_update_arrow"
+                    android:textColor="@color/font_darkgray"
+                    android:textSize="@dimen/three_text_type" />
+
+                <ImageView
+                    android:id="@+id/myset_update_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/myset_update_text"
+                    android:layout_marginRight="@dimen/arrow_margin_right"
+                    android:src="@drawable/my_corner" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:background="@color/line_darkyellow" />
+
+            <RelativeLayout
+                android:id="@+id/myset_about"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/item_hight"
+                android:background="@drawable/mysetitemselector"
+                android:gravity="center" >
+
+                <TextView
+                    android:id="@+id/myset_about_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/myset_nomar_padding"
+                    android:text="@string/myset_about"
+                    android:textColor="@color/font_black"
+                    android:textSize="@dimen/three_text_type" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/myset_about_text"
+                    android:layout_marginRight="@dimen/arrow_margin_right"
+                    android:src="@drawable/my_corner" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:background="@color/line_darkyellow" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

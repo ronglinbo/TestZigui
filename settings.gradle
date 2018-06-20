@@ -1,0 +1,4 @@
+include ':alipay_lib', ':PushSDK', ':polyv', ':OneSDK'
+//include ':zigui'
+include ':zigui2'
+//include ':trineaandroidcommon'

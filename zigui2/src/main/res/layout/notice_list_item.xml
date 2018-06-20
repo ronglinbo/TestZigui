@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent_firstpager_my_enroll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/item_selector"
+    android:paddingTop="9dp"
+    android:paddingBottom="9dp"
+    android:gravity="center_vertical" >
+
+    <ImageView
+        android:id="@+id/iv_notice_my_icon"
+        android:layout_width="@dimen/teacher_my_icon_hight"
+        android:layout_height="@dimen/teacher_my_icon_hight"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/nomar_margin"
+        android:src="@drawable/my_lv_icon_8" />
+    <TextView
+        android:id="@+id/notice_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/iv_notice_my_icon"
+        android:layout_marginLeft="20dp"
+        android:text="校运会通知校运会通知校运会通知校运会通知"
+        android:maxEms="6"
+        android:textColor="@color/font_black"
+        android:singleLine="true"
+        android:textSize="18sp" />
+    <ImageView
+		android:id="@+id/iv_notice_view"
+		android:layout_width="@dimen/newmessage_red"
+		android:layout_height="@dimen/newmessage_red"
+		android:layout_toRightOf="@+id/notice_name"
+        android:layout_marginTop="5dp"
+		android:src="@drawable/my_information_item_newmessage_red"
+		android:visibility="visible" />
+    <TextView
+        android:id="@+id/tv_notice_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/nomar_margin"
+        android:layout_toLeftOf="@+id/iv_enroll_arraw"
+        android:text="2014-12-11"
+        android:textColor="@color/font_gray"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/iv_enroll_arraw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/my_corner" />
+
+</RelativeLayout>

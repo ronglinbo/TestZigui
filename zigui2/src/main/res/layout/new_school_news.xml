@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <include 
+        android:layout_height="0dip"
+        android:layout_weight="0"
+        layout="@layout/new_title" />
+    
+    <com.wcyc.zigui2.newapp.widget.RefreshListView1 
+        android:id="@+id/new_school_news_lv"
+        android:visibility="visible"
+        android:dividerHeight="0.5dp"
+        android:divider="#e5e5e5"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    
+    <ImageView
+            android:id="@+id/no_data_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="150dp"
+            android:src="@drawable/shuju_no"
+            android:visibility="gone" />
+    
+	
+</LinearLayout>

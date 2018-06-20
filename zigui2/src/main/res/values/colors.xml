@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="white">#ffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="gold">#b89766</color>
+    <color name="foot">#F0F0F0</color>
+    <color name="common_bg">#fcfcfc</color>
+    <color name="divider_list">#cccccc</color>
+    <color name="top_bar_normal_bg">#4ebcd3</color>
+    <color name="error_item_color">#F6EBE6</color>
+    <color name="btn_white_normal">#f7f8f8</color>
+    <color name="btn_white_pressed">#b5b5b6</color>
+    <color name="btn_red_normal">#FF5B57</color>
+    <color name="btn_green_noraml">#4dd963</color>
+    <color name="btn_green_pressed">#6FCD78</color>
+    <color name="btn_gray_normal">#c0c0c0</color>
+    <color name="btn_gray_pressed_status">#b5b5b6</color>
+    <color name="btn_gray_pressed">#666667</color>
+    <color name="btn_blue_normal">#1e90ff</color>
+    <color name="btn_blue_pressed">#0066FF</color>
+    <color name="orange">#FFA500</color>
+    <color name="gray_normal">#666666</color>
+    <color name="background_search">#ECECEC</color>
+    
+    
+    <!-- 标题背景颜色 -->
+    <color name="title_bg_color">#01afef</color>
+    <color name="title_text_selector">#9fe4fe</color>
+    <!-- 白色字体 -->
+    <color name="font_white">#FFFFFF</color>
+    <!-- 浅灰色字体 -->
+    <color name="font_lightgray">#c5c5c5</color>
+    <!-- 深灰色字体 -->
+    <color name="font_darkgray">#868686</color>
+     <!-- 深灰色字体 -->
+    <color name="font_gray">#666666</color>
+    <!-- 淡红色字体 -->
+    <color name="light_red">#FF4F57</color>
+    <!-- 浅灰色字体 -->
+    <color name="light_gray">#999999</color>
+    <!-- 黑色字体 -->
+    <color name="font_black">#000000</color>
+    <color name="TextColorBlack">#FF000000</color>
+    <!-- 蓝色字体 -->
+    <color name="font_blue">#01afef</color>
+    <!-- 深蓝色字体 -->
+    <color name="font_darkblue">#007aff</color>
+    	<!-- 橘红色字体 -->
+ 	<color name="font_orange">#fda624</color>
+	<color name="blue">#007aff</color>
+	<!-- 偏黑色字体 -->
+	<color name="font_black21">#212121</color>
+    <!-- 我的订单 -->
+    <color name="color_dai_pay">#ff9200</color>
+    <color name="color_shengse">#333333</color>
+    <color name="color_checked" >#007aff</color>
+    <color name="color_backround" >#fafafa</color>
+    <color name="color_qianse" >#666666</color>
+    <color name="color_pay_way" >#4fb676</color>
+    <color name="color_pay_way_font" >#ffffff</color>
+    <color name="color_cancel" >#cccccc</color>
+    <color name="color_cancel_yingfu" >#999999</color>
+    <color name="color_line">#e5e5e5</color>
+    <color name="color_gopay" >#ff4f57</color>
+    <color name="color_gopay_border" >#ff4f57</color>
+    <!-- 有淡黄色的背景颜色 -->
+    <color name="backgroud_lightyellow">#f4f4f4</color>
+    <!-- 有深黄色的背景颜色 -->
+    <color name="backgroud_darktyellow">#f3f3f3</color>
+    <!-- 白色的背景颜色 -->
+    <color name="backgroud_white">#ffffff</color>
+    <!-- 淡黄色划线 -->
+    <!-- <color name="line_darkyellow">#cfcfcf</color>  之前颜色太深  20160629-->
+    <color name="line_darkyellow">#E5E5E5</color>
+    <color name="pop_color">#eeeeee</color>
+
+    <!-- 淡灰色划线 -->
+    <color name="line_darkyellow_biaozhu">#ABAAAF</color>
+     <!-- 蓝色字体颜色 -->
+    <!-- <color name="font_blue">#cfcfcf</color> -->
+
+    <color name="atteation_normal">#01aef0</color>
+    <color name="font_red">#FF0000</color>
+    <color name="line">#cccccc</color>
+	<color name="background_common">#f5f5f9</color>
+	<color name="type_good">#caa43e</color>
+	<color name="type_question">#6095ce</color>
+	<color name="type_suggest">#4fb676</color>
+	<color name="type_other">#f55c9d</color>
+	<color name="type_praise">#d8667c</color>
+    <color name="type_7">#e64766</color>
+	<color name="type_1">#d8667c</color>
+	<color name="type_2">#a1887f</color>
+	<color name="type_3">#4fb676</color>
+	<color name="type_4">#78919d</color>
+	<color name="type_5">#f6bf26</color>
+	<color name="type_6">#f65e8d</color>
+
+    <color name="TextColorGray">#FF505050</color>
+	<color name="tab_color">#F8F8F8</color>
+	<color name="nav_color">#F5F5F5</color>
+	<color name="background_color">#F5F5F9</color>
+	<color name="font_color">#212121</color>
+	<color name="font_gray_color">#666666</color>
+    <color name="quick_publish_color">#e5e5e5</color>
+
+	<color name="font_money_color">#ff4f57</color>
+	<color name="gray_font_color">#626262</color>
+
+	<color name="delete_bg">#00ffffff</color>
+	<color name="email_content_color">#999999</color>
+	<!-- 我的请假红色字体 -->
+	<color name="leave_red">#FD6164</color>
+	<color name="leave_shijia_bg">#6195CF</color>
+	<color name="leave_bingjia_bg">#50B675</color>
+	<color name="leave_sangjia_bg">#666666</color>
+	<color name="leave_tanqinjia_bg">#FD6164</color>
+	<color name="leave_qita_bg">#868686</color>
+
+	<color name="attach_bg">#dce1e8</color>
+    <color name="text_bg">#F5F5F9</color>
+    <color name="text_color">#0173FF</color>
+
+    <color name="black_txt">#000000</color>
+    <color name="black_text">#333333</color>
+    <color name="black">#333333</color>
+    <color name="dh_blue">#1d76d9</color>
+    <color name="gray">#e0e0e0</color>
+    <color name="black_gray">#6D6D6D</color>
+    <color name="input_gray">#b5b5b8</color>
+    <color name="gray_level1">#cccccc</color>
+    <color name="gray_level2">#dadadd</color>
+    <color name="gray_level3">#f0eff5</color>
+    <color name="gray_level_4">#f4f4f4</color>
+    <color name="cameralist_gray">#e3e3e3</color>
+    <color name="page_change_gray">#8f8f8f</color>
+    <color name="gray_text">#adadad</color>
+    <color name="transparent_black">#99000000</color>
+    <color name="transparent_background">#50000000</color>
+
+    <!-- background color -->
+    <color name="background_light">#FFFFFF</color>
+    <color name="background_gray_light">#F0EFF5</color>
+    <color name="background_gray">#D7D9E0</color>
+    <color name="background_gray_dark">#747F8E</color>
+    <color name="background_blue_light">#4D9CF4</color>
+    <color name="background_blue">#1D76D9</color>
+    <color name="background_blue_dark">#145297</color>
+    <color name="background_red">#D91D1D</color>
+    <color name="background_red_dark">#971414</color>
+    <!-- 进度条 -->
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <!-- divider color -->
+    <color name="divider_gray">#C6C6C6</color>
+
+    <!-- text color -->
+    <color name="text_color_dark">#2E2E2E</color>
+    <color name="text_color_light">#FFFFFF</color>
+    <color name="text_color_hint">#B3B3B3</color>
+    <color name="text_color_blue">#1D76D9</color>
+
+    <!-- JazzyViewPager -->
+    <color name="holo_blue">#FF33E5B5</color>
+
+    <!-- timebar -->
+    <color name="greenYellow">#ffffcc00</color>
+</resources>

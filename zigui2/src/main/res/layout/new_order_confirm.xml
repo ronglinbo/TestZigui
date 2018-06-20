@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:weichuyoucai="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F4F4"
+    android:orientation="vertical" >
+
+    <!-- 续费 选择套餐确认界面 -->
+
+    <include
+        layout="@layout/title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:layout_marginTop="20dip"
+        android:background="@drawable/border_corn"
+        android:orientation="vertical"
+        android:padding="0dip" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="10dp" 
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/renew_ordernum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/nomar_margin"
+                android:text="订单编号"
+                android:textColor="@color/font_black"
+                android:textSize="@dimen/three_text_type" />
+
+            <TextView
+                android:id="@+id/tv_renew_ordernum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@+id/renew_ordernum"
+                android:text="201405289968"
+                android:textColor="@color/font_black"
+                android:textSize="@dimen/three_text_type" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_hight"
+            android:background="@color/line_darkyellow" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="10dp" >
+
+            <TextView
+                android:id="@+id/renew_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/nomar_margin"
+                android:text="缴费时长"
+                android:textColor="@color/font_black"
+                android:textSize="@dimen/three_text_type" />
+
+            <TextView
+                android:id="@+id/tv_renew_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@+id/renew_duration"
+                android:text="8个月"
+                android:textColor="@color/font_black"
+                android:textSize="@dimen/three_text_type" />
+
+            <TextView
+                android:id="@+id/tv_renew_duration_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/renew_duration"
+                android:layout_below="@+id/renew_duration"
+                android:layout_marginTop="@dimen/nomar_margin"
+                android:text="@string/renew_duration_content"
+                android:textColor="@color/font_darkgray"
+                android:textSize="@dimen/three_text_type"
+                android:visibility="visible" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line_hight"
+            android:background="@color/line_darkyellow" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="10dp" >
+
+            <TextView
+                android:id="@+id/pay_sum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/nomar_margin"
+                android:text="付款金额"
+                android:textColor="@color/font_black"
+                android:textSize="@dimen/three_text_type" />
+
+            <TextView
+                android:id="@+id/tv_pay_sum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@+id/pay_sum"
+                android:text="￥160"
+                android:textColor="@color/font_orange"
+                android:textSize="@dimen/three_text_type" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/bt_renew_ok"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/big_button_height"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/btn_green_selector"
+        android:text="@string/ok"
+        android:textColor="@color/font_white"
+        android:textSize="@dimen/second_text_type" />
+
+</LinearLayout>

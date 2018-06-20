@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f9"
+    android:orientation="vertical">
+
+    <!-- 我的设置页面 -->
+
+    <include layout="@layout/new_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/backgroud_darktyellow"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:layout_marginTop="20dp"
+                android:background="@color/line_darkyellow" />
+
+            <RelativeLayout
+                android:id="@+id/myset_delete"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/item_hight"
+                android:background="@drawable/mysetitemselector"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="@dimen/myset_nomar_padding"
+                    android:text="@string/myset_delete_text"
+                    android:textColor="@color/font_black"
+                    android:textSize="@dimen/three_text_type" />
+
+                <TextView
+                    android:id="@+id/myset_delete_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/zgd_margin_right"
+                    android:text=""
+                    android:textColor="#007AFF"
+                    android:textSize="@dimen/three_text_type" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line_height"
+                android:background="@color/line_darkyellow" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/mydetail_content_margin_right"
+                android:background="@color/backgroud_white"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:background="@color/line_darkyellow" />
+
+                <RelativeLayout
+                    android:id="@+id/myset_new_msn"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/item_hight"
+                    android:background="@drawable/mysetitemselector"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/myset_new_msn_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/myset_nomar_padding"
+                        android:text="新消息提醒"
+                        android:textColor="@color/font_black"
+                        android:textSize="@dimen/three_text_type" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@+id/myset_new_msn_text"
+                        android:layout_marginRight="@dimen/zgd_margin_right"
+                        android:src="@drawable/list_xiayiji_icon" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:layout_marginLeft="15dp"
+                    android:background="@color/line_darkyellow" />
+
+                <RelativeLayout
+                    android:id="@+id/myset_use_help"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/item_hight"
+                    android:visibility="gone"
+                    android:background="@drawable/mysetitemselector"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/myset_use_help_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/myset_nomar_padding"
+                        android:text="@string/myset_use_help_text"
+                        android:textColor="@color/font_black"
+                        android:textSize="@dimen/three_text_type" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@+id/myset_use_help_text"
+                        android:layout_marginRight="@dimen/zgd_margin_right"
+                        android:src="@drawable/list_xiayiji_icon" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:visibility="gone"
+                    android:layout_marginLeft="15dp"
+                    android:background="@color/line_darkyellow" />
+
+                <RelativeLayout
+                    android:id="@+id/myset_opinion"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/item_hight"
+                    android:background="@drawable/mysetitemselector"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/myset_opinion_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/myset_nomar_padding"
+                        android:text="@string/myset_opinion_text"
+                        android:textColor="@color/font_black"
+                        android:textSize="@dimen/three_text_type" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@+id/myset_opinion_text"
+                        android:layout_marginRight="@dimen/zgd_margin_right"
+                        android:src="@drawable/list_xiayiji_icon" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:background="@color/line_darkyellow" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/mydetail_line_magrin"
+                android:background="@color/backgroud_white"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:background="@color/line_darkyellow" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/item_hight"
+                    android:background="@drawable/mysetitemselector"
+                    android:gravity="center"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/myset_new_weixin_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/myset_nomar_padding"
+                        android:text="关注微信"
+                        android:textColor="@color/font_black"
+                        android:textSize="@dimen/three_text_type" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@+id/myset_new_weixin_text"
+                        android:layout_marginRight="@dimen/zgd_margin_right"
+                        android:src="@drawable/list_xiayiji_icon" />
+                </RelativeLayout>
+
+                <!--<View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:background="@color/line_darkyellow" />  -->
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/item_hight"
+                    android:background="@drawable/mysetitemselector"
+                    android:gravity="center"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/myset_new_share_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/myset_nomar_padding"
+                        android:text="分享给好友"
+                        android:textColor="@color/font_black"
+                        android:textSize="@dimen/three_text_type" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@+id/myset_new_share_text"
+                        android:layout_marginRight="@dimen/zgd_margin_right"
+                        android:src="@drawable/list_xiayiji_icon" />
+                </RelativeLayout>
+
+                <!--  <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:background="@color/line_darkyellow" />-->
+
+                <RelativeLayout
+                    android:id="@+id/myset_new_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/item_hight"
+                    android:background="@drawable/mysetitemselector"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/myset_new_update_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/myset_nomar_padding"
+                        android:text="检查更新"
+                        android:textColor="@color/font_black"
+                        android:textSize="@dimen/three_text_type" />
+
+                    <ImageView
+                        android:id="@+id/myset_red_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/myset_new_update_text"
+                        android:background="@drawable/msg"
+                        android:layout_marginLeft="5dp"
+                        android:layout_centerVertical="true"
+                        android:visibility="invisible"/>
+
+                    <TextView
+                        android:id="@+id/myset_version_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="40dp"
+                        android:text=""
+                        android:textColor="#999999" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/zgd_margin_right"
+                        android:src="@drawable/list_xiayiji_icon" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:layout_marginLeft="15dp"
+                    android:background="@color/line_darkyellow" />
+                <RelativeLayout
+                    android:id="@+id/myset_shuoming"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/item_hight"
+                    android:visibility="gone"
+                    android:background="@drawable/mysetitemselector"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/myset_shuoming_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/myset_nomar_padding"
+                        android:text="@string/myset_shuoming"
+                        android:textColor="@color/font_black"
+                        android:textSize="@dimen/three_text_type" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@+id/myset_shuoming_text"
+                        android:layout_marginRight="@dimen/zgd_margin_right"
+                        android:src="@drawable/list_xiayiji_icon" />
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:layout_marginLeft="15dp"
+                    android:background="@color/line_darkyellow" />
+                <RelativeLayout
+                    android:id="@+id/myset_about"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/item_hight"
+                    android:background="@drawable/mysetitemselector"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/myset_about_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/myset_nomar_padding"
+                        android:text="@string/myset_about"
+                        android:textColor="@color/font_black"
+                        android:textSize="@dimen/three_text_type" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignTop="@+id/myset_about_text"
+                        android:layout_marginRight="@dimen/zgd_margin_right"
+                        android:src="@drawable/list_xiayiji_icon" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_height"
+                    android:background="@color/line_darkyellow" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

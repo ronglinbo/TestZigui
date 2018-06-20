@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 四个圆角的有点击效果的背景图片 -->
+    <item android:state_pressed="true"><shape>
+            <corners android:radius="8dip" />
+
+            <stroke android:width="1px" android:color="#dcdcdc" />
+
+            <solid android:color="@color/backgroud_darktyellow" />
+        </shape></item>
+    <item android:state_pressed="false"><shape>
+            <corners android:radius="8dip" />
+
+            <stroke android:width="1px" android:color="#dcdcdc" />
+
+            <solid android:color="@color/backgroud_white" />
+        </shape></item>
+
+</selector>

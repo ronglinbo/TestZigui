@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroud_white"
+    android:orientation="vertical" >
+
+    <!-- 老师点评选取班级页面 -->
+
+    <include layout="@layout/title" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/backgroud_lightyellow"
+        android:paddingTop="@dimen/nomar_margin"
+        android:layout_weight="0" >
+
+        <TextView
+            android:id="@+id/teacher_comment_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/nomar_margin"
+            android:layout_marginLeft="@dimen/nomar_margin"
+            android:textColor="@color/font_darkgray"
+            android:textSize="@dimen/three_text_type" />
+
+        <Button
+            android:id="@+id/teacher_comment_history_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/nomar_margin"
+            android:layout_marginRight="@dimen/nomar_margin"
+            android:background="@drawable/login_selector"
+            android:gravity="center"
+            android:padding="@dimen/font_to_font_diver"
+            android:text="@string/teacher_comment_history"
+            android:textColor="@color/font_white"
+            android:textSize="@dimen/three_text_type"
+             />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/nomar_margin"
+        android:layout_weight="0"
+        android:background="@color/backgroud_white"
+        android:paddingBottom="5dp"
+        android:paddingLeft="@dimen/nomar_margin"
+        android:text="@string/teacher_comment_choice"
+        android:textColor="@color/font_darkgray"
+        android:textSize="@dimen/three_text_type" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="@dimen/nomar_margin"
+        android:background="@color/line_darkyellow" />
+
+    <ListView
+        android:id="@+id/teacher_comment_lv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fadingEdge="none"
+        android:cacheColorHint="#00000000"
+        android:divider="@color/line_darkyellow"
+        android:dividerHeight="0.5dp" />
+
+</LinearLayout>

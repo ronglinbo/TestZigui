@@ -1,0 +1,41 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/backgroud_white"
+    android:layout_height="match_parent" >
+
+    <include
+        android:id="@+id/parent_message_title"
+        layout="@layout/title" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/parent_message_title" >
+
+        <com.wcyc.zigui2.widget.FallListView
+	        android:id="@+id/pullToRefreshListView1"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:listSelector="@drawable/falling_list_selector"
+	        android:layout_alignParentRight="true"
+	        android:divider="@color/font_lightgray"
+	        android:dividerHeight="0.5dp" 
+	        />
+
+        <TextView
+            android:id="@+id/flistview_tv_no_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:drawableTop="@drawable/myenroll_null_bg"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:text="暂无报名信息"
+            android:visibility="gone"
+            android:textColor="@color/font_darkgray"
+            android:textSize="@dimen/three_text_type" />
+    </RelativeLayout>
+
+</RelativeLayout>

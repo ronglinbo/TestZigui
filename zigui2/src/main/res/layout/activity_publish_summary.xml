@@ -1,0 +1,263 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color">
+
+    <include android:id="@+id/publish_notify_title"
+        layout="@layout/new_title2"/>
+
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+	    android:layout_below="@id/publish_notify_title"
+	    android:focusable="true"
+	    android:focusableInTouchMode="true">
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/nomar_margin"/>
+	    <RelativeLayout
+			android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="@dimen/nomar_margin"
+	        android:background="@color/backgroud_white"
+	        android:gravity="center_vertical"
+			android:layout_centerVertical="true">
+	        <TextView
+	            android:id="@+id/dept"
+				android:layout_centerVertical="true"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="发布部门："
+				android:textSize="@dimen/item_title_size"
+	            android:gravity="center_vertical">
+	        </TextView>
+	        <TextView
+	            android:id="@+id/add_dept"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_toRightOf="@id/dept">
+	        </TextView>
+	        <com.wcyc.zigui2.widget.SpinnerButton
+				android:drawableRight="@drawable/list_btn_xiala"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_toRightOf="@id/add_dept"
+	            android:background="@color/transparent"
+				android:visibility="gone">
+	        </com.wcyc.zigui2.widget.SpinnerButton>
+	        <com.wcyc.zigui2.widget.MySpinner
+	        	android:id="@+id/choose_dept"
+				android:gravity="center|left"
+	        	android:layout_width="wrap_content"
+	        	android:layout_height="45dp"
+	        	android:layout_toRightOf="@id/dept"
+	        	android:layout_alignParentRight="true"
+				android:layout_centerVertical="true"
+	        	android:layout_marginRight="10dp">
+	        </com.wcyc.zigui2.widget.MySpinner>
+			<ImageView
+				android:layout_centerVertical="true"
+				android:layout_alignParentRight="true"
+				android:src="@drawable/icon_xiangxia"
+				android:layout_width="@dimen/my_information_item_iv"
+				android:layout_height="@dimen/my_information_item_iv" />
+	    </RelativeLayout>
+	    
+	    <View android:layout_width="match_parent"
+	         android:layout_height="@dimen/line_height"
+	         android:background="@color/line_darkyellow"/>
+
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="@dimen/item_height"
+			android:padding="@dimen/nomar_margin"
+			android:background="@color/backgroud_white"
+			android:gravity="center_vertical">
+			<TextView
+				android:id="@+id/teacher"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="        教师："
+				android:textSize="@dimen/item_title_size"/>
+			<ScrollView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_weight="0.90">
+				<TextView
+					android:id="@+id/add_teacher"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_toRightOf="@id/teacher"
+					android:layout_toLeftOf="@+id/add_teacher_bt"
+					android:layout_weight="0.90"
+					android:textSize="@dimen/item_text_size"/>
+			</ScrollView>
+			<ImageButton
+				android:id="@+id/add_teacher_bt"
+				android:layout_width="@dimen/image_button_height"
+				android:layout_height="@dimen/image_button_height"
+				android:background="@drawable/new_ten"
+				android:scaleType="fitXY"
+				android:layout_alignParentRight="true"
+				android:layout_marginRight="10dp"
+				/>
+		</LinearLayout>
+
+
+	   		 	
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/nomar_margin"/>
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"
+	        android:background="@color/backgroud_white"
+	        android:padding="@dimen/nomar_margin">
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="        主题："
+	            android:textSize="@dimen/item_title_size"
+				android:layout_centerVertical="true"/>
+
+	        <EditText
+	            android:id="@+id/subject"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="0.90"
+				android:layout_centerVertical="true"
+	            android:maxLength="200"
+	            android:maxLines="3"/>
+	    </LinearLayout>
+	    
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/nomar_margin"/>
+	    
+	    <LinearLayout
+	        android:layout_width="match_parent"
+		    android:layout_height="wrap_content">
+		    <EditText
+	            android:id="@+id/content"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:inputType="textMultiLine"
+	            android:hint="请输入内容..."
+				android:gravity="left|top"
+	            android:minHeight="100dp"
+	            android:singleLine="false"
+	            android:maxLines="6"
+	            android:maxLength="5000"
+	            android:padding="@dimen/nomar_margin"
+	            android:background="@color/backgroud_white"
+	            android:textSize="@dimen/item_desc_size"/>
+		</LinearLayout>
+		<RelativeLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="10dp">
+		    <Button android:id="@+id/weekly_summary"
+		        android:layout_width="@dimen/type_btn_width"
+		        android:layout_height="@dimen/type_btn_height"
+		        android:background="@drawable/btn2_leixing_normal"
+		        android:text="周期小结"
+		        android:textSize="@dimen/bottom_button_text"/>
+		    
+		    <Button android:id="@+id/month_summay"
+		        android:layout_width="@dimen/type_btn_width"
+		        android:layout_height="@dimen/type_btn_height"
+		        android:background="@drawable/btn2_leixing_normal"
+		        android:layout_toRightOf="@id/weekly_summary"
+		        android:layout_marginLeft="@dimen/type_btn_margin"
+		        android:text="月期总结"
+		        android:textSize="@dimen/bottom_button_text"
+		        android:gravity="center"
+		        android:textColor="@color/TextColorBlack"/>
+		    
+		    <Button android:id="@+id/term_summary"
+		        android:layout_width="@dimen/type_btn_width"
+		        android:layout_height="@dimen/type_btn_height"
+		        android:background="@drawable/btn2_leixing_normal"
+		        android:layout_toRightOf="@id/month_summay"
+		        android:layout_marginLeft="@dimen/type_btn_margin"
+		        android:text="学期总结"
+		        android:textSize="@dimen/bottom_button_text"/>
+		    
+		    <Button android:id="@+id/year_summary"
+		        android:layout_width="@dimen/type_btn_width"
+		        android:layout_height="@dimen/type_btn_height"
+		        android:background="@drawable/btn2_leixing_normal"
+		        android:layout_toRightOf="@id/term_summary"
+		        android:layout_marginLeft="@dimen/type_btn_margin"
+		        android:text="学年总结"
+		        android:textSize="@dimen/bottom_button_text"/>
+		    
+		    <Button android:id="@+id/more"
+		        android:layout_width="@dimen/type_btn_width"
+		        android:layout_height="@dimen/type_btn_height"
+		        android:background="@drawable/btn2_leixing_normal"
+		        android:layout_toRightOf="@id/year_summary"
+		        android:layout_marginLeft="@dimen/type_btn_margin"
+		        android:text="..."
+		        android:textSize="@dimen/bottom_button_text"/>
+		    <Button android:id="@+id/meeting"
+		        android:layout_width="@dimen/type_btn_width"
+		        android:layout_height="@dimen/type_btn_height"
+		        android:background="@drawable/btn2_leixing_normal"
+		        android:layout_below="@id/weekly_summary"
+		        android:layout_marginTop="@dimen/type_btn_margin_top"
+		        android:text="会议汇报"
+		        android:textSize="@dimen/bottom_button_text"
+		        android:visibility="gone"/>
+		    <Button android:id="@+id/other"
+		        android:layout_width="@dimen/type_btn_width"
+		        android:layout_height="@dimen/type_btn_height"
+		        android:background="@drawable/btn2_leixing_normal"
+		        android:layout_below="@id/month_summay"
+		        android:layout_marginTop="@dimen/type_btn_margin_top"
+		        android:layout_toRightOf="@id/meeting"
+		        android:layout_marginLeft="@dimen/type_btn_margin"
+		        android:text="其他"
+		        android:textSize="@dimen/bottom_button_text"
+		        android:visibility="gone"/>
+		</RelativeLayout>
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/nomar_margin"/>
+	   
+	    <RelativeLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"
+	        android:background="@color/backgroud_white"
+	        android:padding="@dimen/nomar_margin">
+	        <TextView 
+	        	android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+				android:layout_centerVertical="true"
+	        	android:text="最大可以发送20M附件"
+	        	android:textSize="@dimen/hint_text_size"/>
+	        <Button
+	            android:id="@+id/add_attach"
+	            android:layout_width="wrap_content"
+	            android:layout_height="30dp"
+	            android:text="添加附件"
+	            android:textSize="@dimen/item_desc_size"
+	            android:textColor="@color/font_darkblue"
+	            android:layout_alignParentRight="true"
+	            android:background="@drawable/btn_tianjiafujian"
+	            android:layout_marginRight="10dp"/>
+	    </RelativeLayout>
+	  
+	    
+	    <ListView
+	        android:id="@+id/attachList"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"/>
+	</LinearLayout>
+</RelativeLayout>

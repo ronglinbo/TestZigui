@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/leave_bg_redio"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="14dp"
+        android:paddingLeft="@dimen/zgd_margin_right"
+        android:paddingRight="@dimen/zgd_margin_right" >
+
+        <TextView
+            android:id="@+id/myLeaveTitle_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/leave_shijia_bg"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textColor="@color/white"
+            android:text="事假" />
+
+        <TextView
+            android:id="@+id/status_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="#666666"
+            android:text="2" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="19dp"
+        android:paddingBottom="19dp"
+        android:paddingLeft="@dimen/zgd_margin_right"
+        android:paddingRight="@dimen/zgd_margin_right" >
+
+        <TextView
+            android:id="@+id/startTime_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3" />
+
+        <TextView
+            android:id="@+id/endTime_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/myLeaveContent_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="14dp"
+        android:paddingLeft="@dimen/zgd_margin_right"
+        android:paddingRight="@dimen/zgd_margin_right"
+        android:textColor="#666666"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:text="5" />
+
+</LinearLayout>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:background="@drawable/item_selector"
+    android:orientation="vertical">
+
+
+
+
+
+
+
+    <View
+        android:layout_gravity="bottom"
+        android:background="@color/color_backround"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"></View>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="5dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="5dp">
+
+        <RelativeLayout
+            android:id="@+id/re"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+
+            android:gravity="center_vertical">
+
+
+            <CheckBox
+                android:id="@+id/product_radio_button"
+                style="@style/CustomProductCheckboxTheme"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:clickable="false" />
+
+
+            <TextView
+                android:id="@+id/taocan_name"
+                android:layout_width="235dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageView2"
+                android:layout_marginLeft="30dp"
+                android:text="2017年上学期服务包"
+                android:textColor="@color/color_shengse"
+                android:textSize="15sp" />
+
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="75dp"
+                android:src="@drawable/icon_shuoming"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/product_introduce"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+
+                android:text="产品说明"
+                android:textColor="@color/color_checked"
+                android:textSize="13sp" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/re"
+            android:background="@drawable/item_selector"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:id="@+id/service_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignTop="@+id/relativeLayout"
+                android:layout_marginLeft="30dp"
+                android:text="个性服务+小学学习资源"
+                android:textColor="@color/color_qianse"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/service_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/service_name"
+                android:layout_below="@+id/service_name"
+                android:layout_marginTop="5dp"
+                android:text="服务期限2017-02-01至2017-08-31"
+                android:textColor="@color/color_cancel_yingfu"
+                android:textSize="14sp" />
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="20dp"
+
+                android:layout_marginTop="10dp"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/service_charge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="￥160"
+                    android:textColor="@color/color_dai_pay"
+                    android:textSize="17sp" />
+
+                <TextView
+
+                    android:id="@+id/original_cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/service_charge"
+                    android:layout_marginTop="2dp"
+                    android:text="原价 ￥260 "
+                    android:textColor="@color/font_lightgray"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+        <View
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="bottom"
+            android:background="@color/color_line"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"></View>
+    </LinearLayout>
+    <ImageView
+        android:visibility="visible"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="90dp"
+        android:layout_gravity="right"
+        android:id="@+id/im_yigoumai"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/service_date"
+        android:layout_toLeftOf="@+id/relativeLayout"
+        android:src="@drawable/icon_yigoumai" />
+</FrameLayout>

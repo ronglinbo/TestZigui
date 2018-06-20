@@ -1,0 +1,79 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroud_lightyellow" >
+
+    <!-- 老师消息主界面 -->
+    <include
+        android:id="@+id/parent_message_title"
+        layout="@layout/title2" />
+
+    <TextView
+        android:id="@+id/teachernotification_tv_no_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:drawableTop="@drawable/icon_message_none"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="@string/teachernotification_tv_no_message"
+        android:textColor="@color/font_darkgray"
+        android:textSize="@dimen/three_text_type" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/parent_message_ll"
+        android:gravity="center" >
+
+        <com.wcyc.zigui2.widget.FallListView
+            android:id="@+id/pullToRefreshListView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="#00000000"
+            android:divider="@color/font_lightgray"
+            android:dividerHeight="0.5dp" 
+            android:listSelector="@drawable/item_selector"
+            android:scrollbars="none" >
+        </com.wcyc.zigui2.widget.FallListView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/parent_message_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="@dimen/nomar_margin"
+        android:layout_below="@+id/parent_message_title"
+        android:paddingLeft="@dimen/nomar_margin" >
+
+        <TextView
+            android:id="@+id/parentmsg_first_item_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/font_darkgray"
+            android:textSize="@dimen/three_text_type" />
+
+        <Button
+            android:id="@+id/teacher_notification_btn_send"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/nomar_margin"
+            android:background="@drawable/login_selector"
+            android:gravity="center"
+            android:padding="@dimen/font_to_font_diver"
+            android:text="@string/teacher_notification_btn_send"
+            android:textColor="@color/font_white"
+            android:textSize="@dimen/three_text_type" />
+    </RelativeLayout>
+
+</RelativeLayout>
